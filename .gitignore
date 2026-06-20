@@ -1,0 +1,11 @@
+# Personal data — never commit. Lives only in the browser's localStorage.
+myseed.json
+*.local.json
+
+# OS
+.DS_Store
+
+# Cloudflare Worker local
+worker/.wrangler/
+worker/node_modules/
+worker/.dev.vars

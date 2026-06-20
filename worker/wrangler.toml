@@ -1,0 +1,14 @@
+name = "mealprep-strava"
+main = "worker.js"
+compatibility_date = "2026-06-01"
+
+# Set this to your GitHub Pages origin after the repo is created:
+[vars]
+ALLOWED_ORIGIN = "https://lvelocci-home.github.io"
+
+# Optional: KV namespace to persist a rotating Strava refresh token.
+# Create with:  wrangler kv namespace create TOKENS
+# then paste the id below and uncomment.
+# [[kv_namespaces]]
+# binding = "TOKENS"
+# id = "REPLACE_WITH_KV_ID"

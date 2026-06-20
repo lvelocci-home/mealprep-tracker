@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<title>Prep &amp; Progress</title>
+<style>
+:root{
+  --bg:#eef2f5; --bg2:#f7f9fb; --card:#ffffff; --line:#e2e8ee; --line2:#d3dce4;
+  --ink:#16242f; --ink2:#56697a; --ink3:#90a2b1;
+  --accent:#0eb39a; --accent-d:#0a8f7c; --accent-bg:#e2f6f2;
+  --blue:#2f78d6; --blue-bg:#e6f0fb;
+  --cal:#0eb39a; --pro:#2bb673; --carb:#f0a821; --fat:#8b6cf0;
+  --good:#2bb673; --warn:#e8833a; --bad:#e0566b;
+  --radius:16px; --radius-sm:10px; --nav-h:62px;
+  --shadow:0 1px 3px rgba(20,36,47,.06),0 4px 16px rgba(20,36,47,.06);
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;overflow-x:hidden}
+main{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 8px);min-height:100vh}
+.page{display:none;max-width:780px;margin:0 auto;padding:14px 14px 30px}
+.page.active{display:block;animation:fade .18s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+/* Topbar */
+.topbar{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,var(--bg) 70%,rgba(238,242,245,0));padding:14px 14px 8px;display:flex;align-items:center;gap:10px;max-width:780px;margin:0 auto}
+.topbar h1{font-size:21px;font-weight:800;letter-spacing:-.4px;flex:1}
+.topbar h1 b{color:var(--accent)}
+.topbar .sub{font-size:12px;color:var(--ink3);font-weight:600}
+.icon-btn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink2)}
+.icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* Nav */
+nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:1px solid var(--line);display:flex;z-index:100}
+nav button{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink3);font-size:10px;font-weight:600;font-family:var(--font)}
+nav button.active{color:var(--accent)}
+nav button svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+
+/* Cards & bits */
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink2);margin-bottom:11px;font-weight:700;display:flex;align-items:center;gap:7px}
+.muted{color:var(--ink2)}.tiny{font-size:12px;color:var(--ink3)}
+.row{display:flex;align-items:center;gap:10px}
+.spacer{flex:1}
+.pill{display:inline-block;font-size:11px;font-weight:700;padding:3px 9px;border-radius:20px;background:var(--accent-bg);color:var(--accent-d)}
+.sel,.inp{font-family:var(--font);font-size:15px;color:var(--ink);background:var(--bg2);border:1px solid var(--line2);border-radius:var(--radius-sm);padding:10px 12px;width:100%}
+.sel{appearance:none;background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%2356697a' stroke-width='2'><path d='M4 6l4 4 4-4'/></svg>");background-repeat:no-repeat;background-position:right 12px center}
+button.btn{font-family:var(--font);font-weight:700;font-size:14px;border:none;border-radius:var(--radius-sm);padding:11px 15px;cursor:pointer;background:var(--accent);color:#fff}
+button.btn.sec{background:var(--bg2);color:var(--ink);border:1px solid var(--line2)}
+button.btn.ghost{background:none;color:var(--accent-d);padding:8px 4px}
+button.btn:active{transform:scale(.98)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+label.fld{display:block;font-size:12px;font-weight:700;color:var(--ink2);margin:10px 0 4px}
+
+/* Grocery */
+.aisle{margin-bottom:6px}
+.aisle .ah{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.5px;color:var(--accent-d);padding:12px 2px 4px}
+.gitem{display:flex;align-items:center;gap:12px;padding:11px 4px;border-bottom:1px solid var(--line)}
+.gitem:last-child{border-bottom:none}
+.check{width:24px;height:24px;border-radius:7px;border:2px solid var(--line2);flex:none;display:flex;align-items:center;justify-content:center;cursor:pointer;background:var(--card);transition:.12s}
+.check svg{width:14px;height:14px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.gitem.done .check{background:var(--accent);border-color:var(--accent)}
+.gitem.done .check svg{opacity:1}
+.gitem .gname{flex:1;font-weight:600;font-size:15px}
+.gitem .gqty{font-size:13px;color:var(--ink2);font-weight:600;white-space:nowrap}
+.gitem.done .gname,.gitem.done .gqty{color:var(--ink3);text-decoration:line-through}
+.gitem .xrm{color:var(--ink3);cursor:pointer;font-size:18px;padding:0 4px}
+.progress{height:9px;border-radius:6px;background:var(--line);overflow:hidden;margin-top:6px}
+.progress>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent),var(--accent-d));border-radius:6px;transition:width .3s}
+details.have{margin-top:8px}
+details.have summary{cursor:pointer;font-size:13px;font-weight:700;color:var(--ink2);padding:8px 2px;list-style:none}
+details.have summary::-webkit-details-marker{display:none}
+
+/* Macro rings */
+.rings{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;text-align:center}
+.ring{position:relative;width:100%;max-width:88px;margin:0 auto}
+.ring svg{width:100%;height:auto;transform:rotate(-90deg)}
+.ring .rv{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ring .rv b{font-size:15px;font-weight:800;line-height:1}
+.ring .rv span{font-size:9px;color:var(--ink3);margin-top:1px}
+.rlabel{font-size:11px;font-weight:700;color:var(--ink2);margin-top:5px}
+.rrem{font-size:10px;color:var(--ink3)}
+
+/* meal cards */
+.meal{display:flex;align-items:center;gap:12px;padding:12px 4px;border-bottom:1px solid var(--line)}
+.meal:last-child{border-bottom:none}
+.meal .mn{flex:1}
+.meal .mn b{font-weight:700;font-size:14px}
+.meal .mn .mm{font-size:12px;color:var(--ink2);margin-top:2px}
+.meal.eaten .mn b{color:var(--accent-d)}
+
+/* exercises */
+.day{margin-bottom:10px}
+.day .dh{display:flex;align-items:center;gap:10px;padding:10px 2px}
+.day .dh b{flex:1;font-size:15px;font-weight:700}
+.ex{display:flex;align-items:baseline;gap:8px;padding:7px 4px 7px 14px;font-size:14px;border-bottom:1px solid var(--line)}
+.ex:last-child{border-bottom:none}
+.ex a{color:var(--ink);text-decoration:none;font-weight:600;border-bottom:1px dotted var(--line2)}
+.ex a:hover{color:var(--accent-d)}
+.ex .sr{margin-left:auto;font-size:12px;color:var(--ink2);font-weight:600;white-space:nowrap}
+.rest{padding:14px;text-align:center;color:var(--ink3);font-style:italic;font-size:13px}
+.act{display:flex;align-items:center;gap:10px;padding:10px 2px;border-bottom:1px solid var(--line)}
+.act:last-child{border-bottom:none}
+.act .aemoji{width:30px;text-align:center;font-size:17px}
+.act .an{flex:1}.act .an b{font-size:14px;font-weight:700}.act .an .am{font-size:12px;color:var(--ink2)}
+.act .astat{font-size:12px;color:var(--ink2);text-align:right;font-weight:600}
+
+/* table */
+.thist{width:100%;border-collapse:collapse;font-size:13px}
+.thist th{text-align:right;padding:7px 8px;color:var(--ink2);font-weight:700;font-size:11px;border-bottom:2px solid var(--line);white-space:nowrap}
+.thist th:first-child,.thist td:first-child{text-align:left}
+.thist td{padding:8px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}
+.chartwrap{overflow:hidden;border-radius:var(--radius-sm)}
+.seg{display:inline-flex;background:var(--bg2);border:1px solid var(--line2);border-radius:9px;overflow:hidden;margin-bottom:8px}
+.seg button{border:none;background:none;padding:7px 13px;font-size:12px;font-weight:700;color:var(--ink2);cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff}
+
+.banner{background:var(--blue-bg);border:1px solid #cfe1f6;color:#1c4f8f;border-radius:var(--radius-sm);padding:10px 13px;font-size:13px;font-weight:600;margin-bottom:12px}
+.toast{position:fixed;left:50%;bottom:calc(var(--nav-h) + 18px);transform:translateX(-50%) translateY(20px);background:var(--ink);color:#fff;padding:11px 18px;border-radius:24px;font-size:13px;font-weight:600;opacity:0;transition:.25s;z-index:200;pointer-events:none;max-width:90%;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.modal{position:fixed;inset:0;background:rgba(20,36,47,.45);display:none;align-items:flex-end;justify-content:center;z-index:300}
+.modal.show{display:flex}
+.sheet{background:var(--card);width:100%;max-width:540px;border-radius:20px 20px 0 0;padding:18px 16px calc(20px + env(safe-area-inset-bottom));max-height:86vh;overflow:auto;animation:up .22s ease}
+@keyframes up{from{transform:translateY(30px)}to{transform:none}}
+.sheet h3{font-size:17px;font-weight:800;margin-bottom:4px}
+.searchres{padding:10px 4px;border-bottom:1px solid var(--line);cursor:pointer;display:flex;gap:10px;align-items:center}
+.searchres:active{background:var(--bg2)}
+.searchres .srn{flex:1}.searchres .srn b{font-size:14px}.searchres .srn span{font-size:12px;color:var(--ink2)}
+.empty{text-align:center;color:var(--ink3);padding:26px 10px;font-size:14px}
+.note{font-size:12px;color:var(--ink3);line-height:1.5;margin-top:8px}
+a.link{color:var(--accent-d);font-weight:700;text-decoration:none}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <h1 id="ttl">Prep<b>·</b>Progress</h1>
+  <div class="icon-btn" onclick="go('data')" title="Data & Privacy">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+  </div>
+</div>
+
+<main>
+  <section id="p-grocery" class="page active"></section>
+  <section id="p-food" class="page"></section>
+  <section id="p-train" class="page"></section>
+  <section id="p-progress" class="page"></section>
+  <section id="p-data" class="page"></section>
+</main>
+
+<nav>
+  <button data-pg="grocery" class="active" onclick="go('grocery')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Shop</button>
+  <button data-pg="food" onclick="go('food')"><svg viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M21 15V2a5 5 0 0 0-3 9v9"/></svg>Food</button>
+  <button data-pg="train" onclick="go('train')"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M6.5 17.5L4 20M17.5 6.5L20 4"/></svg>Train</button>
+  <button data-pg="progress" onclick="go('progress')"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Progress</button>
+  <button data-pg="data" onclick="go('data')"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 2"/></svg>Data</button>
+</nav>
+
+<div class="toast" id="toast"></div>
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
+
+<script>
+/* ============================ PUBLIC SEED (non-sensitive) ============================ */
+const SEED_PLANS = [{
+  id:"p1655", name:"1655 Macro Breakdown", calories:1655,
+  target:{cal:1655,p:127,c:145,f:63}, days:7,
+  meals:[
+    {id:"m1", name:"Meal 1 · Yogurt + High-Fiber Bowl", macros:{cal:325,p:29,c:33,f:9}},
+    {id:"m2", name:"Meal 2 · Avocado Egg Salad Pita",  macros:{cal:460,p:13,c:50,f:23}},
+    {id:"m3", name:"Meal 3 · Protein Shake + Greens",  macros:{cal:300,p:65,c:3, f:3}},
+    {id:"m4", name:"Meal 4 · Chicken, Potatoes + Veg", macros:{cal:410,p:30,c:43,f:13}},
+    {id:"m5", name:"Meal 5 · Graham + Almond Butter",  macros:{cal:160,p:0, c:15,f:11}}
+  ],
+  groceries:[
+    {item:"Avocados", qty:"11", aisle:"Produce"},
+    {item:"Baby spinach", qty:"1 large tub (~10–16 oz)", aisle:"Produce"},
+    {item:"Arugula", qty:"1 container", aisle:"Produce"},
+    {item:"Spring mix lettuce", qty:"1 container", aisle:"Produce"},
+    {item:"Celery", qty:"1 bunch", aisle:"Produce"},
+    {item:"Broccoli", qty:"~2 lb (2 crowns)", aisle:"Produce"},
+    {item:"Cauliflower", qty:"1 large head", aisle:"Produce"},
+    {item:"Red potatoes", qty:"2 lb bag", aisle:"Produce"},
+    {item:"Sweet potatoes", qty:"3–4", aisle:"Produce"},
+    {item:"Grape tomatoes", qty:"1 pint", aisle:"Produce"},
+    {item:"Grapes", qty:"~2 lb", aisle:"Produce"},
+    {item:"Blueberries", qty:"2 pints / 18 oz", aisle:"Produce"},
+    {item:"Strawberries", qty:"1 lb", aisle:"Produce"},
+    {item:"Clementines", qty:"1 bag", aisle:"Produce"},
+    {item:"Fuji apples", qty:"small bag", aisle:"Produce"},
+    {item:"Mangos", qty:"2", aisle:"Produce"},
+    {item:"Chicken breast", qty:"~3 lb", aisle:"Meat & Protein"},
+    {item:"Ground turkey", qty:"1 lb", aisle:"Meat & Protein"},
+    {item:"0% Greek yogurt", qty:"32 oz tub", aisle:"Dairy & Refrigerated"},
+    {item:"Cottage cheese (Good Culture)", qty:"1 tub", aisle:"Dairy & Refrigerated"},
+    {item:"Almond milk", qty:"½ gallon", aisle:"Dairy & Refrigerated"},
+    {item:"Eggs", qty:"2½ dozen (26)", aisle:"Dairy & Refrigerated"},
+    {item:"High-fiber pita", qty:"7 (1–2 packs)", aisle:"Bakery"},
+    {item:"Fiber One cereal", qty:"1 box", aisle:"Grocery/Pantry"},
+    {item:"Almonds", qty:"small bag", aisle:"Grocery/Pantry"},
+    {item:"Graham crackers", qty:"1 box", aisle:"Grocery/Pantry"},
+    {item:"Perfect Bars minis", qty:"1 box (if available)", aisle:"Grocery/Pantry"},
+    {item:"Chicken sausage", qty:"1 pack", aisle:"Frozen"},
+    {item:"Olive oil", qty:"check pantry", aisle:"Supplements/Other", pantry:true},
+    {item:"Mustard", qty:"check pantry", aisle:"Supplements/Other", pantry:true},
+    {item:"Almond butter", qty:"check pantry", aisle:"Supplements/Other", pantry:true},
+    {item:"Collagen peptides", qty:"restock if low", aisle:"Supplements/Other", pantry:true},
+    {item:"UMP protein powder", qty:"restock if low", aisle:"Supplements/Other", pantry:true}
+  ]
+}];
+
+const SEED_WORKOUTS = [{
+  id:"w1", name:"Glutes + Chest",
+  days:[
+    {id:"d1", label:"Day 1 · Glute Activation + Abs", exercises:[
+      {name:"X Band Walks",reps:"12"},{name:"Froggy Glute Lifts",reps:"12"},
+      {name:"Frog Pumps",reps:"12"},{name:"Clam Shells",reps:"12"},
+      {name:"Plie Squats",reps:"8–12"},{name:"Static Lunges",reps:"8–12"},
+      {name:"Standing Crunches",reps:"8–10"},{name:"Russian Twists",reps:"8–10"},
+      {name:"Pallof Twist",reps:"8–10 each"}
+    ]},
+    {id:"d2", label:"Day 2 · Rest & Recovery", rest:true, exercises:[]},
+    {id:"d3", label:"Day 3 · Upper Body", exercises:[
+      {name:"Lat Pulldowns",reps:"8–12"},{name:"Single Arm Dumbbell Rows",reps:"8–12"},
+      {name:"External Delt Rotations",reps:"8–12"},{name:"Lateral Raises",reps:"8–12"},
+      {name:"Bicep Curls",reps:"12"},{name:"Hammer Curls",reps:"12"},
+      {name:"Tricep Bench Dips",reps:"8"},{name:"Tricep Kickbacks",reps:"8"}
+    ]},
+    {id:"d4", label:"Day 4 · Legs + Abs", exercises:[
+      {name:"Suitcase Squats",reps:"8"},{name:"Walking Lunges",reps:"8"},
+      {name:"Donkey Kick Backs",reps:"8"},{name:"Marching Glute Bridges",reps:"12"},
+      {name:"Glute Bridge Pull Aparts",reps:"12"},{name:"Single Leg Lunge off Bench",reps:"12"},
+      {name:"Standing Bicycle Crunches",reps:"8–10"},{name:"Ball Crunches",reps:"8–10"},
+      {name:"Heels to Heaven",reps:"8–10"}
+    ]},
+    {id:"d5", label:"Day 5 · Full Body", exercises:[
+      {name:"Arnold Press",reps:"6–8"},{name:"Superman Holds",reps:"6–8"},
+      {name:"Forward Lunge with a Lateral Raise",reps:"6–8"},{name:"Gorilla Rows",reps:"6–8"},
+      {name:"Lift Off Lunges",reps:"8"},{name:"Hip Thrusts",reps:"8"},
+      {name:"Pike Pushups",reps:"8"},{name:"Bird Dog Crunches",reps:"8"}
+    ]}
+  ]
+}];
+
+const SEED_PANTRY = ["Olive oil","Mustard","Almond butter","Collagen peptides","UMP protein powder"];
+const AISLE_ORDER = ["Produce","Meat & Protein","Dairy & Refrigerated","Bakery","Grocery/Pantry","Frozen","Supplements/Other"];
+
+/* ============================ STATE ============================ */
+const LS_KEY = "mealprep_state_v1";
+function defaultState(){
+  return {
+    plans: SEED_PLANS, workouts: SEED_WORKOUTS, pantry: SEED_PANTRY.slice(),
+    currentPlanId: "p1655", currentWorkoutId: "w1",
+    groceryRun: { planId:"p1655", extras:[], checked:{} },
+    // personal (local-only)
+    foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0}
+  };
+}
+let S = load();
+function load(){
+  try{ const r=JSON.parse(localStorage.getItem(LS_KEY)); if(r) return Object.assign(defaultState(), r); }catch(e){}
+  return defaultState();
+}
+function save(){ localStorage.setItem(LS_KEY, JSON.stringify(S)); }
+
+/* ============================ HELPERS ============================ */
+const $=(s,r=document)=>r.querySelector(s);
+const h=(html)=>{const t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild;};
+const esc=(s)=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const todayISO=()=>new Date().toLocaleDateString('en-CA');
+const slug=(n)=>n.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const round=(n,d=0)=>{const f=10**d;return Math.round(n*f)/f;};
+function toast(m){const t=$('#toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('show'),2200);}
+function enc(o){return btoa(unescape(encodeURIComponent(JSON.stringify(o))));}
+function dec(s){return JSON.parse(decodeURIComponent(escape(atob(s))));}
+const curPlan=()=>S.plans.find(p=>p.id===S.currentPlanId)||S.plans[0];
+const curWorkout=()=>S.workouts.find(w=>w.id===S.currentWorkoutId)||S.workouts[0];
+function weekKey(d=new Date()){const t=new Date(d);t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));const w1=new Date(t.getFullYear(),0,4);return t.getFullYear()+'-W'+String(1+Math.round(((t-w1)/864e5-3+((w1.getDay()+6)%7))/7)).padStart(2,'0');}
+
+/* ============================ ROUTER ============================ */
+function go(pg){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  $('#p-'+pg).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.pg===pg));
+  window.scrollTo(0,0);
+  ({grocery:renderGrocery,food:renderFood,train:renderTrain,progress:renderProgress,data:renderData}[pg])();
+}
+
+/* ============================ GROCERY ============================ */
+function renderGrocery(){
+  const p=curPlan(), run=S.groceryRun;
+  if(run.planId!==p.id){ run.planId=p.id; run.checked={}; run.extras=run.extras||[]; }
+  const all=[...p.groceries.map((g,i)=>({...g,key:'p'+i})), ...run.extras.map((e,i)=>({...e,key:'e'+i,extra:true}))];
+  const pantrySet=new Set(S.pantry.map(x=>x.toLowerCase()));
+  const isPantry=(g)=>g.pantry||pantrySet.has(g.item.toLowerCase());
+  const shop=all.filter(g=>!isPantry(g)), have=all.filter(isPantry);
+  const done=shop.filter(g=>run.checked[g.key]).length;
+  const pct=shop.length?Math.round(done/shop.length*100):0;
+
+  let html=`<div class="card">
+    <div class="row"><div style="flex:1">
+      <label class="fld" style="margin-top:0">This week's plan</label>
+      <select class="sel" onchange="S.currentPlanId=this.value;save();renderGrocery()">
+        ${S.plans.map(pl=>`<option value="${pl.id}" ${pl.id===p.id?'selected':''}>${esc(pl.name)}</option>`).join('')}
+      </select>
+    </div></div>
+    <div class="row" style="margin-top:13px"><b style="font-size:14px">${done} / ${shop.length} in cart</b><span class="spacer"></span><span class="tiny">${pct}%</span></div>
+    <div class="progress"><i style="width:${pct}%"></i></div>
+  </div>`;
+
+  // aisles
+  html+='<div class="card">';
+  AISLE_ORDER.forEach(aisle=>{
+    const items=shop.filter(g=>g.aisle===aisle).sort((a,b)=>(run.checked[a.key]?1:0)-(run.checked[b.key]?1:0));
+    if(!items.length) return;
+    html+=`<div class="aisle"><div class="ah">${esc(aisle)}</div>`;
+    items.forEach(g=>{
+      const d=run.checked[g.key]?'done':'';
+      html+=`<div class="gitem ${d}">
+        <div class="check" onclick="toggleGrocery('${g.key}')"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+        <div class="gname" onclick="toggleGrocery('${g.key}')">${esc(g.item)}</div>
+        <div class="gqty">${esc(g.qty||'')}</div>
+        ${g.extra?`<div class="xrm" onclick="rmExtra('${g.key}')">×</div>`:''}
+      </div>`;
+    });
+    html+='</div>';
+  });
+  html+='</div>';
+
+  // add extra
+  html+=`<div class="card"><h2>Add item</h2>
+    <div class="row" style="gap:8px"><input class="inp" id="exItem" placeholder="e.g. Rotisserie chicken" style="flex:2">
+      <input class="inp" id="exQty" placeholder="qty" style="flex:1"></div>
+    <select class="sel" id="exAisle" style="margin-top:8px">${AISLE_ORDER.map(a=>`<option>${a}</option>`).join('')}</select>
+    <button class="btn" style="margin-top:10px;width:100%" onclick="addExtra()">+ Add to list</button>
+  </div>`;
+
+  // have / pantry fold
+  if(have.length){
+    html+=`<details class="have card"><summary>✓ Already have (${have.length}) — pantry staples</summary><div style="margin-top:6px">`;
+    have.forEach(g=>html+=`<div class="gitem"><div class="check" style="background:var(--line2);border-color:var(--line2)"><svg viewBox="0 0 24 24" style="opacity:1;stroke:#fff"><path d="M5 13l4 4L19 7"/></svg></div><div class="gname" style="color:var(--ink3)">${esc(g.item)}</div><div class="gqty">${esc(g.qty||'')}</div></div>`);
+    html+=`</div></details>`;
+  }
+
+  html+=`<div class="row" style="gap:8px;margin-top:4px">
+    <button class="btn sec" style="flex:1" onclick="openOnPhone()">📲 Open on phone</button>
+    <button class="btn sec" style="flex:1" onclick="resetRun()">↺ New week</button>
+  </div>`;
+  $('#p-grocery').innerHTML=html;
+}
+function toggleGrocery(k){S.groceryRun.checked[k]=!S.groceryRun.checked[k];if(!S.groceryRun.checked[k])delete S.groceryRun.checked[k];save();renderGrocery();}
+function addExtra(){const i=$('#exItem').value.trim();if(!i)return;S.groceryRun.extras.push({item:i,qty:$('#exQty').value.trim(),aisle:$('#exAisle').value});save();renderGrocery();}
+function rmExtra(key){const idx=+key.slice(1);S.groceryRun.extras.splice(idx,1);
+  // reindex checked keys for extras
+  const nc={};Object.keys(S.groceryRun.checked).forEach(k=>{if(k[0]!=='e')nc[k]=true;else{const n=+k.slice(1);if(n<idx)nc[k]=true;else if(n>idx)nc['e'+(n-1)]=true;}});S.groceryRun.checked=nc;save();renderGrocery();}
+function resetRun(){if(confirm('Start a fresh list for the new week? (clears checkmarks & extras)')){S.groceryRun={planId:S.currentPlanId,extras:[],checked:{}};save();renderGrocery();toast('Fresh list ready');}}
+function openOnPhone(){
+  const run={planId:S.groceryRun.planId,extras:S.groceryRun.extras,checked:S.groceryRun.checked};
+  const url=location.origin+location.pathname+'#g='+enc(run);
+  openModal(`<h3>Open on your phone</h3>
+    <p class="muted" style="font-size:14px;margin:6px 0 12px">Open this link on your phone to load the same list. Check off as you shop.</p>
+    <div style="background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:10px;font-size:12px;word-break:break-all">${esc(url)}</div>
+    <button class="btn" style="width:100%;margin-top:10px" onclick="navigator.clipboard.writeText(${JSON.stringify(url)}).then(()=>toast('Link copied'))">Copy link</button>
+    <button class="btn sec" style="width:100%;margin-top:8px" onclick="showQR(${JSON.stringify(url)})">Show QR code</button>
+    <p class="note">The QR (optional) renders via a public QR image service and encodes only your grocery list — never any health data.</p>`);
+}
+function showQR(url){
+  const img='https://api.qrserver.com/v1/create-qr-code/?size=240x240&margin=8&data='+encodeURIComponent(url);
+  $('#sheet').insertAdjacentHTML('beforeend',`<div style="text-align:center;margin-top:12px"><img src="${img}" alt="QR" style="width:220px;height:220px;border:1px solid var(--line);border-radius:12px"></div>`);
+}
+
+/* ============================ FOOD ============================ */
+let foodDate=todayISO();
+function dayLog(d){ if(!S.foodLog[d])S.foodLog[d]={mealsEaten:{},extras:[]}; return S.foodLog[d]; }
+function dayTotals(d){
+  const p=curPlan(),lg=S.foodLog[d]||{mealsEaten:{},extras:[]};const t={cal:0,p:0,c:0,f:0};
+  p.meals.forEach(m=>{if(lg.mealsEaten[m.id]){t.cal+=m.macros.cal;t.p+=m.macros.p;t.c+=m.macros.c;t.f+=m.macros.f;}});
+  (lg.extras||[]).forEach(e=>{t.cal+=e.cal||0;t.p+=e.p||0;t.c+=e.c||0;t.f+=e.f||0;});
+  return t;
+}
+function renderFood(){
+  const p=curPlan(),tg=p.target,lg=dayLog(foodDate),tot=dayTotals(foodDate);
+  const isToday=foodDate===todayISO();
+  let html=`<div class="card">
+    <div class="row"><div style="flex:1">
+      <label class="fld" style="margin-top:0">Day</label>
+      <input class="inp" type="date" value="${foodDate}" max="${todayISO()}" onchange="foodDate=this.value;renderFood()">
+    </div><div style="text-align:right"><div class="tiny">Target</div><b style="font-size:14px">${tg.cal} cal</b></div></div>
+    <div class="rings" style="margin-top:16px">
+      ${ringHTML('Calories',tot.cal,tg.cal,'var(--cal)','')}
+      ${ringHTML('Protein',tot.p,tg.p,'var(--pro)','g')}
+      ${ringHTML('Carbs',tot.c,tg.c,'var(--carb)','g')}
+      ${ringHTML('Fat',tot.f,tg.f,'var(--fat)','g')}
+    </div></div>`;
+
+  html+=`<div class="card"><h2>Plan meals${isToday?' · today':''}</h2>`;
+  p.meals.forEach(m=>{
+    const eaten=lg.mealsEaten[m.id]?'eaten':'';
+    html+=`<div class="meal ${eaten}">
+      <div class="check ${eaten?'':''}" onclick="toggleMeal('${m.id}')" style="${eaten?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${eaten?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${m.macros.cal} cal · ${m.macros.p}P / ${m.macros.c}C / ${m.macros.f}F</div></div>
+    </div>`;
+  });
+  html+='</div>';
+
+  html+=`<div class="card"><h2>Off-plan / extras</h2>`;
+  if((lg.extras||[]).length){
+    lg.extras.forEach((e,i)=>html+=`<div class="meal"><div class="mn"><b>${esc(e.name)}</b><div class="mm">${e.cal||0} cal · ${e.p||0}P / ${e.c||0}C / ${e.f||0}F</div></div><div class="xrm" style="font-size:20px;color:var(--ink3);cursor:pointer" onclick="rmFoodExtra(${i})">×</div></div>`);
+  } else html+=`<div class="tiny" style="padding:4px 2px 10px">Nothing logged off-plan.</div>`;
+  html+=`<div class="row" style="gap:8px;margin-top:8px">
+    <button class="btn sec" style="flex:1" onclick="searchFoodModal()">🔍 Search food</button>
+    <button class="btn sec" style="flex:1" onclick="customFoodModal()">＋ Custom</button>
+  </div></div>`;
+
+  // 7-day strip
+  html+=`<div class="card"><h2>Last 7 days</h2><div class="row" style="gap:6px;justify-content:space-between">`;
+  for(let i=6;i>=0;i--){
+    const d=new Date();d.setDate(d.getDate()-i);const iso=d.toLocaleDateString('en-CA');
+    const t=dayTotals(iso),has=S.foodLog[iso]&&(Object.keys(S.foodLog[iso].mealsEaten).length||S.foodLog[iso].extras.length);
+    const ratio=tg.cal?t.cal/tg.cal:0;
+    let col=has?(ratio>=.9&&ratio<=1.1?'var(--good)':ratio<.9?'var(--carb)':'var(--warn)'):'var(--line)';
+    html+=`<div style="flex:1;text-align:center;cursor:pointer" onclick="foodDate='${iso}';renderFood()">
+      <div style="height:34px;display:flex;align-items:flex-end;justify-content:center"><div style="width:60%;border-radius:5px 5px 0 0;background:${col};height:${has?Math.max(12,Math.min(34,ratio*34)):4}px"></div></div>
+      <div class="tiny" style="margin-top:3px">${'SMTWTFS'[d.getDay()]}</div></div>`;
+  }
+  html+=`</div></div>`;
+  $('#p-food').innerHTML=html;
+}
+function ringHTML(label,val,target,color,unit){
+  const r=26,c=2*Math.PI*r,pct=target?Math.min(1,val/target):0;
+  return `<div><div class="ring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" stroke="var(--line)" stroke-width="7" fill="none"/>
+    <circle cx="32" cy="32" r="${r}" stroke="${color}" stroke-width="7" fill="none" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${c*(1-pct)}"/></svg>
+    <div class="rv"><b>${round(val)}</b><span>/${target}${unit}</span></div></div>
+    <div class="rlabel">${label}</div><div class="rrem">${Math.max(0,round(target-val))}${unit} left</div></div>`;
+}
+function toggleMeal(id){const lg=dayLog(foodDate);lg.mealsEaten[id]=!lg.mealsEaten[id];if(!lg.mealsEaten[id])delete lg.mealsEaten[id];save();renderFood();}
+function rmFoodExtra(i){dayLog(foodDate).extras.splice(i,1);save();renderFood();}
+function customFoodModal(){
+  openModal(`<h3>Add custom food</h3>
+    <label class="fld">Name</label><input class="inp" id="cfN" placeholder="e.g. Cappuccino">
+    <div class="grid2" style="margin-top:8px"><div><label class="fld" style="margin:0">Calories</label><input class="inp" id="cfCal" type="number" inputmode="numeric"></div>
+    <div><label class="fld" style="margin:0">Protein g</label><input class="inp" id="cfP" type="number" inputmode="numeric"></div>
+    <div><label class="fld" style="margin:0">Carbs g</label><input class="inp" id="cfC" type="number" inputmode="numeric"></div>
+    <div><label class="fld" style="margin:0">Fat g</label><input class="inp" id="cfF" type="number" inputmode="numeric"></div></div>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="addCustomFood()">Add</button>`);
+}
+function addCustomFood(){const n=$('#cfN').value.trim();if(!n)return;
+  dayLog(foodDate).extras.push({name:n,cal:+$('#cfCal').value||0,p:+$('#cfP').value||0,c:+$('#cfC').value||0,f:+$('#cfF').value||0});
+  save();closeModal();renderFood();toast('Added');}
+function searchFoodModal(){
+  openModal(`<h3>Search food</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Powered by Open Food Facts (free database).</p>
+    <div class="row" style="gap:8px"><input class="inp" id="ofqS" placeholder="e.g. chobani vanilla" onkeydown="if(event.key==='Enter')runFoodSearch()"><button class="btn" onclick="runFoodSearch()">Go</button></div>
+    <div id="ofRes" style="margin-top:10px"></div>`);
+  setTimeout(()=>$('#ofqS').focus(),100);
+}
+async function runFoodSearch(){
+  const q=$('#ofqS').value.trim();if(!q)return;const box=$('#ofRes');box.innerHTML='<div class="empty">Searching…</div>';
+  try{
+    const u='https://world.openfoodfacts.org/cgi/search.pl?search_terms='+encodeURIComponent(q)+'&search_simple=1&action=process&json=1&page_size=10&fields=product_name,brands,serving_size,nutriments';
+    const r=await fetch(u);const j=await r.json();
+    const items=(j.products||[]).filter(p=>p.product_name&&p.nutriments).slice(0,8);
+    if(!items.length){box.innerHTML='<div class="empty">No matches. Try a custom entry.</div>';return;}
+    box.innerHTML=items.map((p,i)=>{
+      const n=p.nutriments,perServe=n['energy-kcal_serving']!=null;
+      const cal=Math.round(perServe?n['energy-kcal_serving']:(n['energy-kcal_100g']||0));
+      const pr=round(perServe?(n.proteins_serving||0):(n.proteins_100g||0)),
+            cb=round(perServe?(n.carbohydrates_serving||0):(n.carbohydrates_100g||0)),
+            ft=round(perServe?(n.fat_serving||0):(n.fat_100g||0));
+      const lbl=(p.brands?p.brands.split(',')[0]+' · ':'')+(perServe?(p.serving_size||'serving'):'per 100g');
+      window['_of'+i]={name:p.product_name,cal,p:pr,c:cb,f:ft};
+      return `<div class="searchres" onclick="pickFood(${i})"><div class="srn"><b>${esc(p.product_name)}</b><br><span>${esc(lbl)} — ${cal} cal · ${pr}P/${cb}C/${ft}F</span></div><div style="color:var(--accent-d);font-weight:800">＋</div></div>`;
+    }).join('');
+  }catch(e){box.innerHTML='<div class="empty">Search failed (offline?). Use a custom entry.</div>';}
+}
+function pickFood(i){const f=window['_of'+i];dayLog(foodDate).extras.push(f);save();closeModal();renderFood();toast('Added '+f.name);}
+
+/* ============================ TRAIN ============================ */
+function renderTrain(){
+  const w=curWorkout(),wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};
+  const log=S.trainingLog[wk];
+  const trainDays=w.days.filter(d=>!d.rest);
+  const done=trainDays.filter(d=>log[d.id]).length;
+  let html=`<div class="card"><div class="row"><div style="flex:1">
+      <label class="fld" style="margin-top:0">Program</label>
+      <select class="sel" onchange="S.currentWorkoutId=this.value;save();renderTrain()">${S.workouts.map(x=>`<option value="${x.id}" ${x.id===w.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select>
+    </div><div style="text-align:right"><div class="tiny">This week</div><b style="font-size:18px;color:var(--accent-d)">${done}/${trainDays.length}</b></div></div></div>`;
+
+  w.days.forEach(d=>{
+    if(d.rest){html+=`<div class="card" style="padding:0"><div class="rest">🧘 ${esc(d.label)}</div></div>`;return;}
+    const dn=log[d.id]?'done':'';
+    html+=`<div class="card"><div class="day"><div class="dh">
+      <div class="check ${dn}" onclick="toggleDay('${d.id}')" style="${dn?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${dn?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
+      <b>${esc(d.label)}</b></div>`;
+    d.exercises.forEach(ex=>{
+      html+=`<div class="ex"><a href="https://julielohre.com/?s=${encodeURIComponent(ex.name)}" target="_blank" rel="noopener">${esc(ex.name)}</a><span class="sr">${esc(ex.reps)} reps</span></div>`;
+    });
+    html+=`</div></div>`;
+  });
+
+  // Strava
+  html+=`<div class="card"><h2>📡 Recent activity ${S.strava.workerUrl?'':'<span class="pill" style="background:var(--line);color:var(--ink2);margin-left:auto">not connected</span>'}</h2>`;
+  if(!S.strava.workerUrl){
+    html+=`<p class="muted" style="font-size:13px">Connect Strava to pull your Apple Watch workouts here.</p><button class="btn sec" style="margin-top:10px;width:100%" onclick="go('data')">Connect Strava →</button>`;
+  }else{
+    const acts=(S.activities||[]).slice(0,12);
+    if(acts.length){
+      // weekly rollup
+      const wkAgo=Date.now()-7*864e5;const recent=S.activities.filter(a=>new Date(a.date).getTime()>wkAgo);
+      const mins=recent.reduce((s,a)=>s+(a.durationMin||0),0),cals=recent.reduce((s,a)=>s+(a.calories||0),0);
+      html+=`<div class="banner" style="background:var(--accent-bg);border-color:#bfe9e1;color:var(--accent-d)">Last 7 days: <b>${recent.length}</b> sessions · <b>${mins}</b> min · <b>${cals||'—'}</b> cal</div>`;
+      acts.forEach(a=>{
+        const emo=actEmoji(a.type),dt=new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+        html+=`<div class="act"><div class="aemoji">${emo}</div><div class="an"><b>${esc(a.name||a.type)}</b><div class="am">${dt} · ${a.durationMin||0} min${a.distanceKm?' · '+a.distanceKm+' km':''}</div></div>
+          <div class="astat">${a.calories?a.calories+' cal':''}${a.avgHR?'<br>♥ '+a.avgHR:''}</div></div>`;
+      });
+    } else html+=`<div class="tiny" style="padding:4px 2px">No activities yet — hit Sync.</div>`;
+    html+=`<button class="btn" style="margin-top:12px;width:100%" onclick="syncStrava()">↻ Sync Strava${S.strava.lastSync?' · '+timeAgo(S.strava.lastSync):''}</button>`;
+  }
+  html+=`</div>`;
+  $('#p-train').innerHTML=html;
+}
+function toggleDay(id){const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};S.trainingLog[wk][id]=!S.trainingLog[wk][id];if(!S.trainingLog[wk][id])delete S.trainingLog[wk][id];save();renderTrain();}
+function actEmoji(t){t=(t||'').toLowerCase();if(t.includes('run'))return'🏃';if(t.includes('ride')||t.includes('cycl')||t.includes('bike'))return'🚴';if(t.includes('swim'))return'🏊';if(t.includes('walk')||t.includes('hike'))return'🚶';if(t.includes('weight')||t.includes('strength')||t.includes('workout'))return'🏋️';if(t.includes('yoga'))return'🧘';return'💪';}
+function timeAgo(ts){const s=(Date.now()-ts)/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
+async function syncStrava(){
+  if(!S.strava.workerUrl||!S.strava.token){toast('Connect Strava first');return;}
+  toast('Syncing…');
+  try{
+    const after=Math.floor((Date.now()-30*864e5)/1000);
+    const r=await fetch(S.strava.workerUrl.replace(/\/$/,'')+'/activities?after='+after+'&per_page=30',{headers:{Authorization:'Bearer '+S.strava.token}});
+    if(!r.ok){toast('Strava error '+r.status);return;}
+    const j=await r.json();S.activities=j.activities||[];S.strava.lastSync=Date.now();save();renderTrain();toast('Synced '+S.activities.length+' activities');
+  }catch(e){toast('Sync failed (check Worker URL)');}
+}
+
+/* ============================ PROGRESS / CHECK-IN ============================ */
+let trendMetric='weightLbs';
+function renderProgress(){
+  const ck=[...S.checkins].sort((a,b)=>a.date<b.date?-1:1);
+  let html='';
+  // due banner: every other Sunday from last check-in
+  const due=checkinDue(ck);
+  if(due) html+=`<div class="banner">📅 Check-in due — log today's weight & measurements.</div>`;
+
+  html+=`<div class="card"><div class="row"><h2 style="margin:0;flex:1">Progress</h2><button class="btn ghost" onclick="checkinModal()">＋ New check-in</button></div>`;
+  if(!ck.length){
+    html+=`<div class="empty">No check-ins yet.<br>Import your history in <a class="link" onclick="go('data')">Data</a>, or add one.</div></div>`;
+  }else{
+    const first=ck[0],last=ck[ck.length-1];
+    const dW=round(last.weightLbs-first.weightLbs,1);
+    html+=`<div class="row" style="gap:14px;margin:6px 0 14px">
+      <div><div class="tiny">Latest</div><b style="font-size:24px">${last.weightLbs}<span style="font-size:13px;color:var(--ink3)"> lb</span></b></div>
+      <div><div class="tiny">Since start</div><b style="font-size:24px;color:${dW<=0?'var(--good)':'var(--ink)'}">${dW>0?'+':''}${dW}</b></div>
+      <div class="spacer"></div><div style="text-align:right"><div class="tiny">Check-ins</div><b style="font-size:24px">${ck.length}</b></div>
+    </div>`;
+    // metric toggle + chart
+    html+=`<div class="seg">
+      <button class="${trendMetric==='weightLbs'?'on':''}" onclick="trendMetric='weightLbs';renderProgress()">Weight</button>
+      <button class="${trendMetric==='waist'?'on':''}" onclick="trendMetric='waist';renderProgress()">Waist</button>
+      <button class="${trendMetric==='restingHR'?'on':''}" onclick="trendMetric='restingHR';renderProgress()">Rest HR</button>
+    </div>`;
+    html+=`<div class="chartwrap">${trendSVG(ck,trendMetric)}</div></div>`;
+
+    // history table
+    html+=`<div class="card"><h2>History</h2><div style="overflow-x:auto"><table class="thist"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Chest</th><th>Hips</th><th>R HR</th></tr></thead><tbody>`;
+    [...ck].reverse().forEach(c=>{
+      html+=`<tr><td>${fmtDate(c.date)}</td><td>${c.weightLbs??'—'}</td><td>${c.measurements?.waist??'—'}</td><td>${c.measurements?.chest??'—'}</td><td>${c.measurements?.hips??'—'}</td><td>${c.fitTest?.restingHR??'—'}</td></tr>`;
+    });
+    html+=`</tbody></table></div></div>`;
+  }
+  $('#p-progress').innerHTML=html;
+}
+function fmtDate(iso){const[y,m,d]=iso.split('-');return `${+m}/${+d}/${y.slice(2)}`;}
+function getMetric(c,key){if(key==='weightLbs')return c.weightLbs;if(key==='waist')return c.measurements?.waist;if(key==='restingHR')return c.fitTest?.restingHR;return null;}
+function trendSVG(ck,key){
+  const pts=ck.map(c=>({d:c.date,v:getMetric(c,key)})).filter(p=>p.v!=null);
+  if(pts.length<2)return `<div class="empty">Not enough data for this metric yet.</div>`;
+  const W=700,H=200,pad=34;const vs=pts.map(p=>p.v);let mn=Math.min(...vs),mx=Math.max(...vs);if(mn===mx){mn-=1;mx+=1;}const rng=mx-mn;
+  const x=i=>pad+i*(W-2*pad)/(pts.length-1);const y=v=>H-pad-((v-mn)/rng)*(H-2*pad);
+  const col=key==='restingHR'?'var(--fat)':key==='waist'?'var(--carb)':'var(--accent)';
+  let path=pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(p.v).toFixed(1)).join(' ');
+  let area=path+` L${x(pts.length-1)} ${H-pad} L${x(0)} ${H-pad} Z`;
+  let dots=pts.map((p,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3" fill="${col}"/>`).join('');
+  const lblFirst=fmtDate(pts[0].d),lblLast=fmtDate(pts[pts.length-1].d);
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--bg2);border-radius:10px">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".18"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#g)"/><path d="${path}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>${dots}
+    <text x="${pad}" y="${H-10}" font-size="12" fill="#90a2b1">${lblFirst}</text>
+    <text x="${W-pad}" y="${H-10}" font-size="12" fill="#90a2b1" text-anchor="end">${lblLast}</text>
+    <text x="${pad}" y="20" font-size="12" fill="#90a2b1">${round(mx,1)}</text>
+    <text x="${pad}" y="${H-pad+2}" font-size="12" fill="#90a2b1">${round(mn,1)}</text></svg>`;
+}
+function checkinDue(ck){
+  if(!ck.length)return false;const last=new Date(ck[ck.length-1].date);const days=(Date.now()-last)/864e5;return days>=14;
+}
+function checkinModal(){
+  const wk=weekKey();const done=Object.keys(S.trainingLog[wk]||{}).length;
+  openModal(`<h3>New check-in</h3>
+    <div class="grid2"><div><label class="fld" style="margin:6px 0 4px">Date</label><input class="inp" id="ciDate" type="date" value="${todayISO()}"></div>
+    <div><label class="fld" style="margin:6px 0 4px">Weight (lb)</label><input class="inp" id="ciW" type="number" step="0.1" inputmode="decimal"></div></div>
+    <label class="fld">Measurements (in) — optional</label>
+    <div class="grid2">
+      ${['chest','waist','hips','rBicep','lBicep','rThigh','lThigh','rCalf','lCalf'].map(k=>`<div><label class="fld" style="margin:0;font-weight:600;text-transform:capitalize">${k.replace(/([A-Z])/,' $1')}</label><input class="inp" id="ci_${k}" type="number" step="0.05" inputmode="decimal"></div>`).join('')}
+    </div>
+    <details style="margin-top:12px"><summary style="cursor:pointer;font-weight:700;color:var(--ink2);font-size:13px">Fit test (every 4 weeks) ▾</summary>
+      <div class="grid2" style="margin-top:8px">
+        <div><label class="fld" style="margin:0">Resting HR</label><input class="inp" id="ft_rhr" type="number" inputmode="numeric"></div>
+        <div><label class="fld" style="margin:0">Plank hold</label><input class="inp" id="ft_plank" placeholder="e.g. 1:45"></div>
+        <div><label class="fld" style="margin:0">1-mile time</label><input class="inp" id="ft_mile" placeholder="e.g. 9:50"></div>
+        <div><label class="fld" style="margin:0">Sit &amp; reach</label><input class="inp" id="ft_sit" type="number" step="0.5"></div>
+        <div><label class="fld" style="margin:0">Long jump</label><input class="inp" id="ft_jump" type="number" step="0.5"></div>
+      </div></details>
+    <label class="fld">Workouts done (2 wks)</label><input class="inp" id="ciWork" type="number" value="${done}">
+    <label class="fld">Notes</label><input class="inp" id="ciNotes" placeholder="How you're feeling…">
+    <button class="btn" style="width:100%;margin-top:14px" onclick="saveCheckin()">Save check-in</button>`);
+}
+function saveCheckin(){
+  const w=$('#ciW').value;if(!w){toast('Add a weight');return;}
+  const m={};['chest','waist','hips','rBicep','lBicep','rThigh','lThigh','rCalf','lCalf'].forEach(k=>{const v=$('#ci_'+k).value;if(v)m[k]=+v;});
+  let ft=null;const rhr=$('#ft_rhr').value;
+  if(rhr||$('#ft_plank').value||$('#ft_mile').value){ft={restingHR:rhr?+rhr:null,plankHold:$('#ft_plank').value||null,mileTime:$('#ft_mile').value||null,sitReach:+$('#ft_sit').value||null,longJump:+$('#ft_jump').value||null};}
+  S.checkins.push({date:$('#ciDate').value,weightLbs:+w,measurements:m,fitTest:ft,workoutsDone:+$('#ciWork').value||null,adherencePct:null,notes:$('#ciNotes').value||''});
+  save();closeModal();renderProgress();toast('Check-in saved');
+}
+
+/* ============================ DATA & PRIVACY ============================ */
+function renderData(){
+  const n=S.checkins.length,acts=S.activities.length;
+  let html=`<div class="card"><h2>🔒 Your data is private</h2>
+    <p class="muted" style="font-size:13px">This app's code is public, but everything personal — your weight, measurements, food log, and Strava activity — lives <b>only in this browser</b>. Nothing is uploaded or published.</p></div>`;
+
+  html+=`<div class="card"><h2>Import history</h2>
+    <p class="muted" style="font-size:13px">Load your check-in history once on each device.</p>
+    <input type="file" id="impFile" accept=".json" style="margin-top:10px;font-size:13px" onchange="importFile(event)">
+    <p class="note">Pick <b>myseed.json</b> (your private seed) or a backup you exported.</p>
+    <div class="tiny" style="margin-top:8px">Currently loaded: <b>${n}</b> check-ins · <b>${acts}</b> activities</div>
+  </div>`;
+
+  html+=`<div class="card"><h2>📡 Connect Strava</h2>
+    <label class="fld" style="margin-top:0">Worker URL</label><input class="inp" id="stUrl" placeholder="https://mealprep-strava.xxx.workers.dev" value="${esc(S.strava.workerUrl||'')}">
+    <label class="fld">App token</label><input class="inp" id="stTok" placeholder="your APP_TOKEN" value="${esc(S.strava.token||'')}">
+    <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="saveStrava()">Save & test</button></div>
+    <p class="note">See <code>worker/README.md</code> for the one-time setup. The token stays on this device only.</p>
+  </div>`;
+
+  html+=`<div class="card"><h2>Backup & reset</h2>
+    <div class="row" style="gap:8px"><button class="btn sec" style="flex:1" onclick="exportBackup()">⬇ Export backup</button>
+    <button class="btn sec" style="flex:1;color:var(--bad)" onclick="resetAll()">Reset device</button></div>
+    <p class="note">Export keeps a JSON copy of everything (incl. personal data). Reset clears local data on this device only.</p>
+  </div>`;
+  $('#p-data').innerHTML=html;
+}
+function importFile(e){
+  const f=e.target.files[0];if(!f)return;const rd=new FileReader();
+  rd.onload=()=>{try{
+    const j=JSON.parse(rd.result);
+    if(j.checkins)S.checkins=j.checkins;
+    if(j.foodLog)S.foodLog=Object.assign(S.foodLog,j.foodLog);
+    if(j.activities)S.activities=j.activities;
+    if(j.trainingLog)S.trainingLog=Object.assign(S.trainingLog,j.trainingLog);
+    if(j.strava)S.strava=Object.assign(S.strava,j.strava);
+    if(j.groceryRun)S.groceryRun=j.groceryRun;
+    save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
+  }catch(err){toast('Could not read file');}};
+  rd.readAsText(f);
+}
+function saveStrava(){S.strava.workerUrl=$('#stUrl').value.trim();S.strava.token=$('#stTok').value.trim();save();
+  if(S.strava.workerUrl&&S.strava.token)syncStrava();else toast('Saved');}
+function exportBackup(){
+  const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='prep-progress-backup-'+todayISO()+'.json';a.click();toast('Backup downloaded');
+}
+function resetAll(){if(confirm('Clear all data on THIS device? (Your backup/export and other devices are untouched.)')){localStorage.removeItem(LS_KEY);S=defaultState();save();renderData();toast('Device reset');}}
+
+/* ============================ MODAL ============================ */
+function openModal(html){$('#sheet').innerHTML=html;$('#modal').classList.add('show');}
+function closeModal(){$('#modal').classList.remove('show');}
+
+/* ============================ BOOT ============================ */
+function boot(){
+  // grocery handoff via #g=
+  if(location.hash.startsWith('#g=')){
+    try{const run=dec(location.hash.slice(3));S.groceryRun=run;save();history.replaceState(null,'',location.pathname);toast('Grocery list loaded');}catch(e){}
+  }
+  renderGrocery();
+}
+boot();
+</script>
+</body>
+</html>
