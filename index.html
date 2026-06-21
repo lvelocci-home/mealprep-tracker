@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<title>Prep &amp; Progress</title>
+<title>Vitality</title>
 <style>
 :root{
   --bg:#eef2f5; --bg2:#f7f9fb; --card:#ffffff; --line:#e2e8ee; --line2:#d3dce4;
@@ -20,24 +20,39 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;overflow-x:hidden}
-main{padding-bottom:calc(var(--nav-h) + env(safe-area-inset-bottom) + 8px);min-height:100vh}
+main{padding-bottom:34px;min-height:100vh}
 .page{display:none;max-width:780px;margin:0 auto;padding:14px 14px 30px}
 .page.active{display:block;animation:fade .18s ease}
 @keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 
-/* Topbar */
-.topbar{position:sticky;top:0;z-index:40;background:linear-gradient(180deg,var(--bg) 70%,rgba(238,242,245,0));padding:14px 14px 8px;display:flex;align-items:center;gap:10px;max-width:780px;margin:0 auto}
-.topbar h1{font-size:21px;font-weight:800;letter-spacing:-.4px;flex:1}
-.topbar h1 b{color:var(--accent)}
-.topbar .sub{font-size:12px;color:var(--ink3);font-weight:600}
+/* App bar (top) */
+.appbar{position:sticky;top:0;z-index:40;background:var(--card);border-bottom:1px solid var(--line)}
+.bar-top{display:flex;align-items:center;gap:10px;max-width:780px;margin:0 auto;padding:12px 16px 4px}
+.bar-top h1{font-size:23px;font-weight:800;letter-spacing:-.5px;flex:1;cursor:pointer}
+.bar-top h1 b{color:var(--accent)}
 .icon-btn{width:38px;height:38px;border-radius:11px;border:1px solid var(--line);background:var(--card);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--ink2)}
 .icon-btn svg{width:19px;height:19px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+nav.tabs{display:flex;max-width:780px;margin:0 auto;padding:2px 8px 6px}
+nav.tabs button{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 4px;color:var(--ink3);font-size:10px;font-weight:700;font-family:var(--font);border-radius:10px}
+nav.tabs button.active{color:var(--accent)}
+nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
 
-/* Nav */
-nav{position:fixed;bottom:0;left:0;right:0;height:calc(var(--nav-h) + env(safe-area-inset-bottom));padding-bottom:env(safe-area-inset-bottom);background:var(--card);border-top:1px solid var(--line);display:flex;z-index:100}
-nav button{flex:1;background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--ink3);font-size:10px;font-weight:600;font-family:var(--font)}
-nav button.active{color:var(--accent)}
-nav button svg{width:23px;height:23px;stroke:currentColor;fill:none;stroke-width:1.9;stroke-linecap:round;stroke-linejoin:round}
+/* Dashboard (home) */
+.hero{padding:8px 4px 14px}
+.hero .greet{font-size:13px;color:var(--ink2);font-weight:600}
+.hero h2{font-size:26px;font-weight:800;letter-spacing:-.5px;margin:1px 0 2px}
+.hero .hdate{font-size:13px;color:var(--ink3);font-weight:600}
+.dash{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px;margin-bottom:11px;box-shadow:var(--shadow);cursor:pointer}
+.dash:active{transform:scale(.99)}
+.dash .dicon{width:44px;height:44px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:21px;flex:none}
+.dash .dbody{flex:1;min-width:0}
+.dash .dlabel{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--ink3)}
+.dash .dstat{font-size:19px;font-weight:800;margin-top:1px}
+.dash .dstat small{font-size:13px;font-weight:600;color:var(--ink3)}
+.dash .dsub{font-size:12px;color:var(--ink2);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dash .dchev{color:var(--ink3);font-size:22px;font-weight:300}
+.dbar{height:7px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:7px}
+.dbar>i{display:block;height:100%;border-radius:5px}
 
 /* Cards & bits */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
@@ -135,28 +150,29 @@ a.link{color:var(--accent-d);font-weight:700;text-decoration:none}
 </style>
 </head>
 <body>
-<div class="topbar">
-  <h1 id="ttl">Prep<b>·</b>Progress</h1>
-  <div class="icon-btn" onclick="go('data')" title="Data & Privacy">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+<header class="appbar">
+  <div class="bar-top">
+    <h1 id="ttl" onclick="go('home')">Vita<b>lity</b></h1>
+    <div class="icon-btn" onclick="go('data')" title="Data & Privacy">
+      <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    </div>
   </div>
-</div>
+  <nav class="tabs">
+    <button data-pg="grocery" onclick="go('grocery')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Shop</button>
+    <button data-pg="food" onclick="go('food')"><svg viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M21 15V2a5 5 0 0 0-3 9v9"/></svg>Food</button>
+    <button data-pg="train" onclick="go('train')"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M6.5 17.5L4 20M17.5 6.5L20 4"/></svg>Train</button>
+    <button data-pg="progress" onclick="go('progress')"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Progress</button>
+  </nav>
+</header>
 
 <main>
-  <section id="p-grocery" class="page active"></section>
+  <section id="p-home" class="page active"></section>
+  <section id="p-grocery" class="page"></section>
   <section id="p-food" class="page"></section>
   <section id="p-train" class="page"></section>
   <section id="p-progress" class="page"></section>
   <section id="p-data" class="page"></section>
 </main>
-
-<nav>
-  <button data-pg="grocery" class="active" onclick="go('grocery')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Shop</button>
-  <button data-pg="food" onclick="go('food')"><svg viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M21 15V2a5 5 0 0 0-3 9v9"/></svg>Food</button>
-  <button data-pg="train" onclick="go('train')"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M6.5 17.5L4 20M17.5 6.5L20 4"/></svg>Train</button>
-  <button data-pg="progress" onclick="go('progress')"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Progress</button>
-  <button data-pg="data" onclick="go('data')"><svg viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2z"/><path d="M12 8v4l3 2"/></svg>Data</button>
-</nav>
 
 <div class="toast" id="toast"></div>
 <div class="modal" id="modal" onclick="if(event.target===this)closeModal()"><div class="sheet" id="sheet"></div></div>
@@ -282,9 +298,65 @@ function weekKey(d=new Date()){const t=new Date(d);t.setHours(0,0,0,0);t.setDate
 function go(pg){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   $('#p-'+pg).classList.add('active');
-  document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('active',b.dataset.pg===pg));
+  document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.pg===pg));
   window.scrollTo(0,0);
-  ({grocery:renderGrocery,food:renderFood,train:renderTrain,progress:renderProgress,data:renderData}[pg])();
+  ({home:renderHome,grocery:renderGrocery,food:renderFood,train:renderTrain,progress:renderProgress,data:renderData}[pg])();
+}
+
+/* ============================ HOME / DASHBOARD ============================ */
+function renderHome(){
+  const p=curPlan(), tg=p.target, today=todayISO(), tot=dayTotals(today);
+  const calPct=tg.cal?Math.min(100,Math.round(tot.cal/tg.cal*100)):0;
+  const mealsEaten=Object.keys((S.foodLog[today]||{mealsEaten:{}}).mealsEaten).length;
+  const wk=weekKey(), wlog=S.trainingLog[wk]||{};
+  const tDays=curWorkout().days.filter(d=>!d.rest), tDone=tDays.filter(d=>wlog[d.id]).length;
+  const run=S.groceryRun, pantrySet=new Set(S.pantry.map(x=>x.toLowerCase()));
+  const shop=[...p.groceries.map((g,i)=>({...g,key:'p'+i})),...(run.extras||[]).map((e,i)=>({...e,key:'e'+i}))].filter(g=>!(g.pantry||pantrySet.has(g.item.toLowerCase())));
+  const left=shop.filter(g=>!run.checked[g.key]).length;
+  const ck=[...S.checkins].sort((a,b)=>a.date<b.date?-1:1), last=ck[ck.length-1];
+  let dueText='Add your first check-in';
+  if(last){const d=Math.floor((Date.now()-new Date(last.date))/864e5),n=14-d; dueText=n<=0?'Check-in due now':'Next check-in in '+n+' days';}
+  const lastAct=(S.activities||[])[0];
+  const hr=new Date().getHours(), greet=hr<12?'Good morning ☀️':hr<18?'Good afternoon 🌤️':'Good evening 🌙';
+  const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+
+  let html=`<div class="hero"><div class="greet">${greet}</div><h2>Today's Vitality</h2><div class="hdate">${dateStr}</div></div>`;
+
+  html+=`<div class="dash" onclick="go('food')"><div class="dicon" style="background:var(--accent-bg);color:var(--accent-d)">🍽️</div>
+    <div class="dbody"><div class="dlabel">Nutrition</div>
+      <div class="dstat">${round(tot.cal)} <small>/ ${tg.cal} cal</small></div>
+      <div class="dbar"><i style="width:${calPct}%;background:var(--cal)"></i></div>
+      <div class="dsub">${mealsEaten}/${p.meals.length} meals · ${round(tot.p)}P / ${round(tot.c)}C / ${round(tot.f)}F</div>
+    </div><div class="dchev">›</div></div>`;
+
+  const actLine=lastAct?`${actEmoji(lastAct.type)} ${esc(lastAct.name||lastAct.type)} · ${lastAct.durationMin} min`:'Connect Strava to see workouts';
+  html+=`<div class="dash" onclick="go('train')"><div class="dicon" style="background:#eef0fb;color:var(--fat)">🏋️</div>
+    <div class="dbody"><div class="dlabel">Training</div>
+      <div class="dstat">${tDone}<small>/${tDays.length} workouts this week</small></div>
+      <div class="dsub">${actLine}</div>
+    </div><div class="dchev">›</div></div>`;
+
+  html+=`<div class="dash" onclick="go('grocery')"><div class="dicon" style="background:#fdf1e3;color:var(--warn)">🛒</div>
+    <div class="dbody"><div class="dlabel">Grocery</div>
+      <div class="dstat">${left===0?'All set ✓':left+' <small>items to buy</small>'}</div>
+      <div class="dsub">${esc(p.name)}</div>
+    </div><div class="dchev">›</div></div>`;
+
+  html+=`<div class="dash" onclick="go('progress')"><div class="dicon" style="background:#e9f5ee;color:var(--good)">📊</div>
+    <div class="dbody"><div class="dlabel">Progress</div>
+      <div class="dstat">${last?last.weightLbs+' <small>lb</small>':'—'}</div>
+      ${ck.length>=2?sparkHTML(ck):''}
+      <div class="dsub">${dueText}</div>
+    </div><div class="dchev">›</div></div>`;
+
+  $('#p-home').innerHTML=html;
+}
+function sparkHTML(ck){
+  const pts=ck.map(c=>c.weightLbs).filter(v=>v!=null); if(pts.length<2)return'';
+  const W=260,H=32,mn=Math.min(...pts),mx=Math.max(...pts),rng=(mx-mn)||1;
+  const x=i=>i*W/(pts.length-1), y=v=>H-2-((v-mn)/rng)*(H-4);
+  const path=pts.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+  return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:30px;margin-top:6px;display:block"><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
 }
 
 /* ============================ GROCERY ============================ */
@@ -681,9 +753,9 @@ function closeModal(){$('#modal').classList.remove('show');}
 function boot(){
   // grocery handoff via #g=
   if(location.hash.startsWith('#g=')){
-    try{const run=dec(location.hash.slice(3));S.groceryRun=run;save();history.replaceState(null,'',location.pathname);toast('Grocery list loaded');}catch(e){}
+    try{const run=dec(location.hash.slice(3));S.groceryRun=run;save();history.replaceState(null,'',location.pathname);toast('Grocery list loaded');go('grocery');return;}catch(e){}
   }
-  renderGrocery();
+  go('home');
 }
 boot();
 </script>
