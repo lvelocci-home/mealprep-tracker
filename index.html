@@ -117,6 +117,11 @@ details.have summary::-webkit-details-marker{display:none}
 .meal .mn b{font-weight:700;font-size:14px}
 .meal .mn .mm{font-size:12px;color:var(--ink2);margin-top:2px}
 .meal.eaten .mn b{color:var(--accent-d)}
+.mealinfo{background:none;border:none;color:var(--ink3);font-size:13px;cursor:pointer;padding:6px 4px;flex:none}
+.mealings{padding:2px 6px 12px 50px;animation:fade .15s ease}
+.ming{display:flex;gap:12px;font-size:13px;padding:4px 0;border-bottom:1px dashed var(--line)}
+.ming:last-child{border-bottom:none}
+.ming .mq{min-width:72px;color:var(--accent-d);font-weight:700}
 
 /* exercises */
 .day{margin-bottom:10px}
@@ -4699,6 +4704,9 @@ function showQR(url){
 
 /* ============================ FOOD ============================ */
 let foodDate=todayISO();
+let foodExp=new Set();
+function toggleMealInfo(id){ foodExp.has(id)?foodExp.delete(id):foodExp.add(id); renderFood(); }
+function toggleAllMeals(){ const p=curPlan(); if(p.meals.every(m=>foodExp.has(m.id))) foodExp.clear(); else p.meals.forEach(m=>foodExp.add(m.id)); renderFood(); }
 function dayLog(d){ if(!S.foodLog[d])S.foodLog[d]={mealsEaten:{},extras:[]}; return S.foodLog[d]; }
 function dayTotals(d){
   const p=curPlan(),lg=S.foodLog[d]||{mealsEaten:{},extras:[]};const t={cal:0,p:0,c:0,f:0};
@@ -4721,13 +4729,15 @@ function renderFood(){
       ${ringHTML('Fat',tot.f,tg.f,'var(--fat)','g')}
     </div></div>`;
 
-  html+=`<div class="card"><h2>Plan meals${isToday?' · today':''}</h2>`;
+  html+=`<div class="card"><div class="row"><h2 style="margin:0;flex:1">Plan meals${isToday?' · today':''}</h2><button class="btn ghost" style="padding:2px 4px;font-size:12px" onclick="toggleAllMeals()">${p.meals.every(m=>foodExp.has(m.id))?'Hide recipes':'Show recipes'}</button></div>`;
   p.meals.forEach(m=>{
-    const eaten=lg.mealsEaten[m.id]?'eaten':'';
+    const eaten=lg.mealsEaten[m.id]?'eaten':'', mm=mealMacros(m), exp=foodExp.has(m.id);
     html+=`<div class="meal ${eaten}">
-      <div class="check ${eaten?'':''}" onclick="toggleMeal('${m.id}')" style="${eaten?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${eaten?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
-      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${mealMacros(m).cal} cal · ${mealMacros(m).p}P / ${mealMacros(m).c}C / ${mealMacros(m).f}F</div></div>
-    </div>`;
+      <div class="check" onclick="toggleMeal('${m.id}')" style="${eaten?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${eaten?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
+      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${mm.cal} cal · ${mm.p}P / ${mm.c}C / ${mm.f}F</div></div>
+      <button class="mealinfo" onclick="toggleMealInfo('${m.id}')" title="Ingredients">${exp?'▲':'▼'}</button>
+    </div>
+    ${exp&&m.items?`<div class="mealings">${m.items.map(it=>`<div class="ming"><span class="mq">${esc(it.q||'—')}</span><span>${esc(it.f)}</span></div>`).join('')}</div>`:''}`;
   });
   html+='</div>';
 
@@ -4871,8 +4881,7 @@ async function syncStrava(){
   if(!S.strava.workerUrl||!S.strava.token){toast('Connect Strava first');return;}
   toast('Syncing…');
   try{
-    const after=Math.floor((Date.now()-30*864e5)/1000);
-    const r=await fetch(S.strava.workerUrl.replace(/\/$/,'')+'/activities?after='+after+'&per_page=30',{headers:{Authorization:'Bearer '+S.strava.token}});
+    const r=await fetch(S.strava.workerUrl.replace(/\/$/,'')+'/activities?per_page=40',{headers:{Authorization:'Bearer '+S.strava.token}});
     if(!r.ok){toast('Strava error '+r.status);return;}
     const j=await r.json();S.activities=j.activities||[];S.strava.lastSync=Date.now();save();renderTrain();toast('Synced '+S.activities.length+' activities');
   }catch(e){toast('Sync failed (check Worker URL)');}
