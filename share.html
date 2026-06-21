@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Progress · Wellness Tracker</title>
+<style>
+:root{
+  --bg:#eef2f5;--bg2:#f7f9fb;--card:#fff;--line:#e2e8ee;--ink:#16242f;--ink2:#56697a;--ink3:#90a2b1;
+  --accent:#0eb39a;--accent-d:#0a8f7c;--accent-bg:#e2f6f2;--good:#2bb673;--bad:#e0566b;--carb:#f0a821;--fat:#8b6cf0;--blue:#2f78d6;
+  --radius:16px;--shadow:0 1px 3px rgba(20,36,47,.06),0 4px 16px rgba(20,36,47,.06);
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--ink);font-family:var(--font);font-size:16px;line-height:1.45;padding:0 0 40px}
+.wrap{max-width:720px;margin:0 auto;padding:16px}
+.top{padding:18px 4px 12px}
+.top .eyebrow{font-size:12px;font-weight:800;letter-spacing:1px;color:var(--accent-d);text-transform:uppercase}
+.top h1{font-size:26px;font-weight:800;letter-spacing:-.5px;margin:2px 0}
+.top .sub{font-size:13px;color:var(--ink3);font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;margin-bottom:12px;box-shadow:var(--shadow)}
+.card h2{font-size:13px;text-transform:uppercase;letter-spacing:.6px;color:var(--ink2);margin-bottom:11px;font-weight:700}
+.vision{background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:12px;box-shadow:var(--shadow)}
+.vision .vl{font-size:10px;font-weight:800;letter-spacing:1.2px;opacity:.85}
+.vision .vt{font-size:16px;font-weight:600;font-style:italic;margin-top:5px;line-height:1.45}
+.statrow{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:12px}
+.statrow .tiny{font-size:12px;color:var(--ink3)}
+.statrow b{font-size:24px;font-weight:800}
+.seg{display:inline-flex;background:var(--bg2);border:1px solid #d3dce4;border-radius:9px;overflow:hidden;margin-bottom:10px}
+.seg button{border:none;background:none;padding:7px 13px;font-size:12px;font-weight:700;color:var(--ink2);cursor:pointer}
+.seg button.on{background:var(--accent);color:#fff}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center}
+.grid4 b{font-size:22px;font-weight:800}.grid4 .tiny{font-size:11px;color:var(--ink3)}
+.thist{width:100%;border-collapse:collapse;font-size:13px}
+.thist th{text-align:right;padding:7px 8px;color:var(--ink2);font-weight:700;font-size:11px;border-bottom:2px solid var(--line)}
+.thist th:first-child,.thist td:first-child{text-align:left}
+.thist td{padding:8px;border-bottom:1px solid var(--line);text-align:right}
+.empty{text-align:center;color:var(--ink3);padding:40px 10px}
+.foot{text-align:center;color:var(--ink3);font-size:12px;margin-top:16px}
+.bar{height:8px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:6px}.bar>i{display:block;height:100%;border-radius:5px}
+.arrow{font-weight:700}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"><div class="empty">Loading progress…</div></div>
+<script>
+const $=s=>document.querySelector(s);
+const round=(n,d=0)=>{const f=10**d;return Math.round(n*f)/f;};
+function fmtDate(iso){const[y,m,d]=iso.split('-');return `${+m}/${+d}/${y.slice(2)}`;}
+function parseTime(s){if(s==null)return null;s=String(s);if(s.includes(':')){const p=s.split(':');return (+p[0])*60+(+p[1]);}const m=s.match(/(\d+(\.\d+)?)/);return m?+m[1]:null;}
+function weekKey(d){const t=new Date(d);t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));const w1=new Date(t.getFullYear(),0,4);return t.getFullYear()+'-W'+String(1+Math.round(((t-w1)/864e5-3+((w1.getDay()+6)%7))/7)).padStart(2,'0');}
+
+const hash=new URLSearchParams(location.hash.slice(1));
+const api=hash.get('api'), token=hash.get('t');
+let DATA=null, metric='weightLbs';
+
+async function boot(){
+  if(!api||!token){ $('#app').innerHTML='<div class="empty">Invalid link.</div>'; return; }
+  try{
+    const r=await fetch(api.replace(/\/$/,'')+'/api/share/'+token);
+    if(!r.ok){ $('#app').innerHTML='<div class="empty">This link is no longer active.</div>'; return; }
+    DATA=await r.json(); render();
+  }catch(e){ $('#app').innerHTML='<div class="empty">Could not load (the server may be waking up — try again in a minute).</div>'; }
+}
+function getMetric(c,k){if(k==='weightLbs')return c.weightLbs;if(k==='waist')return c.measurements&&c.measurements.waist;if(k==='restingHR')return c.fitTest&&c.fitTest.restingHR;return null;}
+function trendSVG(ck,key){
+  const pts=ck.map(c=>({d:c.date,v:getMetric(c,key)})).filter(p=>p.v!=null);
+  if(pts.length<2)return '<div class="empty">Not enough data yet.</div>';
+  const W=700,H=200,pad=34,vs=pts.map(p=>p.v);let mn=Math.min(...vs),mx=Math.max(...vs);if(mn===mx){mn-=1;mx+=1;}const rng=mx-mn;
+  const x=i=>pad+i*(W-2*pad)/(pts.length-1),y=v=>H-pad-((v-mn)/rng)*(H-2*pad);
+  const col=key==='restingHR'?'var(--fat)':key==='waist'?'var(--carb)':'var(--accent)';
+  let path=pts.map((p,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(p.v).toFixed(1)).join(' ');
+  let area=path+` L${x(pts.length-1)} ${H-pad} L${x(0)} ${H-pad} Z`;
+  let dots=pts.map((p,i)=>`<circle cx="${x(i).toFixed(1)}" cy="${y(p.v).toFixed(1)}" r="3" fill="${col}"/>`).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;background:var(--bg2);border-radius:10px">
+    <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity=".18"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${area}" fill="url(#g)"/><path d="${path}" fill="none" stroke="${col}" stroke-width="2.5" stroke-linejoin="round"/>${dots}
+    <text x="${pad}" y="${H-10}" font-size="12" fill="#90a2b1">${fmtDate(pts[0].d)}</text>
+    <text x="${W-pad}" y="${H-10}" font-size="12" fill="#90a2b1" text-anchor="end">${fmtDate(pts[pts.length-1].d)}</text>
+    <text x="${pad}" y="20" font-size="12" fill="#90a2b1">${round(mx,1)}</text>
+    <text x="${pad}" y="${H-pad+2}" font-size="12" fill="#90a2b1">${round(mn,1)}</text></svg>`;
+}
+function render(){
+  const ck=[...(DATA.checkins||[])].sort((a,b)=>a.date<b.date?-1:1);
+  const last=ck[ck.length-1], first=ck[0];
+  let h='';
+  h+=`<div class="top"><div class="eyebrow">Accountability share</div>
+    <h1>${DATA.name?esc(DATA.name)+"'s progress":'Progress'}</h1>
+    <div class="sub">${DATA.updated_at?'Updated '+new Date(DATA.updated_at).toLocaleDateString():''}</div></div>`;
+  if(DATA.vision) h+=`<div class="vision"><div class="vl">VISION</div><div class="vt">${esc(DATA.vision)}</div></div>`;
+
+  if(!ck.length){ h+='<div class="card"><div class="empty">No check-ins shared yet.</div></div>'; $('#app').innerHTML=h; return; }
+  const dW=round(last.weightLbs-first.weightLbs,1);
+  h+=`<div class="card"><h2>Body progress</h2>
+    <div class="statrow">
+      <div><div class="tiny">Latest</div><b>${last.weightLbs}<span style="font-size:13px;color:var(--ink3)"> lb</span></b></div>
+      <div><div class="tiny">Since start</div><b style="color:${dW<=0?'var(--good)':'var(--ink)'}">${dW>0?'+':''}${dW}</b></div>
+      <div style="margin-left:auto"><div class="tiny">Check-ins</div><b>${ck.length}</b></div>
+    </div>
+    <div class="seg">
+      <button class="${metric==='weightLbs'?'on':''}" onclick="metric='weightLbs';render()">Weight</button>
+      <button class="${metric==='waist'?'on':''}" onclick="metric='waist';render()">Waist</button>
+      <button class="${metric==='restingHR'?'on':''}" onclick="metric='restingHR';render()">Rest HR</button>
+    </div>${trendSVG(ck,metric)}</div>`;
+
+  // consistency
+  const wk=weekKey(new Date()), lastWk=weekKey(new Date(Date.now()-7*864e5));
+  const tl=DATA.trainingLog||{};
+  const wThis=Object.keys(tl[wk]||{}).length, wLast=Object.keys(tl[lastWk]||{}).length;
+  let logged=0; const fl=DATA.foodLog||{};
+  for(let i=0;i<14;i++){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toLocaleDateString('en-CA');const e=fl[iso];if(e&&(Object.keys(e.mealsEaten||{}).length||(e.extras||[]).length))logged++;}
+  let wsum=0,wd=0; const wat=DATA.water||{},wgoal=DATA.waterGoal||126;
+  for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const iso=d.toLocaleDateString('en-CA');if(wat[iso]!=null){wsum+=wat[iso];wd++;}}
+  const wAdh=wd?Math.round((wsum/wd)/wgoal*100):0;
+  h+=`<div class="card"><h2>Consistency</h2><div class="grid4">
+    <div><b>${wThis}</b><div class="tiny">Workouts this wk</div></div>
+    <div><b>${wLast}</b><div class="tiny">Last wk</div></div>
+    <div><b>${logged}<span style="font-size:12px;color:var(--ink3)">/14</span></b><div class="tiny">Days food-logged</div></div>
+    <div><b>${wAdh}%</b><div class="tiny">Water (7-day avg)</div></div>
+  </div></div>`;
+
+  // fitness tests
+  const fts=ck.filter(c=>c.fitTest);
+  if(fts.length){
+    const a=fts[0].fitTest, z=fts[fts.length-1].fitTest;
+    const arrow=(x,y,low)=>{if(x==null||y==null||x===y)return'';const up=y>x,better=low?!up:up;return `<span class="arrow" style="color:${better?'var(--good)':'var(--bad)'}"> ${up?'▲':'▼'}</span>`;};
+    h+=`<div class="card"><h2>Fitness tests</h2><div class="statrow">
+      <div><div class="tiny">Resting HR</div><b style="font-size:18px">${z.restingHR??'—'}${arrow(a.restingHR,z.restingHR,true)}</b></div>
+      <div><div class="tiny">1-mile</div><b style="font-size:18px">${z.mileTime??'—'}${arrow(parseTime(a.mileTime),parseTime(z.mileTime),true)}</b></div>
+      <div><div class="tiny">Plank</div><b style="font-size:18px">${z.plankHold??'—'}${arrow(parseTime(a.plankHold),parseTime(z.plankHold),false)}</b></div>
+    </div></div>`;
+  }
+
+  // recent check-ins
+  h+=`<div class="card"><h2>Recent check-ins</h2><div style="overflow-x:auto"><table class="thist"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Chest</th><th>Hips</th></tr></thead><tbody>`;
+  [...ck].reverse().slice(0,8).forEach(c=>{h+=`<tr><td>${fmtDate(c.date)}</td><td>${c.weightLbs??'—'}</td><td>${c.measurements?.waist??'—'}</td><td>${c.measurements?.chest??'—'}</td><td>${c.measurements?.hips??'—'}</td></tr>`;});
+  h+=`</tbody></table></div></div>`;
+  h+=`<div class="foot">Read-only share · Wellness Tracker</div>`;
+  $('#app').innerHTML=h;
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+boot();
+</script>
+</body>
+</html>

@@ -9,3 +9,8 @@ myseed.json
 worker/.wrangler/
 worker/node_modules/
 worker/.dev.vars
+
+# Node server deps / local env
+server/node_modules/
+server/.env
+node_modules/

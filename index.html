@@ -4391,6 +4391,7 @@ function defaultState(){
     groceryRun: { planId:"p1655", extras:[], checked:{} },
     // personal (local-only)
     foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0},
+    cloud:{url:"",token:"",lastSync:0}, shareToken:"",
     vision:"", focus:{}, water:{}, profileName:"", waterGoal:126
   };
 }
@@ -4404,7 +4405,52 @@ function load(){
   if(!d.workouts.some(w=>w.id===d.currentWorkoutId)) d.currentWorkoutId=d.workouts[0].id;
   return d;
 }
-function save(){ const c=Object.assign({},S); delete c.plans; delete c.workouts; localStorage.setItem(LS_KEY, JSON.stringify(c)); }
+function save(){ const c=Object.assign({},S); delete c.plans; delete c.workouts; localStorage.setItem(LS_KEY, JSON.stringify(c)); scheduleCloudPush(); }
+
+/* ---- cloud sync (Render + Supabase) ---- */
+const CLOUD_KEYS=["checkins","foodLog","trainingLog","activities","water","waterGoal","vision","focus","profileName","groceryRun","currentPlanId","currentWorkoutId","strava","shareToken"];
+function cloudPersonal(){ const o={}; CLOUD_KEYS.forEach(k=>o[k]=S[k]); return o; }
+function applyCloud(state){ if(!state)return; CLOUD_KEYS.forEach(k=>{ if(state[k]!==undefined) S[k]=state[k]; }); }
+let _pushT=null;
+function scheduleCloudPush(){
+  if(!S.cloud||!S.cloud.url||!S.cloud.token) return;
+  clearTimeout(_pushT); _pushT=setTimeout(cloudPush,1500);
+}
+async function cloudPush(){
+  if(!S.cloud||!S.cloud.url||!S.cloud.token) return;
+  try{ await fetch(S.cloud.url.replace(/\/$/,'')+'/api/state',{method:'PUT',headers:{'Content-Type':'application/json','Authorization':'Bearer '+S.cloud.token},body:JSON.stringify({state:cloudPersonal()})});
+    S.cloud.lastSync=Date.now(); localStorage.setItem(LS_KEY, JSON.stringify(Object.assign({},S,{plans:undefined,workouts:undefined})));
+  }catch(e){}
+}
+async function cloudPull(){
+  if(!S.cloud||!S.cloud.url||!S.cloud.token) return false;
+  try{ const r=await fetch(S.cloud.url.replace(/\/$/,'')+'/api/state',{headers:{'Authorization':'Bearer '+S.cloud.token}});
+    if(!r.ok) return false; const j=await r.json();
+    if(j&&j.state){ applyCloud(j.state); S.cloud.lastSync=Date.now(); save(); return true; }
+  }catch(e){}
+  return false;
+}
+async function saveCloud(){
+  S.cloud=S.cloud||{}; S.cloud.url=$('#clUrl').value.trim(); S.cloud.token=$('#clTok').value.trim();
+  if(!S.cloud.url||!S.cloud.token){ save(); renderData(); toast('Saved'); return; }
+  save(); toast('Syncing…');
+  // pull server state; if empty, push local up
+  const got=await cloudPull();
+  if(!got) await cloudPush();
+  renderData(); renderHome(); toast('Synced ✓');
+}
+async function createShare(){
+  if(!S.cloud||!S.cloud.url||!S.cloud.token){ toast('Turn on Cloud sync first'); return; }
+  await cloudPush(); // make sure server has latest
+  try{ const r=await fetch(S.cloud.url.replace(/\/$/,'')+'/api/share',{method:'POST',headers:{'Authorization':'Bearer '+S.cloud.token}});
+    const j=await r.json(); if(j.share_token){ S.shareToken=j.share_token; save(); renderData(); toast('Share link ready'); } else toast('Could not create link');
+  }catch(e){ toast('Failed (server waking up? try again)'); }
+}
+async function stopShare(){
+  if(!confirm('Stop sharing? The current link will stop working.')) return;
+  try{ await fetch(S.cloud.url.replace(/\/$/,'')+'/api/share',{method:'DELETE',headers:{'Authorization':'Bearer '+S.cloud.token}}); }catch(e){}
+  S.shareToken=''; save(); renderData(); toast('Sharing stopped');
+}
 
 /* ============================ HELPERS ============================ */
 const $=(s,r=document)=>r.querySelector(s);
@@ -5003,8 +5049,9 @@ function saveCheckin(){
 /* ============================ DATA & PRIVACY ============================ */
 function renderData(){
   const n=S.checkins.length,acts=S.activities.length;
-  let html=`<div class="card"><h2>🔒 Your data is private</h2>
-    <p class="muted" style="font-size:13px">This app's code is public, but everything personal — your weight, measurements, food log, and Strava activity — lives <b>only in this browser</b>. Nothing is uploaded or published.</p></div>`;
+  const isSynced=S.cloud&&S.cloud.url&&S.cloud.token;
+  let html=`<div class="card"><h2>🔒 Your data</h2>
+    <p class="muted" style="font-size:13px">The app's code is public, but your personal data ${isSynced?'syncs to <b>your private cloud account</b> (behind your token) and a local copy stays in this browser.':'lives <b>only in this browser</b> — nothing is uploaded unless you turn on Cloud sync below.'}</p></div>`;
 
   html+=`<div class="card"><h2>Profile & goals</h2>
     <label class="fld" style="margin-top:0">Your name (for the greeting)</label>
@@ -5014,6 +5061,29 @@ function renderData(){
     <div class="row" style="gap:8px"><input class="inp" id="pfWater" type="number" inputmode="numeric" value="${S.waterGoal||126}">
     <button class="btn" onclick="S.waterGoal=Math.max(1,+$('#pfWater').value||126);save();toast('Saved')">Save</button></div>
   </div>`;
+
+  const synced=S.cloud&&S.cloud.url&&S.cloud.token;
+  html+=`<div class="card"><h2>☁️ Cloud sync ${synced?'<span class="pill" style="margin-left:auto">on</span>':''}</h2>
+    <p class="muted" style="font-size:13px">Sync your data across devices. Use the same URL + token on your laptop and phone. ${synced&&S.cloud.lastSync?'<br>Last synced '+timeAgo(S.cloud.lastSync)+'.':''}</p>
+    <label class="fld">API URL</label><input class="inp" id="clUrl" placeholder="https://...onrender.com" value="${esc(S.cloud&&S.cloud.url||'')}">
+    <label class="fld">Your private token</label><input class="inp" id="clTok" placeholder="a long secret you choose" value="${esc(S.cloud&&S.cloud.token||'')}">
+    <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="saveCloud()">Save & sync now</button>
+    ${synced?'<button class="btn sec" onclick="S.cloud={url:\'\',token:\'\',lastSync:0};save();renderData();toast(\'Disconnected\')">Disconnect</button>':''}</div>
+    <p class="note">Setup steps are in <code>server/README.md</code> (Render + Supabase, free).</p>
+  </div>`;
+
+  html+=`<div class="card"><h2>🤝 Share progress</h2>
+    <p class="muted" style="font-size:13px">A read-only link for your accountability partner — your weight, measurements, fitness tests, and workout/food/water consistency. They can't edit anything.</p>`;
+  if(!synced){ html+=`<p class="note" style="margin-top:8px">Turn on Cloud sync first.</p>`; }
+  else if(S.shareToken){
+    const link=location.origin+location.pathname.replace(/index\.html$/,'')+'share.html#api='+encodeURIComponent(S.cloud.url)+'&t='+S.shareToken;
+    html+=`<div style="background:var(--bg2);border:1px solid var(--line2);border-radius:10px;padding:10px;font-size:12px;word-break:break-all;margin-top:8px">${esc(link)}</div>
+    <div class="row" style="gap:8px;margin-top:10px"><button class="btn" style="flex:1" onclick="navigator.clipboard.writeText(${JSON.stringify(link)}).then(()=>toast('Link copied'))">Copy link</button>
+    <button class="btn sec" onclick="stopShare()">Stop sharing</button></div>`;
+  } else {
+    html+=`<button class="btn" style="margin-top:10px;width:100%" onclick="createShare()">Create share link</button>`;
+  }
+  html+=`</div>`;
 
   html+=`<div class="card"><h2>Import history</h2>
     <p class="muted" style="font-size:13px">Load your check-in history once on each device.</p>
@@ -5051,6 +5121,7 @@ function importFile(e){
     if(j.water)S.water=Object.assign(S.water||{},j.water);
     if(j.profileName)S.profileName=j.profileName;
     if(j.waterGoal)S.waterGoal=j.waterGoal;
+    if(j.cloud)S.cloud=Object.assign(S.cloud||{},j.cloud);
     save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
   }catch(err){toast('Could not read file');}};
   rd.readAsText(f);
@@ -5068,12 +5139,18 @@ function openModal(html){$('#sheet').innerHTML=html;$('#modal').classList.add('s
 function closeModal(){$('#modal').classList.remove('show');}
 
 /* ============================ BOOT ============================ */
-function boot(){
+async function boot(){
   // grocery handoff via #g=
   if(location.hash.startsWith('#g=')){
     try{const run=dec(location.hash.slice(3));S.groceryRun=run;save();history.replaceState(null,'',location.pathname);toast('Grocery list loaded');go('grocery');return;}catch(e){}
   }
   go('home');
+  // pull latest from cloud (if configured), then re-render current page
+  if(S.cloud&&S.cloud.url&&S.cloud.token){
+    const ok=await cloudPull();
+    if(ok){ const active=document.querySelector('.page.active'); const pg=active?active.id.replace('p-',''):'home';
+      ({home:renderHome,grocery:renderGrocery,food:renderFood,train:renderTrain,progress:renderProgress,data:renderData}[pg]||renderHome)(); }
+  }
 }
 boot();
 </script>
