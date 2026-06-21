@@ -2943,38 +2943,1436 @@ const SEED_PLANS = [
   }
 ];
 
-const SEED_WORKOUTS = [{
-  id:"w1", name:"Glutes + Chest",
-  days:[
-    {id:"d1", label:"Day 1 · Glute Activation + Abs", exercises:[
-      {name:"X Band Walks",reps:"12"},{name:"Froggy Glute Lifts",reps:"12"},
-      {name:"Frog Pumps",reps:"12"},{name:"Clam Shells",reps:"12"},
-      {name:"Plie Squats",reps:"8–12"},{name:"Static Lunges",reps:"8–12"},
-      {name:"Standing Crunches",reps:"8–10"},{name:"Russian Twists",reps:"8–10"},
-      {name:"Pallof Twist",reps:"8–10 each"}
-    ]},
-    {id:"d2", label:"Day 2 · Rest & Recovery", rest:true, exercises:[]},
-    {id:"d3", label:"Day 3 · Upper Body", exercises:[
-      {name:"Lat Pulldowns",reps:"8–12"},{name:"Single Arm Dumbbell Rows",reps:"8–12"},
-      {name:"External Delt Rotations",reps:"8–12"},{name:"Lateral Raises",reps:"8–12"},
-      {name:"Bicep Curls",reps:"12"},{name:"Hammer Curls",reps:"12"},
-      {name:"Tricep Bench Dips",reps:"8"},{name:"Tricep Kickbacks",reps:"8"}
-    ]},
-    {id:"d4", label:"Day 4 · Legs + Abs", exercises:[
-      {name:"Suitcase Squats",reps:"8"},{name:"Walking Lunges",reps:"8"},
-      {name:"Donkey Kick Backs",reps:"8"},{name:"Marching Glute Bridges",reps:"12"},
-      {name:"Glute Bridge Pull Aparts",reps:"12"},{name:"Single Leg Lunge off Bench",reps:"12"},
-      {name:"Standing Bicycle Crunches",reps:"8–10"},{name:"Ball Crunches",reps:"8–10"},
-      {name:"Heels to Heaven",reps:"8–10"}
-    ]},
-    {id:"d5", label:"Day 5 · Full Body", exercises:[
-      {name:"Arnold Press",reps:"6–8"},{name:"Superman Holds",reps:"6–8"},
-      {name:"Forward Lunge with a Lateral Raise",reps:"6–8"},{name:"Gorilla Rows",reps:"6–8"},
-      {name:"Lift Off Lunges",reps:"8"},{name:"Hip Thrusts",reps:"8"},
-      {name:"Pike Pushups",reps:"8"},{name:"Bird Dog Crunches",reps:"8"}
-    ]}
-  ]
-}];
+const SEED_WORKOUTS = [
+  {
+    "id": "w1",
+    "name": "Glutes + Chest — Apr 6 (current)",
+    "days": [
+      {
+        "label": "Day 1 · Glute Activation + Abs",
+        "exercises": [
+          {
+            "name": "X Band Walks",
+            "reps": "12"
+          },
+          {
+            "name": "Froggy Glute Lifts",
+            "reps": "12"
+          },
+          {
+            "name": "Frog Pumps",
+            "reps": "12"
+          },
+          {
+            "name": "Clam Shells",
+            "reps": "12"
+          },
+          {
+            "name": "Plie Squats",
+            "reps": "8–12"
+          },
+          {
+            "name": "Static Lunges",
+            "reps": "8–12"
+          },
+          {
+            "name": "Standing Crunches",
+            "reps": "8–10"
+          },
+          {
+            "name": "Russian Twists",
+            "reps": "8–10"
+          },
+          {
+            "name": "Pallof Twist",
+            "reps": "8–10 each"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Upper Body",
+        "exercises": [
+          {
+            "name": "Lat Pulldowns",
+            "reps": "8–12"
+          },
+          {
+            "name": "Single Arm Dumbbell Rows",
+            "reps": "8–12"
+          },
+          {
+            "name": "External Delt Rotations",
+            "reps": "8–12"
+          },
+          {
+            "name": "Lateral Raises",
+            "reps": "8–12"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "12"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "12"
+          },
+          {
+            "name": "Tricep Bench Dips",
+            "reps": "8"
+          },
+          {
+            "name": "Tricep Kickbacks",
+            "reps": "8"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Legs + Abs",
+        "exercises": [
+          {
+            "name": "Suitcase Squats",
+            "reps": "8"
+          },
+          {
+            "name": "Walking Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "Donkey Kick Backs",
+            "reps": "8"
+          },
+          {
+            "name": "Marching Glute Bridges",
+            "reps": "12"
+          },
+          {
+            "name": "Glute Bridge Pull Aparts",
+            "reps": "12"
+          },
+          {
+            "name": "Single Leg Lunge off Bench",
+            "reps": "12"
+          },
+          {
+            "name": "Standing Bicycle Crunches",
+            "reps": "8–10"
+          },
+          {
+            "name": "Ball Crunches",
+            "reps": "8–10"
+          },
+          {
+            "name": "Heels to Heaven",
+            "reps": "8–10"
+          }
+        ],
+        "id": "d4"
+      },
+      {
+        "label": "Day 5 · Full Body",
+        "exercises": [
+          {
+            "name": "Arnold Press",
+            "reps": "6–8"
+          },
+          {
+            "name": "Superman Holds",
+            "reps": "6–8"
+          },
+          {
+            "name": "Forward Lunge with a Lateral Raise",
+            "reps": "6–8"
+          },
+          {
+            "name": "Gorilla Rows",
+            "reps": "6–8"
+          },
+          {
+            "name": "Lift Off Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "Hip Thrusts",
+            "reps": "8"
+          },
+          {
+            "name": "Pike Pushups",
+            "reps": "8"
+          },
+          {
+            "name": "Bird Dog Crunches",
+            "reps": "8"
+          }
+        ],
+        "id": "d5"
+      }
+    ]
+  },
+  {
+    "id": "w_mar9",
+    "name": "Strength + Cardio — Mar 9",
+    "days": [
+      {
+        "label": "Day 1 · Upper",
+        "exercises": [
+          {
+            "name": "Push Press",
+            "reps": "15/10/5"
+          },
+          {
+            "name": "Lat Pulldowns",
+            "reps": "8"
+          },
+          {
+            "name": "Tricep Bench Dips",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Overhead Press",
+            "reps": "8"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "10"
+          },
+          {
+            "name": "DB Incline Flyes",
+            "reps": "8"
+          },
+          {
+            "name": "Straight Arm DB Pull Overs",
+            "reps": "10"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Overhead Tricep Extension",
+            "reps": "10"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Lower + Abs",
+        "exercises": [
+          {
+            "name": "Back Squats",
+            "reps": "15/10/5"
+          },
+          {
+            "name": "Stiff Leg Barbell Deadlifts",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Bicycle Crunches",
+            "reps": "8"
+          },
+          {
+            "name": "Plank Glute Cross Overs",
+            "reps": "8"
+          },
+          {
+            "name": "Wide Sumo Side Bends",
+            "reps": "12"
+          },
+          {
+            "name": "Single Leg DB or KB Deadlifts",
+            "reps": "8"
+          },
+          {
+            "name": "Russian Twists",
+            "reps": "10"
+          },
+          {
+            "name": "Kettle Bell Swings",
+            "reps": "8"
+          },
+          {
+            "name": "Donkey Kick Backs",
+            "reps": "10"
+          }
+        ],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Upper",
+        "exercises": [
+          {
+            "name": "Thrusters",
+            "reps": "15/10/5"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Arnold Press",
+            "reps": "8"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "8"
+          },
+          {
+            "name": "Halo Exercise",
+            "reps": "12"
+          },
+          {
+            "name": "Lateral Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Bridging Barbell Tricep Extensions",
+            "reps": "10"
+          },
+          {
+            "name": "Under Bar Pull Ups",
+            "reps": "8"
+          },
+          {
+            "name": "Wood Choppers",
+            "reps": "8"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Lower + Abs",
+        "exercises": [
+          {
+            "name": "Romanian Deadlift",
+            "reps": "10/10/5"
+          },
+          {
+            "name": "Hand to Foot Ball Passes",
+            "reps": "8"
+          },
+          {
+            "name": "Hamstring Curls",
+            "reps": "8"
+          },
+          {
+            "name": "X Band Walks",
+            "reps": "8"
+          },
+          {
+            "name": "Plie Squats",
+            "reps": "12"
+          },
+          {
+            "name": "Hip Thrusts",
+            "reps": "8"
+          },
+          {
+            "name": "Alternating Lunges",
+            "reps": "10"
+          },
+          {
+            "name": "Leg Press",
+            "reps": "8"
+          },
+          {
+            "name": "Butterfly Situps",
+            "reps": "10"
+          }
+        ],
+        "id": "d4"
+      }
+    ]
+  },
+  {
+    "id": "w_feb9",
+    "name": "Strength + Delts — Feb 9",
+    "days": [
+      {
+        "label": "Day 1 · Glutes + Upper",
+        "exercises": [
+          {
+            "name": "Air Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "10"
+          },
+          {
+            "name": "Tricep Kickbacks",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Glute Pulses with Band",
+            "reps": "10"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "10"
+          },
+          {
+            "name": "Standing Straight Leg Lifts",
+            "reps": "12"
+          },
+          {
+            "name": "Glute Bridge Pull Aparts",
+            "reps": "8"
+          },
+          {
+            "name": "Calf Raises",
+            "reps": "12"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Delts, Chest & Abs",
+        "exercises": [
+          {
+            "name": "Lateral Raise Pulses",
+            "reps": "14"
+          },
+          {
+            "name": "Incline DB Bench Press",
+            "reps": "8"
+          },
+          {
+            "name": "External Delt Rotations",
+            "reps": "8"
+          },
+          {
+            "name": "Star Crunches",
+            "reps": "12"
+          },
+          {
+            "name": "Incline DB Flye Pulses",
+            "reps": "14"
+          },
+          {
+            "name": "Rear Delt Flyes",
+            "reps": "10"
+          },
+          {
+            "name": "Delt Skier Kickbacks",
+            "reps": "10"
+          },
+          {
+            "name": "Wall Pushups",
+            "reps": "10"
+          }
+        ],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Legs & Abs",
+        "exercises": [
+          {
+            "name": "Plie Squats",
+            "reps": "8"
+          },
+          {
+            "name": "Static Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "Wall Sit",
+            "reps": "30s"
+          },
+          {
+            "name": "X Band Walks",
+            "reps": "12"
+          },
+          {
+            "name": "Marching Glute Bridges",
+            "reps": "8"
+          },
+          {
+            "name": "Stability Ball Crunch",
+            "reps": "10"
+          },
+          {
+            "name": "Donkey Kick Backs",
+            "reps": "12"
+          },
+          {
+            "name": "Standing Side Bends",
+            "reps": "10"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d4"
+      },
+      {
+        "label": "Day 5 · Back & Delts",
+        "exercises": [
+          {
+            "name": "Lat Pulldowns",
+            "reps": "8"
+          },
+          {
+            "name": "DB Halos",
+            "reps": "8"
+          },
+          {
+            "name": "Front Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "8"
+          },
+          {
+            "name": "Arnold Press",
+            "reps": "8"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "10"
+          },
+          {
+            "name": "Lateral Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Straight Arm DB Pull Overs",
+            "reps": "8"
+          }
+        ],
+        "id": "d5"
+      },
+      {
+        "label": "Day 6 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d6"
+      }
+    ]
+  },
+  {
+    "id": "w_jan12",
+    "name": "Strength + Abs — Jan 12",
+    "days": [
+      {
+        "label": "Day 1 · Lower",
+        "exercises": [
+          {
+            "name": "Back Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Static Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "Glute Step Ups",
+            "reps": "8"
+          },
+          {
+            "name": "Good Mornings",
+            "reps": "8"
+          },
+          {
+            "name": "Donkey Kick Backs",
+            "reps": "8"
+          },
+          {
+            "name": "Ab V-Ups",
+            "reps": "10"
+          },
+          {
+            "name": "Russian Twists",
+            "reps": "10"
+          },
+          {
+            "name": "Superman Holds",
+            "reps": "10s"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Abs & Cardio",
+        "exercises": [
+          {
+            "name": "Hand to Elbow Plank",
+            "reps": "20"
+          },
+          {
+            "name": "Lying Leg Raises",
+            "reps": "50"
+          },
+          {
+            "name": "Bicycle Crunches",
+            "reps": "50"
+          },
+          {
+            "name": "Plank Rocks",
+            "reps": "40"
+          },
+          {
+            "name": "Oblique V Ups",
+            "reps": "100"
+          }
+        ],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Upper",
+        "exercises": [
+          {
+            "name": "Hand Release Push Ups",
+            "reps": "10"
+          },
+          {
+            "name": "Plank Hold",
+            "reps": "45s"
+          },
+          {
+            "name": "Overhead Shoulder Press",
+            "reps": "10"
+          },
+          {
+            "name": "Gorilla Rows",
+            "reps": "10"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "10"
+          },
+          {
+            "name": "Sumo Deadlift High Pull",
+            "reps": "10"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "10"
+          },
+          {
+            "name": "Tricep Pressdowns",
+            "reps": "10"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Lower",
+        "exercises": [
+          {
+            "name": "Romanian Deadlift",
+            "reps": "10"
+          },
+          {
+            "name": "Glute Pull Through",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Crunches",
+            "reps": "8"
+          },
+          {
+            "name": "Walking Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "Hamstring Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Bicycle Crunches",
+            "reps": "10"
+          },
+          {
+            "name": "Wide Sumo Side Bends",
+            "reps": "10"
+          }
+        ],
+        "id": "d4"
+      },
+      {
+        "label": "Day 5 · Abs & Cardio",
+        "exercises": [
+          {
+            "name": "Stomach Vacuums",
+            "reps": "10"
+          },
+          {
+            "name": "Lying Leg Raises",
+            "reps": "50"
+          },
+          {
+            "name": "Kettlebell Swings",
+            "reps": "20"
+          },
+          {
+            "name": "Heels to Heaven",
+            "reps": "40"
+          },
+          {
+            "name": "Ball Crunches",
+            "reps": "100"
+          }
+        ],
+        "id": "d5"
+      },
+      {
+        "label": "Day 6 · Full Body",
+        "exercises": [
+          {
+            "name": "Dead - Curl - Press",
+            "reps": "10"
+          },
+          {
+            "name": "Bench Press",
+            "reps": "8"
+          },
+          {
+            "name": "Thrusters",
+            "reps": "8"
+          },
+          {
+            "name": "Burpees",
+            "reps": "8"
+          },
+          {
+            "name": "45 Degree Lunge Lateral Raise",
+            "reps": "8"
+          },
+          {
+            "name": "Ab Barbell Leg Curl Ins",
+            "reps": "8"
+          }
+        ],
+        "id": "d6"
+      }
+    ]
+  },
+  {
+    "id": "w_dec15",
+    "name": "Joint-Friendly — Dec 15",
+    "days": [
+      {
+        "label": "Day 1 · Lower + Abs",
+        "exercises": [
+          {
+            "name": "Suitcase Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Plie Squat Pulses",
+            "reps": "16"
+          },
+          {
+            "name": "Heels to Heaven",
+            "reps": "10"
+          },
+          {
+            "name": "Good Mornings",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Crunches",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Glute Kickbacks",
+            "reps": "10"
+          },
+          {
+            "name": "Butterfly Situps",
+            "reps": "10"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Upper",
+        "exercises": [
+          {
+            "name": "Overhead Shoulder Press",
+            "reps": "8"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "10"
+          },
+          {
+            "name": "Tricep Pressdowns",
+            "reps": "8"
+          },
+          {
+            "name": "Lat Pulldowns",
+            "reps": "8"
+          },
+          {
+            "name": "External Delt Rotations",
+            "reps": "8"
+          },
+          {
+            "name": "Halo Exercise",
+            "reps": "8"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d4"
+      },
+      {
+        "label": "Day 5 · Lower + Abs",
+        "exercises": [
+          {
+            "name": "Back Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Plie Squats",
+            "reps": "12"
+          },
+          {
+            "name": "Standing Side Bend",
+            "reps": "12"
+          },
+          {
+            "name": "Plank Hold",
+            "reps": "30s"
+          },
+          {
+            "name": "Static Lunges",
+            "reps": "6 each"
+          }
+        ],
+        "id": "d5"
+      },
+      {
+        "label": "Day 6 · Upper",
+        "exercises": [
+          {
+            "name": "Arnold Press",
+            "reps": "10"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Rear Delt Flyes",
+            "reps": "8"
+          },
+          {
+            "name": "Lateral Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Tricep Kickbacks",
+            "reps": "8"
+          }
+        ],
+        "id": "d6"
+      }
+    ]
+  },
+  {
+    "id": "w_nov17",
+    "name": "Full Body — Nov 17",
+    "days": [
+      {
+        "label": "Day 1 · Lower + Abs",
+        "exercises": [
+          {
+            "name": "Good Mornings",
+            "reps": "10"
+          },
+          {
+            "name": "Single Leg Deadlift",
+            "reps": "8"
+          },
+          {
+            "name": "Hand to Foot Ball Passes",
+            "reps": "8"
+          },
+          {
+            "name": "Goblet Squats",
+            "reps": "8"
+          },
+          {
+            "name": "Butterfly Situps",
+            "reps": "16"
+          },
+          {
+            "name": "Hip Abduction",
+            "reps": "12"
+          },
+          {
+            "name": "Heels to Heaven",
+            "reps": "12"
+          },
+          {
+            "name": "Donkey Kick Backs",
+            "reps": "8"
+          },
+          {
+            "name": "Hamstring Ball Curl Ins",
+            "reps": "12"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Upper Body",
+        "exercises": [
+          {
+            "name": "Arnold Press",
+            "reps": "8"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "12"
+          },
+          {
+            "name": "Sumo Deadlift High Pull",
+            "reps": "8"
+          },
+          {
+            "name": "Lateral Raises",
+            "reps": "12"
+          },
+          {
+            "name": "Rear Delt Flyes",
+            "reps": "8"
+          },
+          {
+            "name": "Wood Choppers",
+            "reps": "10"
+          },
+          {
+            "name": "45 Degree Bicep Curls",
+            "reps": "14"
+          },
+          {
+            "name": "Overhead Tricep Extension",
+            "reps": "10"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Full Body Circuit",
+        "exercises": [
+          {
+            "name": "Dead - Curl - Press",
+            "reps": "8"
+          },
+          {
+            "name": "Lying Leg Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Frog Crunches",
+            "reps": "8"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "10"
+          },
+          {
+            "name": "Squat with Calf Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "8"
+          },
+          {
+            "name": "Kettlebell Swings",
+            "reps": "8"
+          },
+          {
+            "name": "Bow to Boat",
+            "reps": "8"
+          },
+          {
+            "name": "Superman Holds",
+            "reps": "10s"
+          },
+          {
+            "name": "Bird Dog Crunches",
+            "reps": "8"
+          }
+        ],
+        "id": "d4"
+      },
+      {
+        "label": "Day 5 · Rest & Recovery",
+        "rest": true,
+        "exercises": [],
+        "id": "d5"
+      }
+    ]
+  },
+  {
+    "id": "w_oct20",
+    "name": "Lower/Upper Split — Oct 20",
+    "days": [
+      {
+        "label": "Day 1 · Upper & Abs",
+        "exercises": [
+          {
+            "name": "Thrusters",
+            "reps": "8"
+          },
+          {
+            "name": "Band Pull Aparts",
+            "reps": "10"
+          },
+          {
+            "name": "DB Bicep Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Tricep Kickbacks",
+            "reps": "10"
+          },
+          {
+            "name": "Lateral Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Crunches",
+            "reps": "10"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Lower",
+        "exercises": [
+          {
+            "name": "Dead - Curl - Press",
+            "reps": "8"
+          },
+          {
+            "name": "Back Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Marching Glute Bridges",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Straight Leg Lifts",
+            "reps": "10"
+          },
+          {
+            "name": "Standing Glute Kickbacks",
+            "reps": "8"
+          },
+          {
+            "name": "Wood Chop with Dumbbells",
+            "reps": "10"
+          }
+        ],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Endurance Circuit",
+        "exercises": [
+          {
+            "name": "Bench Step Ups",
+            "reps": "10"
+          },
+          {
+            "name": "Low Impact Burpees",
+            "reps": "20"
+          },
+          {
+            "name": "Sumo Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Forward Lunge with a Lateral Raise",
+            "reps": "10"
+          },
+          {
+            "name": "Windmill Exercise",
+            "reps": "20"
+          },
+          {
+            "name": "Delt Skier Kickbacks",
+            "reps": "10"
+          },
+          {
+            "name": "Dead - Curl - Press",
+            "reps": "10"
+          },
+          {
+            "name": "Standing Bicycle Crunches",
+            "reps": "20"
+          },
+          {
+            "name": "Walking Lunges",
+            "reps": "10 each"
+          }
+        ],
+        "id": "d3"
+      }
+    ]
+  },
+  {
+    "id": "w_sep22",
+    "name": "Circuits — Sep 22",
+    "days": [
+      {
+        "label": "Day 1 · Legs & Abs",
+        "exercises": [
+          {
+            "name": "Dumbbell Thrusters",
+            "reps": "8"
+          },
+          {
+            "name": "Plie Squats",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Bicycle Crunches",
+            "reps": "14"
+          },
+          {
+            "name": "Hamstring Ball Curl Ins",
+            "reps": "8"
+          },
+          {
+            "name": "Wood Choppers",
+            "reps": "10"
+          },
+          {
+            "name": "Air Squats",
+            "reps": "15"
+          },
+          {
+            "name": "Flutterkicks",
+            "reps": "10"
+          },
+          {
+            "name": "Alternating Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "X Band Walks",
+            "reps": "8"
+          },
+          {
+            "name": "Plank Glute Cross Overs",
+            "reps": "15"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Upper",
+        "exercises": [
+          {
+            "name": "Lateral Raise Pulses",
+            "reps": "12"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "12"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Tricep Pressdowns",
+            "reps": "12"
+          },
+          {
+            "name": "Incline DB Flye Pulses",
+            "reps": "12"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "10"
+          },
+          {
+            "name": "Tricep Bench Dips",
+            "reps": "14"
+          },
+          {
+            "name": "Hip Abduction",
+            "reps": "10"
+          }
+        ],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Legs & Abs",
+        "exercises": [
+          {
+            "name": "Suitcase Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Hip Abduction",
+            "reps": "8"
+          },
+          {
+            "name": "Wide Sumo Side Bends",
+            "reps": "8"
+          },
+          {
+            "name": "Standing Glute Kickbacks",
+            "reps": "8"
+          },
+          {
+            "name": "Calf Raises",
+            "reps": "16"
+          },
+          {
+            "name": "Banded Squat with Lateral Leg Raise",
+            "reps": "12"
+          },
+          {
+            "name": "Standing Crunches",
+            "reps": "20"
+          },
+          {
+            "name": "Clam Shells",
+            "reps": "12"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Upper",
+        "exercises": [
+          {
+            "name": "Lateral Raises",
+            "reps": "10"
+          },
+          {
+            "name": "Arnold Press",
+            "reps": "8"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Front Raises",
+            "reps": "8"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "8"
+          },
+          {
+            "name": "Bird Dog Crunches",
+            "reps": "8"
+          },
+          {
+            "name": "Overhead Tricep Extension",
+            "reps": "8"
+          }
+        ],
+        "id": "d4"
+      }
+    ]
+  },
+  {
+    "id": "w_aug25",
+    "name": "Upper/Lower Split — Aug 25",
+    "days": [
+      {
+        "label": "Day 1 · Upper & Abs",
+        "exercises": [
+          {
+            "name": "Med Ball Roll Backs",
+            "reps": "8"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "8"
+          },
+          {
+            "name": "Ball Crunches",
+            "reps": "16"
+          },
+          {
+            "name": "Bent Over Rows",
+            "reps": "8"
+          },
+          {
+            "name": "Side Plank Pulses",
+            "reps": "16"
+          },
+          {
+            "name": "Light DB Front Raises",
+            "reps": "12"
+          },
+          {
+            "name": "Tricep Pressdowns",
+            "reps": "12"
+          },
+          {
+            "name": "Bicep Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Warrior Three Crunch",
+            "reps": "12"
+          }
+        ],
+        "id": "d1"
+      },
+      {
+        "label": "Day 2 · Lower & Abs",
+        "exercises": [
+          {
+            "name": "Air Squats",
+            "reps": "20"
+          },
+          {
+            "name": "Good Mornings",
+            "reps": "8"
+          },
+          {
+            "name": "X Band Walks",
+            "reps": "14"
+          },
+          {
+            "name": "Stiff Leg Deadlift",
+            "reps": "8"
+          },
+          {
+            "name": "Russian Twists",
+            "reps": "12"
+          },
+          {
+            "name": "Side Leg Raises",
+            "reps": "14"
+          },
+          {
+            "name": "Goblet Squats",
+            "reps": "10"
+          },
+          {
+            "name": "Glute Bridge Pull Aparts",
+            "reps": "14"
+          },
+          {
+            "name": "Heels to Heaven",
+            "reps": "10"
+          }
+        ],
+        "id": "d2"
+      },
+      {
+        "label": "Day 3 · Upper & Abs",
+        "exercises": [
+          {
+            "name": "External Delt Rotations",
+            "reps": "8"
+          },
+          {
+            "name": "Lat Pulldowns",
+            "reps": "8"
+          },
+          {
+            "name": "Delt Skier Kickbacks",
+            "reps": "8"
+          },
+          {
+            "name": "Scapular Retractions",
+            "reps": "8"
+          },
+          {
+            "name": "Hammer Curls",
+            "reps": "8"
+          },
+          {
+            "name": "Boat Pose Holds",
+            "reps": "10s"
+          },
+          {
+            "name": "Standing Side Bends",
+            "reps": "8"
+          },
+          {
+            "name": "Butterfly Situps",
+            "reps": "10"
+          }
+        ],
+        "id": "d3"
+      },
+      {
+        "label": "Day 4 · Full Body",
+        "exercises": [
+          {
+            "name": "Plie Squat Pulses",
+            "reps": "10"
+          },
+          {
+            "name": "Donkey Kick Backs",
+            "reps": "8"
+          },
+          {
+            "name": "Lying Leg Raises",
+            "reps": "8"
+          },
+          {
+            "name": "45 Degree Bicep Curls",
+            "reps": "10"
+          },
+          {
+            "name": "Static Lunges",
+            "reps": "8"
+          },
+          {
+            "name": "Deadlift to Row",
+            "reps": "8"
+          },
+          {
+            "name": "Hip Thrusts",
+            "reps": "8"
+          }
+        ],
+        "id": "d4"
+      }
+    ]
+  }
+];
 
 const SEED_PANTRY = ["Olive oil","Mustard","Almond butter","Collagen peptides","UMP protein powder"];
 const AISLE_ORDER = ["Produce","Meat & Protein","Dairy & Refrigerated","Bakery","Grocery/Pantry","Frozen","Supplements/Other"];
