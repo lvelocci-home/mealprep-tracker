@@ -190,52 +190,2758 @@ a.link{color:var(--accent-d);font-weight:700;text-decoration:none}
 
 <script>
 /* ============================ PUBLIC SEED (non-sensitive) ============================ */
-const SEED_PLANS = [{
-  id:"p1655", name:"1655 Macro Breakdown", calories:1655,
-  target:{cal:1655,p:127,c:145,f:63}, days:7,
-  meals:[
-    {id:"m1", name:"Meal 1 · Yogurt + High-Fiber Bowl", macros:{cal:325,p:29,c:33,f:9}},
-    {id:"m2", name:"Meal 2 · Avocado Egg Salad Pita",  macros:{cal:460,p:13,c:50,f:23}},
-    {id:"m3", name:"Meal 3 · Protein Shake + Greens",  macros:{cal:300,p:65,c:3, f:3}},
-    {id:"m4", name:"Meal 4 · Chicken, Potatoes + Veg", macros:{cal:410,p:30,c:43,f:13}},
-    {id:"m5", name:"Meal 5 · Graham + Almond Butter",  macros:{cal:160,p:0, c:15,f:11}}
-  ],
-  groceries:[
-    {item:"Avocados", qty:"11", aisle:"Produce"},
-    {item:"Baby spinach", qty:"1 large tub (~10–16 oz)", aisle:"Produce"},
-    {item:"Arugula", qty:"1 container", aisle:"Produce"},
-    {item:"Spring mix lettuce", qty:"1 container", aisle:"Produce"},
-    {item:"Celery", qty:"1 bunch", aisle:"Produce"},
-    {item:"Broccoli", qty:"~2 lb (2 crowns)", aisle:"Produce"},
-    {item:"Cauliflower", qty:"1 large head", aisle:"Produce"},
-    {item:"Red potatoes", qty:"2 lb bag", aisle:"Produce"},
-    {item:"Sweet potatoes", qty:"3–4", aisle:"Produce"},
-    {item:"Grape tomatoes", qty:"1 pint", aisle:"Produce"},
-    {item:"Grapes", qty:"~2 lb", aisle:"Produce"},
-    {item:"Blueberries", qty:"2 pints / 18 oz", aisle:"Produce"},
-    {item:"Strawberries", qty:"1 lb", aisle:"Produce"},
-    {item:"Clementines", qty:"1 bag", aisle:"Produce"},
-    {item:"Fuji apples", qty:"small bag", aisle:"Produce"},
-    {item:"Mangos", qty:"2", aisle:"Produce"},
-    {item:"Chicken breast", qty:"~3 lb", aisle:"Meat & Protein"},
-    {item:"Ground turkey", qty:"1 lb", aisle:"Meat & Protein"},
-    {item:"0% Greek yogurt", qty:"32 oz tub", aisle:"Dairy & Refrigerated"},
-    {item:"Cottage cheese (Good Culture)", qty:"1 tub", aisle:"Dairy & Refrigerated"},
-    {item:"Almond milk", qty:"½ gallon", aisle:"Dairy & Refrigerated"},
-    {item:"Eggs", qty:"2½ dozen (26)", aisle:"Dairy & Refrigerated"},
-    {item:"High-fiber pita", qty:"7 (1–2 packs)", aisle:"Bakery"},
-    {item:"Fiber One cereal", qty:"1 box", aisle:"Grocery/Pantry"},
-    {item:"Almonds", qty:"small bag", aisle:"Grocery/Pantry"},
-    {item:"Graham crackers", qty:"1 box", aisle:"Grocery/Pantry"},
-    {item:"Perfect Bars minis", qty:"1 box (if available)", aisle:"Grocery/Pantry"},
-    {item:"Chicken sausage", qty:"1 pack", aisle:"Frozen"},
-    {item:"Olive oil", qty:"check pantry", aisle:"Supplements/Other", pantry:true},
-    {item:"Mustard", qty:"check pantry", aisle:"Supplements/Other", pantry:true},
-    {item:"Almond butter", qty:"check pantry", aisle:"Supplements/Other", pantry:true},
-    {item:"Collagen peptides", qty:"restock if low", aisle:"Supplements/Other", pantry:true},
-    {item:"UMP protein powder", qty:"restock if low", aisle:"Supplements/Other", pantry:true}
-  ]
-}];
+const SEED_PLANS = [
+  {
+    "id": "p1650a",
+    "name": "Apr 6 — 1650 cal",
+    "calories": 1650,
+    "target": {
+      "cal": 1650,
+      "p": 141,
+      "c": 135,
+      "f": 64
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Almond Protein Breakfast Bowl",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Almond Slices",
+            "q": "1 oz",
+            "cal": 160,
+            "m": "F"
+          },
+          {
+            "f": "Heavy Whipping Cream",
+            "q": "1 TBSP",
+            "cal": 60,
+            "m": "F"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "1 scoop",
+            "cal": 40,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "½ cup",
+            "cal": 15,
+            "m": "F"
+          },
+          {
+            "f": "Shredded Coconut",
+            "q": "½ oz",
+            "cal": 90,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Cottage Cheese & Cinnamon Apples",
+        "items": [
+          {
+            "f": "Low-Fat Cottage Cheese",
+            "q": "½ cup",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Apple",
+            "q": "1 medium",
+            "cal": 95,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Mediterranean Chicken Bowl",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Quinoa",
+            "q": "¾ cup",
+            "cal": 170,
+            "m": "C"
+          },
+          {
+            "f": "Roasted Zucchini & Peppers",
+            "q": "1 cup",
+            "cal": 50,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "½ TBSP",
+            "cal": 60,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Garlic Herb Chicken Thighs",
+        "items": [
+          {
+            "f": "Chicken Thighs",
+            "q": "5 oz",
+            "cal": 230,
+            "m": "PF"
+          },
+          {
+            "f": "Steamed Green Beans",
+            "q": "2 cups",
+            "cal": 80,
+            "m": "C"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "1 medium",
+            "cal": 180,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1680",
+    "name": "Mar 23 — 1680 cal",
+    "calories": 1680,
+    "target": {
+      "cal": 1680,
+      "p": 140,
+      "c": 154,
+      "f": 56
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Breakfast Burrito",
+        "items": [
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Egg Whites",
+            "q": "4",
+            "cal": 60,
+            "m": "P"
+          },
+          {
+            "f": "Whole Eggs",
+            "q": "2",
+            "cal": 140,
+            "m": "PF"
+          },
+          {
+            "f": "Spinach",
+            "q": "1 cup",
+            "cal": 10,
+            "m": "C"
+          },
+          {
+            "f": "Mixed Peppers & Onions",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Gluten-Free Tortilla",
+            "q": "1",
+            "cal": 120,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Turkey Lettuce Wraps with Rice",
+        "items": [
+          {
+            "f": "Turkey Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Romaine Lettuce Leaves",
+            "q": "2",
+            "cal": 10,
+            "m": "C"
+          },
+          {
+            "f": "Hummus",
+            "q": "2 TBSP",
+            "cal": 70,
+            "m": "F"
+          },
+          {
+            "f": "Cucumber Slices",
+            "q": "1 cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "White Rice",
+            "q": "½ cup",
+            "cal": 100,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Chicken, Quinoa & Veggies",
+        "items": [
+          {
+            "f": "Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Quinoa",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Broccoli",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Zucchini",
+            "q": "1 cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Strawberries",
+            "q": "1 cup",
+            "cal": 50,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein & Potato",
+        "items": [
+          {
+            "f": "Lean Protein",
+            "q": "6 oz",
+            "cal": 180,
+            "m": "P"
+          },
+          {
+            "f": "Russet Potato",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "C"
+          },
+          {
+            "f": "Asparagus",
+            "q": "2 cups",
+            "cal": 60,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1655b",
+    "name": "Mar 9 — 1655 cal",
+    "calories": 1655,
+    "target": {
+      "cal": 1655,
+      "p": 127,
+      "c": 165,
+      "f": 60
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Egg White Veggie Scramble",
+        "items": [
+          {
+            "f": "Egg Whites",
+            "q": "4",
+            "cal": 60,
+            "m": "P"
+          },
+          {
+            "f": "Spinach",
+            "q": "2 cups",
+            "cal": 15,
+            "m": "C"
+          },
+          {
+            "f": "Mixed Omelet Veggies",
+            "q": "",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Feta Cheese",
+            "q": "1 oz",
+            "cal": 75,
+            "m": "PF"
+          },
+          {
+            "f": "High Fiber English Muffin",
+            "q": "1",
+            "cal": 100,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Orange & Walnuts",
+        "items": [
+          {
+            "f": "Orange",
+            "q": "1",
+            "cal": 60,
+            "m": "C"
+          },
+          {
+            "f": "Walnuts",
+            "q": "1 oz",
+            "cal": 185,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Black Bean Burger",
+        "items": [
+          {
+            "f": "Black Bean Burger",
+            "q": "1",
+            "cal": 110,
+            "m": "PC"
+          },
+          {
+            "f": "Ezekiel Bread",
+            "q": "2 slices",
+            "cal": 160,
+            "m": "C"
+          },
+          {
+            "f": "Avocado",
+            "q": "¼ cup",
+            "cal": 60,
+            "m": "F"
+          },
+          {
+            "f": "Sandwich Veggies",
+            "q": "1 cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Asparagus",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "2 scoops",
+            "cal": 260,
+            "m": "P"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Grilled Chicken & Sweet Potato Fries",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Green Beans",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1660",
+    "name": "Feb 23 — 1660 cal",
+    "calories": 1660,
+    "target": {
+      "cal": 1660,
+      "p": 143,
+      "c": 138,
+      "f": 60
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Breakfast Skillet",
+        "items": [
+          {
+            "f": "Whole Eggs",
+            "q": "2",
+            "cal": 140,
+            "m": "PF"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "4 oz",
+            "cal": 100,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Onions & Peppers",
+            "q": "1 cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Mushrooms",
+            "q": "1 cup",
+            "cal": 15,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Yogurt & Berries",
+        "items": [
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Plain Greek Yogurt",
+            "q": "6 oz",
+            "cal": 100,
+            "m": "P"
+          },
+          {
+            "f": "Strawberries",
+            "q": "1 cup",
+            "cal": 50,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Teriyaki Chicken & Broccoli",
+        "items": [
+          {
+            "f": "Chicken Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Teriyaki Sauce",
+            "q": "2 TBSP",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Broccoli",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Brown Rice",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Edamame",
+            "q": "½ cup",
+            "cal": 120,
+            "m": "PC"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Frozen Banana",
+            "q": "½",
+            "cal": 50,
+            "m": "C"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Mahi Chickpea & Spinach Skillet",
+        "items": [
+          {
+            "f": "Mahi Mahi",
+            "q": "4 oz",
+            "cal": 90,
+            "m": "P"
+          },
+          {
+            "f": "Chickpeas",
+            "q": "½ cup",
+            "cal": 120,
+            "m": "PC"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Spinach",
+            "q": "2 cups",
+            "cal": 15,
+            "m": "C"
+          },
+          {
+            "f": "Pinenuts",
+            "q": "2 TBSP",
+            "cal": 80,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1630",
+    "name": "Feb 9 — 1630 cal",
+    "calories": 1630,
+    "target": {
+      "cal": 1630,
+      "p": 155,
+      "c": 142,
+      "f": 54
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Oats, Eggs & Berries",
+        "items": [
+          {
+            "f": "Whole Eggs",
+            "q": "2",
+            "cal": 140,
+            "m": "PF"
+          },
+          {
+            "f": "Egg Whites",
+            "q": "2",
+            "cal": 30,
+            "m": "P"
+          },
+          {
+            "f": "Cooked Oats",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Blueberries",
+            "q": "1 cup",
+            "cal": 80,
+            "m": "C"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Apple & Almonds",
+        "items": [
+          {
+            "f": "Apple",
+            "q": "1 small",
+            "cal": 60,
+            "m": "C"
+          },
+          {
+            "f": "Almonds",
+            "q": "1 oz",
+            "cal": 160,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Salmon & Quinoa",
+        "items": [
+          {
+            "f": "Grilled Salmon",
+            "q": "5 oz",
+            "cal": 210,
+            "m": "PF"
+          },
+          {
+            "f": "Quinoa",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Steamed Asparagus",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          },
+          {
+            "f": "Raspberries",
+            "q": "½ cup",
+            "cal": 30,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Chicken & Potatoes",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "5 oz",
+            "cal": 140,
+            "m": "P"
+          },
+          {
+            "f": "Roasted Red Potatoes",
+            "q": "4 oz",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Green Beans",
+            "q": "½ cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Coconut Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1575",
+    "name": "Jan 26 — 1575 cal",
+    "calories": 1575,
+    "target": {
+      "cal": 1575,
+      "p": 118,
+      "c": 135,
+      "f": 63
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Berry Almond Overnight Oats",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Oats",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "½ cup",
+            "cal": 15,
+            "m": "F"
+          },
+          {
+            "f": "Blueberries or Raspberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Kind Bar",
+        "items": [
+          {
+            "f": "Kind Bar",
+            "q": "1",
+            "cal": 200,
+            "m": "PCF"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Mediterranean Chicken Bowl",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Quinoa",
+            "q": "½ cup",
+            "cal": 155,
+            "m": "C"
+          },
+          {
+            "f": "Roasted Zucchini & Peppers",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Hummus",
+            "q": "2 TBSP",
+            "cal": 70,
+            "m": "FC"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Balsamic Steak Salad",
+        "items": [
+          {
+            "f": "Lean Sirloin Steak",
+            "q": "4 oz",
+            "cal": 170,
+            "m": "PF"
+          },
+          {
+            "f": "Mixed Greens",
+            "q": "2 cups",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "4 oz",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Cherry Tomatoes, Cucumber, Onion",
+            "q": "½ cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Balsamic Vinaigrette",
+            "q": "1 TBSP",
+            "cal": 60,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1525",
+    "name": "Jan 12 — 1525 cal",
+    "calories": 1525,
+    "target": {
+      "cal": 1525,
+      "p": 148,
+      "c": 112,
+      "f": 54
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Turkey Bacon & PB Toast",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 70,
+            "m": "P"
+          },
+          {
+            "f": "Strawberries",
+            "q": "1 cup",
+            "cal": 50,
+            "m": "C"
+          },
+          {
+            "f": "Turkey Bacon",
+            "q": "4 slices",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Rice Cakes",
+            "q": "2",
+            "cal": 70,
+            "m": "C"
+          },
+          {
+            "f": "Peanut Butter",
+            "q": "1 TBSP",
+            "cal": 95,
+            "m": "F"
+          },
+          {
+            "f": "Sugar Free Jelly",
+            "q": "1 TBSP",
+            "cal": 10,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Turkey & Hummus Wrap",
+        "items": [
+          {
+            "f": "High Fiber Tortilla",
+            "q": "1",
+            "cal": 120,
+            "m": "C"
+          },
+          {
+            "f": "Turkey Breast Slices",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Hummus",
+            "q": "2 TBSP",
+            "cal": 70,
+            "m": "FC"
+          },
+          {
+            "f": "Spinach + Peppers",
+            "q": "",
+            "cal": 20,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Greek Yogurt & Walnuts",
+        "items": [
+          {
+            "f": "Plain Nonfat Greek Yogurt",
+            "q": "6 oz",
+            "cal": 90,
+            "m": "P"
+          },
+          {
+            "f": "Raspberries",
+            "q": "½ cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Walnuts",
+            "q": "1 oz",
+            "cal": 185,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Chicken Avo Bowl",
+        "items": [
+          {
+            "f": "Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Black Beans",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Mixed Veggies/Salad",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Avocado",
+            "q": "¼",
+            "cal": 60,
+            "m": "F"
+          },
+          {
+            "f": "Salsa",
+            "q": "2 TBSP",
+            "cal": 15,
+            "m": "C"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1695",
+    "name": "Dec 30 — 1695 cal",
+    "calories": 1695,
+    "target": {
+      "cal": 1695,
+      "p": 150,
+      "c": 144,
+      "f": 58
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Collagen Greek Yogurt Bowl",
+        "items": [
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Plain Nonfat Greek Yogurt",
+            "q": "6 oz",
+            "cal": 90,
+            "m": "P"
+          },
+          {
+            "f": "Blueberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Almond Butter",
+            "q": "1 TBSP",
+            "cal": 100,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "UMP Protein Balls",
+        "macros": {
+          "cal": 360,
+          "p": 29,
+          "c": 21,
+          "f": 19
+        },
+        "items": [
+          {
+            "f": "UMP Protein Balls",
+            "q": "10 balls",
+            "cal": 360,
+            "m": "PCF"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Turkey Bacon Pita Sandwich",
+        "items": [
+          {
+            "f": "Lean Turkey Breast",
+            "q": "4 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Turkey Bacon",
+            "q": "2 slices",
+            "cal": 40,
+            "m": "PF"
+          },
+          {
+            "f": "High Fiber Pita",
+            "q": "1",
+            "cal": 130,
+            "m": "C"
+          },
+          {
+            "f": "Peach",
+            "q": "1 large",
+            "cal": 80,
+            "m": "C"
+          },
+          {
+            "f": "Green Beans",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Almonds, Grapes & Carrots",
+        "items": [
+          {
+            "f": "Almonds",
+            "q": "½ oz",
+            "cal": 80,
+            "m": "F"
+          },
+          {
+            "f": "Grapes",
+            "q": "1 cup",
+            "cal": 120,
+            "m": "C"
+          },
+          {
+            "f": "Carrots",
+            "q": "3 oz",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Chicken Harvest Salad",
+        "items": [
+          {
+            "f": "Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Spinach",
+            "q": "3 cups",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Mixed Salad Veggies",
+            "q": "",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Feta Cheese",
+            "q": "1 oz",
+            "cal": 75,
+            "m": "PF"
+          },
+          {
+            "f": "Bolthouse Dressing",
+            "q": "2 TBSP",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1730",
+    "name": "Dec 15 — 1730 cal",
+    "calories": 1730,
+    "target": {
+      "cal": 1730,
+      "p": 136,
+      "c": 173,
+      "f": 55
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Almond Butter Toast",
+        "items": [
+          {
+            "f": "Collagen Peptides",
+            "q": "1 scoop",
+            "cal": 40,
+            "m": "P"
+          },
+          {
+            "f": "Ezekiel Bread",
+            "q": "2 pieces",
+            "cal": 120,
+            "m": "C"
+          },
+          {
+            "f": "Almond Butter",
+            "q": "2 TBSP",
+            "cal": 200,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "2 scoops",
+            "cal": 260,
+            "m": "P"
+          },
+          {
+            "f": "Unsweetened Coconut Milk",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Chicken, Rice & Veggies",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Brown Rice",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Mixed Veggies",
+            "q": "2 cups",
+            "cal": 60,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Cottage Cheese & Blueberries",
+        "items": [
+          {
+            "f": "Cottage Cheese",
+            "q": "½ cup",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Blueberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Beef Patty & Sweet Potato",
+        "items": [
+          {
+            "f": "Lean Beef Patty",
+            "q": "3 oz",
+            "cal": 185,
+            "m": "PF"
+          },
+          {
+            "f": "Asparagus",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "8 oz",
+            "cal": 100,
+            "m": "C"
+          },
+          {
+            "f": "Butter",
+            "q": "1 TBSP",
+            "cal": 100,
+            "m": "F"
+          },
+          {
+            "f": "Apple",
+            "q": "1 small",
+            "cal": 60,
+            "m": "C"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1780",
+    "name": "Dec 1 — 1780 cal",
+    "calories": 1780,
+    "target": {
+      "cal": 1780,
+      "p": 136,
+      "c": 153,
+      "f": 70
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Apple Collagen Cinnamon Oats",
+        "items": [
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Oats",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          },
+          {
+            "f": "Almond Butter",
+            "q": "1 TBSP",
+            "cal": 100,
+            "m": "F"
+          },
+          {
+            "f": "Apple",
+            "q": "½",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Kind Bar",
+        "items": [
+          {
+            "f": "Kind Bar",
+            "q": "1",
+            "cal": 200,
+            "m": "PCF"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Turkey Chili",
+        "items": [
+          {
+            "f": "Lean Ground Turkey",
+            "q": "4 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Kidney Beans",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Diced Tomatoes",
+            "q": "1 cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Onions & Peppers",
+            "q": "½ cup",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Shredded Cheddar Cheese",
+            "q": "1 oz",
+            "cal": 110,
+            "m": "PF"
+          },
+          {
+            "f": "Oyster Crackers",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "UMP Hot Cocoa",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Harvest Chicken & Roasted Veggies",
+        "items": [
+          {
+            "f": "Lean Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Roasted Brussels Sprouts",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Butternut Squash",
+            "q": "½ cup",
+            "cal": 60,
+            "m": "C"
+          },
+          {
+            "f": "Wild Rice",
+            "q": "½ cup",
+            "cal": 90,
+            "m": "C"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1765",
+    "name": "Nov 17 — 1765 cal",
+    "calories": 1765,
+    "target": {
+      "cal": 1765,
+      "p": 133,
+      "c": 150,
+      "f": 70
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Savory Breakfast Bowl",
+        "items": [
+          {
+            "f": "Oatmeal",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Tahini",
+            "q": "2 TBSP",
+            "cal": 180,
+            "m": "F"
+          },
+          {
+            "f": "Roasted Zucchini & Mushrooms",
+            "q": "½ cup",
+            "cal": 30,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Mediterranean Chicken Wrap",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Gluten-Free High-Fiber Tortilla",
+            "q": "1",
+            "cal": 120,
+            "m": "C"
+          },
+          {
+            "f": "Hummus",
+            "q": "2 TBSP",
+            "cal": 70,
+            "m": "F"
+          },
+          {
+            "f": "Cucumber + Tomato",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Mango Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          },
+          {
+            "f": "Frozen Mango Chunks",
+            "q": "½ cup",
+            "cal": 50,
+            "m": "C"
+          },
+          {
+            "f": "Chia Seeds",
+            "q": "1 TBSP",
+            "cal": 60,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Cooked Sushi Bowl",
+        "items": [
+          {
+            "f": "Baked Salmon",
+            "q": "6 oz",
+            "cal": 250,
+            "m": "PF"
+          },
+          {
+            "f": "White Rice",
+            "q": "½ cup",
+            "cal": 100,
+            "m": "C"
+          },
+          {
+            "f": "Steamed Edamame",
+            "q": "1 cup",
+            "cal": 120,
+            "m": "PC"
+          },
+          {
+            "f": "Avocado Slices",
+            "q": "1 TBSP",
+            "cal": 30,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Dessert",
+        "items": [
+          {
+            "f": "Rice Cake",
+            "q": "1",
+            "cal": 35,
+            "m": "C"
+          },
+          {
+            "f": "Almond Butter",
+            "q": "1 TBSP",
+            "cal": 100,
+            "m": "F"
+          },
+          {
+            "f": "Pineapple Chunks",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1670",
+    "name": "Nov 3 — 1670 cal",
+    "calories": 1670,
+    "target": {
+      "cal": 1670,
+      "p": 156,
+      "c": 137,
+      "f": 54
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Oatmeal & Egg Whites",
+        "items": [
+          {
+            "f": "Oatmeal",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Egg Whites",
+            "q": "2",
+            "cal": 30,
+            "m": "P"
+          },
+          {
+            "f": "Raspberries",
+            "q": "½ cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Flaxseed Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Cottage Cheese & Walnuts",
+        "items": [
+          {
+            "f": "Cottage Cheese Low Fat",
+            "q": "½ cup",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Peach",
+            "q": "½ cup",
+            "cal": 50,
+            "m": "C"
+          },
+          {
+            "f": "Walnuts",
+            "q": "1 oz",
+            "cal": 180,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Pork & Sweet Potato",
+        "items": [
+          {
+            "f": "Pork Tenderloin",
+            "q": "3 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "4 oz",
+            "cal": 105,
+            "m": "C"
+          },
+          {
+            "f": "Green Beans",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "2 tsp",
+            "cal": 80,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "2 scoops",
+            "cal": 260,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          },
+          {
+            "f": "Blueberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Mahi & Quinoa",
+        "items": [
+          {
+            "f": "Mahi Mahi",
+            "q": "6 oz",
+            "cal": 135,
+            "m": "P"
+          },
+          {
+            "f": "Quinoa",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Cauliflower",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Coconut Oil",
+            "q": "1 tsp",
+            "cal": 40,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1720",
+    "name": "Oct 20 — 1720 cal",
+    "calories": 1720,
+    "target": {
+      "cal": 1720,
+      "p": 140,
+      "c": 160,
+      "f": 58
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Pumpkin Protein Oats",
+        "items": [
+          {
+            "f": "Oatmeal",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Pumpkin Puree",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 70,
+            "m": "P"
+          },
+          {
+            "f": "Almond Butter",
+            "q": "1 TBSP",
+            "cal": 100,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Avocado Toast with Eggs",
+        "items": [
+          {
+            "f": "Ezekiel Bread",
+            "q": "2 slices",
+            "cal": 160,
+            "m": "C"
+          },
+          {
+            "f": "Egg Whites",
+            "q": "4",
+            "cal": 60,
+            "m": "P"
+          },
+          {
+            "f": "Avocado",
+            "q": "½ cup",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Spinach & Tomato",
+            "q": "",
+            "cal": 20,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Greek Yogurt & Almonds",
+        "items": [
+          {
+            "f": "Plain Nonfat Greek Yogurt",
+            "q": "6 oz",
+            "cal": 90,
+            "m": "P"
+          },
+          {
+            "f": "Blueberries",
+            "q": "1 cup",
+            "cal": 80,
+            "m": "C"
+          },
+          {
+            "f": "Almonds",
+            "q": "1 oz",
+            "cal": 160,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Chicken, Rice & Veggies",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Brown Rice",
+            "q": "1 cup",
+            "cal": 220,
+            "m": "C"
+          },
+          {
+            "f": "Steamed Broccoli",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1655",
+    "name": "Oct 6 — 1655 cal (current)",
+    "calories": 1655,
+    "target": {
+      "cal": 1655,
+      "p": 127,
+      "c": 145,
+      "f": 63
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Yogurt + High-Fiber Bowl",
+        "items": [
+          {
+            "f": "0% Greek Yogurt",
+            "q": "½ cup",
+            "cal": 75,
+            "m": "P"
+          },
+          {
+            "f": "Fiber One Cereal",
+            "q": "⅔ cup",
+            "cal": 90,
+            "m": "C"
+          },
+          {
+            "f": "Blueberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Almonds",
+            "q": "½ oz",
+            "cal": 80,
+            "m": "F"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "1 scoop",
+            "cal": 40,
+            "m": "P"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Avocado Egg Salad Pita",
+        "items": [
+          {
+            "f": "Whole Eggs",
+            "q": "2",
+            "cal": 140,
+            "m": "PF"
+          },
+          {
+            "f": "Mashed Avocado",
+            "q": "½ cup",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Celery",
+            "q": "½ cup",
+            "cal": 10,
+            "m": "C"
+          },
+          {
+            "f": "High Fiber Pita",
+            "q": "1",
+            "cal": 130,
+            "m": "C"
+          },
+          {
+            "f": "Grapes",
+            "q": "½ cup",
+            "cal": 60,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Protein Shake + Greens",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "2 scoops",
+            "cal": 260,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          },
+          {
+            "f": "Spinach",
+            "q": "1 cup",
+            "cal": 10,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Chicken, Potatoes + Veg",
+        "items": [
+          {
+            "f": "Chicken Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Red Potatoes",
+            "q": "4 oz",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Broccoli",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Cauliflower",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Graham + Almond Butter",
+        "items": [
+          {
+            "f": "Graham Crackers",
+            "q": "2 squares",
+            "cal": 60,
+            "m": "C"
+          },
+          {
+            "f": "Almond Butter",
+            "q": "1 TBSP",
+            "cal": 100,
+            "m": "F"
+          }
+        ]
+      }
+    ],
+    "groceries": [
+      {
+        "item": "Avocados",
+        "qty": "11",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Baby spinach",
+        "qty": "1 large tub (~10–16 oz)",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Arugula",
+        "qty": "1 container",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Spring mix lettuce",
+        "qty": "1 container",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Celery",
+        "qty": "1 bunch",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Broccoli",
+        "qty": "~2 lb (2 crowns)",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Cauliflower",
+        "qty": "1 large head",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Red potatoes",
+        "qty": "2 lb bag",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Sweet potatoes",
+        "qty": "3–4",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Grape tomatoes",
+        "qty": "1 pint",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Grapes",
+        "qty": "~2 lb",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Blueberries",
+        "qty": "2 pints / 18 oz",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Strawberries",
+        "qty": "1 lb",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Clementines",
+        "qty": "1 bag",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Fuji apples",
+        "qty": "small bag",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Mangos",
+        "qty": "2",
+        "aisle": "Produce"
+      },
+      {
+        "item": "Chicken breast",
+        "qty": "~3 lb",
+        "aisle": "Meat & Protein"
+      },
+      {
+        "item": "Ground turkey",
+        "qty": "1 lb",
+        "aisle": "Meat & Protein"
+      },
+      {
+        "item": "0% Greek yogurt",
+        "qty": "32 oz tub",
+        "aisle": "Dairy & Refrigerated"
+      },
+      {
+        "item": "Cottage cheese (Good Culture)",
+        "qty": "1 tub",
+        "aisle": "Dairy & Refrigerated"
+      },
+      {
+        "item": "Almond milk",
+        "qty": "½ gallon",
+        "aisle": "Dairy & Refrigerated"
+      },
+      {
+        "item": "Eggs",
+        "qty": "2½ dozen (26)",
+        "aisle": "Dairy & Refrigerated"
+      },
+      {
+        "item": "High-fiber pita",
+        "qty": "7 (1–2 packs)",
+        "aisle": "Bakery"
+      },
+      {
+        "item": "Fiber One cereal",
+        "qty": "1 box",
+        "aisle": "Grocery/Pantry"
+      },
+      {
+        "item": "Almonds",
+        "qty": "small bag",
+        "aisle": "Grocery/Pantry"
+      },
+      {
+        "item": "Graham crackers",
+        "qty": "1 box",
+        "aisle": "Grocery/Pantry"
+      },
+      {
+        "item": "Perfect Bars minis",
+        "qty": "1 box (if available)",
+        "aisle": "Grocery/Pantry"
+      },
+      {
+        "item": "Chicken sausage",
+        "qty": "1 pack",
+        "aisle": "Frozen"
+      },
+      {
+        "item": "Olive oil",
+        "qty": "check pantry",
+        "aisle": "Supplements/Other",
+        "pantry": true
+      },
+      {
+        "item": "Mustard",
+        "qty": "check pantry",
+        "aisle": "Supplements/Other",
+        "pantry": true
+      },
+      {
+        "item": "Almond butter",
+        "qty": "check pantry",
+        "aisle": "Supplements/Other",
+        "pantry": true
+      },
+      {
+        "item": "Collagen peptides",
+        "qty": "restock if low",
+        "aisle": "Supplements/Other",
+        "pantry": true
+      },
+      {
+        "item": "UMP protein powder",
+        "qty": "restock if low",
+        "aisle": "Supplements/Other",
+        "pantry": true
+      }
+    ]
+  },
+  {
+    "id": "p1625",
+    "name": "Sep 22 — 1625 cal",
+    "calories": 1625,
+    "target": {
+      "cal": 1625,
+      "p": 137,
+      "c": 150,
+      "f": 53
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Cottage Cheese & Egg Toast",
+        "items": [
+          {
+            "f": "Cottage Cheese",
+            "q": "½ cup",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Blueberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Hard Boiled Egg",
+            "q": "1",
+            "cal": 70,
+            "m": "PF"
+          },
+          {
+            "f": "Ezekiel Bread",
+            "q": "1 piece",
+            "cal": 80,
+            "m": "C"
+          },
+          {
+            "f": "Butter",
+            "q": "½ TBSP",
+            "cal": 50,
+            "m": "F"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "1 scoop",
+            "cal": 40,
+            "m": "P"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Chicken & Rice",
+        "items": [
+          {
+            "f": "Chicken Breast",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Brown Rice",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Coconut Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Broccoli",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Salmon & Sweet Potato",
+        "items": [
+          {
+            "f": "Salmon",
+            "q": "6 oz",
+            "cal": 250,
+            "m": "PF"
+          },
+          {
+            "f": "Mixed Veggies",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Pineapple",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Sweet Potato",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein Mug Cake",
+        "items": [
+          {
+            "f": "Ultimate Muscle Protein",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Oatmeal",
+            "q": "⅓ cup",
+            "cal": 100,
+            "m": "C"
+          },
+          {
+            "f": "Peanut Butter",
+            "q": "1 TBSP",
+            "cal": 95,
+            "m": "F"
+          },
+          {
+            "f": "Mini Chocolate Chips",
+            "q": "1 TBSP",
+            "cal": 70,
+            "m": "FC"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1685",
+    "name": "Sep 8 — 1685 cal",
+    "calories": 1685,
+    "target": {
+      "cal": 1685,
+      "p": 137,
+      "c": 165,
+      "f": 53
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Protein Pancakes",
+        "items": [
+          {
+            "f": "Kodiak Cakes Pancake Mix",
+            "q": "½ cup",
+            "cal": 190,
+            "m": "PC"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          },
+          {
+            "f": "Egg",
+            "q": "1 whole",
+            "cal": 70,
+            "m": "PF"
+          },
+          {
+            "f": "Strawberries",
+            "q": "1 cup",
+            "cal": 50,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "PB&J",
+        "items": [
+          {
+            "f": "Natural Peanut Butter",
+            "q": "1 TBSP",
+            "cal": 95,
+            "m": "F"
+          },
+          {
+            "f": "Sugar Free Jelly",
+            "q": "1 TBSP",
+            "cal": 10,
+            "m": "C"
+          },
+          {
+            "f": "Ezekiel Bread",
+            "q": "2 slices",
+            "cal": 160,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Taco Salad",
+        "items": [
+          {
+            "f": "Lean Ground Turkey",
+            "q": "4 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Black Beans",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Mixed Salad with Veggies",
+            "q": "",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Avocado",
+            "q": "¼ cup",
+            "cal": 60,
+            "m": "F"
+          },
+          {
+            "f": "Salsa",
+            "q": "4 TBSP",
+            "cal": 30,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "Protein Shake",
+        "items": [
+          {
+            "f": "Ultimate Muscle Protein",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          },
+          {
+            "f": "Blueberries",
+            "q": "½ cup",
+            "cal": 40,
+            "m": "C"
+          }
+        ]
+      },
+      {
+        "id": "m5",
+        "name": "Chicken with Sweet Potato Fries",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Mixed Veggies",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil",
+            "q": "1 TBSP",
+            "cal": 120,
+            "m": "F"
+          },
+          {
+            "f": "Sweet Potatoes",
+            "q": "4 oz",
+            "cal": 100,
+            "m": "C"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": "p1700",
+    "name": "Aug 25 — 1700 cal",
+    "calories": 1700,
+    "target": {
+      "cal": 1700,
+      "p": 132,
+      "c": 151,
+      "f": 63
+    },
+    "days": 7,
+    "meals": [
+      {
+        "id": "m1",
+        "name": "Eggs & Oatmeal",
+        "items": [
+          {
+            "f": "Whole Eggs",
+            "q": "2",
+            "cal": 140,
+            "m": "PF"
+          },
+          {
+            "f": "Egg White",
+            "q": "1",
+            "cal": 15,
+            "m": "P"
+          },
+          {
+            "f": "Mixed Omelet Veggies",
+            "q": "",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Oatmeal",
+            "q": "½ cup",
+            "cal": 150,
+            "m": "C"
+          },
+          {
+            "f": "Collagen Peptides",
+            "q": "2 scoops",
+            "cal": 80,
+            "m": "P"
+          }
+        ]
+      },
+      {
+        "id": "m2",
+        "name": "Chicken Salad + Kind Bar",
+        "items": [
+          {
+            "f": "Grilled Chicken Breast",
+            "q": "6 oz",
+            "cal": 170,
+            "m": "P"
+          },
+          {
+            "f": "Spinach & Mixed Greens Salad",
+            "q": "",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Olive Oil & Vinegar Dressing",
+            "q": "1 TBSP",
+            "cal": 75,
+            "m": "F"
+          },
+          {
+            "f": "Blueberries",
+            "q": "1 cup",
+            "cal": 40,
+            "m": "C"
+          },
+          {
+            "f": "Almond Slivers",
+            "q": "½ oz",
+            "cal": 70,
+            "m": "F"
+          },
+          {
+            "f": "Kind Bar",
+            "q": "1",
+            "cal": 180,
+            "m": "FC"
+          }
+        ]
+      },
+      {
+        "id": "m3",
+        "name": "Banana Protein Shake",
+        "items": [
+          {
+            "f": "UMP Protein Powder",
+            "q": "1 scoop",
+            "cal": 130,
+            "m": "P"
+          },
+          {
+            "f": "Banana",
+            "q": "1",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Almond Milk",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "F"
+          }
+        ]
+      },
+      {
+        "id": "m4",
+        "name": "White Fish & Rice",
+        "items": [
+          {
+            "f": "White Fish",
+            "q": "4 oz",
+            "cal": 120,
+            "m": "P"
+          },
+          {
+            "f": "Brown Rice",
+            "q": "½ cup",
+            "cal": 110,
+            "m": "C"
+          },
+          {
+            "f": "Apple",
+            "q": "1 small",
+            "cal": 60,
+            "m": "C"
+          },
+          {
+            "f": "Broccoli",
+            "q": "1 cup",
+            "cal": 30,
+            "m": "C"
+          },
+          {
+            "f": "Onions, Peppers, Mushrooms",
+            "q": "",
+            "cal": 20,
+            "m": "C"
+          },
+          {
+            "f": "Avocado",
+            "q": "½ cup",
+            "cal": 120,
+            "m": "F"
+          }
+        ]
+      }
+    ]
+  }
+];
 
 const SEED_WORKOUTS = [{
   id:"w1", name:"Glutes + Chest",
@@ -287,10 +2993,15 @@ function defaultState(){
 }
 let S = load();
 function load(){
-  try{ const r=JSON.parse(localStorage.getItem(LS_KEY)); if(r) return Object.assign(defaultState(), r); }catch(e){}
-  return defaultState();
+  const d=defaultState();
+  try{ const r=JSON.parse(localStorage.getItem(LS_KEY)); if(r) Object.assign(d,r); }catch(e){}
+  // plans/workouts/pantry are code-defined (non-personal) — always use the latest from the app, not stale localStorage
+  d.plans=SEED_PLANS; d.workouts=SEED_WORKOUTS; normalizePlans(d.plans);
+  if(!d.plans.some(p=>p.id===d.currentPlanId)) d.currentPlanId=d.plans[0].id;
+  if(!d.workouts.some(w=>w.id===d.currentWorkoutId)) d.currentWorkoutId=d.workouts[0].id;
+  return d;
 }
-function save(){ localStorage.setItem(LS_KEY, JSON.stringify(S)); }
+function save(){ const c=Object.assign({},S); delete c.plans; delete c.workouts; localStorage.setItem(LS_KEY, JSON.stringify(c)); }
 
 /* ============================ HELPERS ============================ */
 const $=(s,r=document)=>r.querySelector(s);
@@ -305,6 +3016,65 @@ function dec(s){return JSON.parse(decodeURIComponent(escape(atob(s))));}
 const curPlan=()=>S.plans.find(p=>p.id===S.currentPlanId)||S.plans[0];
 const curWorkout=()=>S.workouts.find(w=>w.id===S.currentWorkoutId)||S.workouts[0];
 function weekKey(d=new Date()){const t=new Date(d);t.setHours(0,0,0,0);t.setDate(t.getDate()+3-((t.getDay()+6)%7));const w1=new Date(t.getFullYear(),0,4);return t.getFullYear()+'-W'+String(1+Math.round(((t-w1)/864e5-3+((w1.getDay()+6)%7))/7)).padStart(2,'0');}
+
+/* ----- meal macros + auto grocery (computed from meal items) ----- */
+function mealRaw(m){
+  let cal=0,P=0,C=0,F=0;
+  (m.items||[]).forEach(it=>{ if(it.free||!it.cal) return; cal+=it.cal;
+    const t=it.m||'C'; const has=c=>t.indexOf(c)>=0;
+    const n=(has('P')?1:0)+(has('C')?1:0)+(has('F')?1:0)||1, per=it.cal/n;
+    if(has('P'))P+=per; if(has('C'))C+=per; if(has('F'))F+=per; });
+  return {cal, p:P/4, c:C/4, f:F/9};
+}
+function mealMacros(m){
+  if(m._macros) return m._macros;
+  const r=mealRaw(m); return {cal:Math.round(r.cal), p:Math.round(r.p), c:Math.round(r.c), f:Math.round(r.f)};
+}
+// Scale each plan's per-meal P/C/F so the day sums to the coach's stated target.
+function normalizePlans(plans){
+  plans.forEach(plan=>{
+    const raws=plan.meals.map(mealRaw);
+    let rp=0,rc=0,rf=0; raws.forEach(r=>{rp+=r.p;rc+=r.c;rf+=r.f;});
+    const t=plan.target||{}, sp=(t.p&&rp)?t.p/rp:1, sc=(t.c&&rc)?t.c/rc:1, sf=(t.f&&rf)?t.f/rf:1;
+    plan.meals.forEach((m,i)=>{ m._macros={cal:Math.round(raws[i].cal), p:Math.round(raws[i].p*sp), c:Math.round(raws[i].c*sc), f:Math.round(raws[i].f*sf)}; });
+  });
+}
+function categorize(food){
+  const f=food.toLowerCase(), has=arr=>arr.some(k=>f.includes(k));
+  if(f.includes('green bean')||f.includes('potato')) return 'Produce';
+  if(has(['collagen','ump','protein powder','ultimate muscle','provosyn','muscle provider','protein balls','creatine'])) return 'Supplements/Other';
+  if(has(['chicken','turkey','salmon','mahi','beef','steak','sirloin','pork','tilapia','cod','shrimp','tuna','white fish','fish','sausage','ground'])) return 'Meat & Protein';
+  if(has(['egg','yogurt','cottage cheese','feta','chedd','cheese','almond milk','coconut milk','heavy whipping','butter'])) return 'Dairy & Refrigerated';
+  if(has(['bread','pita','tortilla','english muffin','ezekiel','bun','kodiak','pancake'])) return 'Bakery';
+  if(has(['frozen','edamame'])) return 'Frozen';
+  if(has(['oat','quinoa','rice','bean','chickpea','almond','walnut','cashew','pinenut','peanut','nut butter','tahini','chia','flax','hummus','kind bar','perfect bar','cracker','graham','cereal','fiber one','rice cake','salsa','teriyaki','jelly','honey','syrup','chocolate','coconut','seed','oil','dressing','vinaigrette','pumpkin puree','wild rice','kidney','oyster'])) return 'Grocery/Pantry';
+  return 'Produce';
+}
+const FRAC={'½':.5,'⅓':1/3,'⅔':2/3,'¼':.25,'¾':.75,'⅛':.125};
+function parseQty(q){
+  if(!q) return {num:1,unit:'',explicit:false};
+  q=q.trim();
+  let m=q.match(/^(\d+(?:\.\d+)?)\s*([½⅓⅔¼¾⅛])?\s*(.*)$/);
+  if(m && (m[1]||m[2])) return {num:(m[1]?parseFloat(m[1]):0)+(m[2]?FRAC[m[2]]:0), unit:m[3].trim(), explicit:true};
+  let fm=q.match(/^([½⅓⅔¼¾⅛])\s*(.*)$/);
+  if(fm) return {num:FRAC[fm[1]], unit:fm[2].trim(), explicit:true};
+  return {num:1, unit:q, explicit:false};
+}
+function buildGroceries(plan){
+  const days=plan.days||7, agg={};
+  (plan.meals||[]).forEach(m=>(m.items||[]).forEach(it=>{
+    if(it.free) return;
+    const {num,unit,explicit}=parseQty(it.q), key=it.f.toLowerCase().trim();
+    if(!agg[key]) agg[key]={item:it.f, num:0, unit, aisle:categorize(it.f), explicit};
+    agg[key].num+=num; if(explicit) agg[key].explicit=true;
+  }));
+  return Object.values(agg).map(a=>{
+    let qty='as needed';
+    if(a.explicit){ const w=Math.round(a.num*days*100)/100; qty=a.unit?w+' '+a.unit:''+w; }
+    return {item:a.item, qty, aisle:a.aisle};
+  });
+}
+function planGroceries(p){ return p.groceries || buildGroceries(p); }
 
 /* ============================ ROUTER ============================ */
 function go(pg){
@@ -323,7 +3093,7 @@ function renderHome(){
   const wk=weekKey(), wlog=S.trainingLog[wk]||{};
   const tDays=curWorkout().days.filter(d=>!d.rest), tDone=tDays.filter(d=>wlog[d.id]).length;
   const run=S.groceryRun, pantrySet=new Set(S.pantry.map(x=>x.toLowerCase()));
-  const shop=[...p.groceries.map((g,i)=>({...g,key:'p'+i})),...(run.extras||[]).map((e,i)=>({...e,key:'e'+i}))].filter(g=>!(g.pantry||pantrySet.has(g.item.toLowerCase())));
+  const shop=[...planGroceries(p).map((g,i)=>({...g,key:'p'+i})),...(run.extras||[]).map((e,i)=>({...e,key:'e'+i}))].filter(g=>!(g.pantry||pantrySet.has(g.item.toLowerCase())));
   const left=shop.filter(g=>!run.checked[g.key]).length;
   const ck=[...S.checkins].sort((a,b)=>a.date<b.date?-1:1), last=ck[ck.length-1];
   let dueText='Add your first check-in';
@@ -450,7 +3220,7 @@ function saveName(){ S.profileName=$('#nameInp').value.trim(); save(); closeModa
 function renderGrocery(){
   const p=curPlan(), run=S.groceryRun;
   if(run.planId!==p.id){ run.planId=p.id; run.checked={}; run.extras=run.extras||[]; }
-  const all=[...p.groceries.map((g,i)=>({...g,key:'p'+i})), ...run.extras.map((e,i)=>({...e,key:'e'+i,extra:true}))];
+  const all=[...planGroceries(p).map((g,i)=>({...g,key:'p'+i})), ...run.extras.map((e,i)=>({...e,key:'e'+i,extra:true}))];
   const pantrySet=new Set(S.pantry.map(x=>x.toLowerCase()));
   const isPantry=(g)=>g.pantry||pantrySet.has(g.item.toLowerCase());
   const shop=all.filter(g=>!isPantry(g)), have=all.filter(isPantry);
@@ -534,7 +3304,7 @@ let foodDate=todayISO();
 function dayLog(d){ if(!S.foodLog[d])S.foodLog[d]={mealsEaten:{},extras:[]}; return S.foodLog[d]; }
 function dayTotals(d){
   const p=curPlan(),lg=S.foodLog[d]||{mealsEaten:{},extras:[]};const t={cal:0,p:0,c:0,f:0};
-  p.meals.forEach(m=>{if(lg.mealsEaten[m.id]){t.cal+=m.macros.cal;t.p+=m.macros.p;t.c+=m.macros.c;t.f+=m.macros.f;}});
+  p.meals.forEach(m=>{if(lg.mealsEaten[m.id]){const mm=mealMacros(m);t.cal+=mm.cal;t.p+=mm.p;t.c+=mm.c;t.f+=mm.f;}});
   (lg.extras||[]).forEach(e=>{t.cal+=e.cal||0;t.p+=e.p||0;t.c+=e.c||0;t.f+=e.f||0;});
   return t;
 }
@@ -558,7 +3328,7 @@ function renderFood(){
     const eaten=lg.mealsEaten[m.id]?'eaten':'';
     html+=`<div class="meal ${eaten}">
       <div class="check ${eaten?'':''}" onclick="toggleMeal('${m.id}')" style="${eaten?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${eaten?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
-      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${m.macros.cal} cal · ${m.macros.p}P / ${m.macros.c}C / ${m.macros.f}F</div></div>
+      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${mealMacros(m).cal} cal · ${mealMacros(m).p}P / ${mealMacros(m).c}C / ${mealMacros(m).f}F</div></div>
     </div>`;
   });
   html+='</div>';
