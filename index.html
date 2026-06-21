@@ -53,6 +53,16 @@ nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-
 .dash .dchev{color:var(--ink3);font-size:22px;font-weight:300}
 .dbar{height:7px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:7px}
 .dbar>i{display:block;height:100%;border-radius:5px}
+.streak{font-size:13px;font-weight:700;color:var(--warn)}
+.vision{background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:11px;cursor:pointer;box-shadow:var(--shadow)}
+.vision .vlabel{font-size:10px;font-weight:800;letter-spacing:1.2px;opacity:.85}
+.vision .vtext{font-size:16px;font-weight:600;line-height:1.45;margin-top:5px;font-style:italic}
+.vision .vtext.empty{opacity:.8;font-style:normal;font-weight:500}
+.focusline .dstat{font-size:15px!important;font-weight:600!important;white-space:normal!important}
+.watdots{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
+.watdot{width:17px;height:21px;border-radius:3px 3px 7px 7px;border:2px solid var(--blue);cursor:pointer;transition:.1s}
+.watdot.full{background:var(--blue)}
+textarea.inp{resize:vertical;font-family:var(--font);line-height:1.45}
 
 /* Cards & bits */
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px;margin-bottom:12px;box-shadow:var(--shadow)}
@@ -158,10 +168,10 @@ a.link{color:var(--accent-d);font-weight:700;text-decoration:none}
     </div>
   </div>
   <nav class="tabs">
-    <button data-pg="grocery" onclick="go('grocery')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Shop</button>
-    <button data-pg="food" onclick="go('food')"><svg viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M21 15V2a5 5 0 0 0-3 9v9"/></svg>Food</button>
     <button data-pg="train" onclick="go('train')"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M6.5 17.5L4 20M17.5 6.5L20 4"/></svg>Train</button>
+    <button data-pg="food" onclick="go('food')"><svg viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M21 15V2a5 5 0 0 0-3 9v9"/></svg>Food</button>
     <button data-pg="progress" onclick="go('progress')"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Progress</button>
+    <button data-pg="grocery" onclick="go('grocery')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Shop</button>
   </nav>
 </header>
 
@@ -270,7 +280,8 @@ function defaultState(){
     currentPlanId: "p1655", currentWorkoutId: "w1",
     groceryRun: { planId:"p1655", extras:[], checked:{} },
     // personal (local-only)
-    foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0}
+    foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0},
+    vision:"", focus:{}, water:{}
   };
 }
 let S = load();
@@ -319,8 +330,21 @@ function renderHome(){
   const lastAct=(S.activities||[])[0];
   const hr=new Date().getHours(), greet=hr<12?'Good morning ☀️':hr<18?'Good afternoon 🌤️':'Good evening 🌙';
   const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
+  const streak=vitalityStreak();
+  const focusToday=(S.focus&&S.focus[today])||'';
+  const cups=(S.water&&S.water[today])||0, wgoal=8;
 
-  let html=`<div class="hero"><div class="greet">${greet}</div><h2>Today's Vitality</h2><div class="hdate">${dateStr}</div></div>`;
+  let html=`<div class="hero"><div class="greet">${greet}${streak>1?' &nbsp;·&nbsp; <span class="streak">🔥 '+streak+' day streak</span>':''}</div><h2>Today's Vitality</h2><div class="hdate">${dateStr}</div></div>`;
+
+  // 2026 vision
+  html+=`<div class="vision" onclick="editVision()"><div class="vlabel">${new Date().getFullYear()} VISION</div>
+    <div class="vtext ${S.vision?'':'empty'}">${S.vision?esc(S.vision):'✨ Tap to set your vision for the year'}</div></div>`;
+
+  // daily focus
+  html+=`<div class="dash focusline" onclick="editFocus()"><div class="dicon" style="background:#fef0e4;color:var(--warn)">🎯</div>
+    <div class="dbody"><div class="dlabel">Today's focus</div>
+      <div class="dstat">${focusToday?esc(focusToday):'<span style="color:var(--ink3);font-weight:500">Set an intention for today</span>'}</div>
+    </div><div class="dchev">✎</div></div>`;
 
   html+=`<div class="dash" onclick="go('food')"><div class="dicon" style="background:var(--accent-bg);color:var(--accent-d)">🍽️</div>
     <div class="dbody"><div class="dlabel">Nutrition</div>
@@ -328,6 +352,12 @@ function renderHome(){
       <div class="dbar"><i style="width:${calPct}%;background:var(--cal)"></i></div>
       <div class="dsub">${mealsEaten}/${p.meals.length} meals · ${round(tot.p)}P / ${round(tot.c)}C / ${round(tot.f)}F</div>
     </div><div class="dchev">›</div></div>`;
+
+  html+=`<div class="dash" style="cursor:default"><div class="dicon" style="background:var(--blue-bg);color:var(--blue)">💧</div>
+    <div class="dbody"><div class="dlabel">Water</div>
+      <div class="dstat">${cups} <small>/ ${wgoal} cups</small></div>
+      <div class="watdots">${Array.from({length:wgoal},(_,k)=>`<div class="watdot ${k<cups?'full':''}" onclick="setWater(${k+1})"></div>`).join('')}</div>
+    </div></div>`;
 
   const actLine=lastAct?`${actEmoji(lastAct.type)} ${esc(lastAct.name||lastAct.type)} · ${lastAct.durationMin} min`:'Connect Strava to see workouts';
   html+=`<div class="dash" onclick="go('train')"><div class="dicon" style="background:#eef0fb;color:var(--fat)">🏋️</div>
@@ -358,6 +388,37 @@ function sparkHTML(ck){
   const path=pts.map((v,i)=>(i?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
   return `<svg viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" style="width:100%;height:30px;margin-top:6px;display:block"><path d="${path}" fill="none" stroke="var(--accent)" stroke-width="2" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg>`;
 }
+function vitalityStreak(){
+  let n=0;
+  for(let i=0;i<400;i++){
+    const d=new Date(); d.setDate(d.getDate()-i); const iso=d.toLocaleDateString('en-CA');
+    const fl=S.foodLog[iso];
+    const wk=weekKey(d); const trained=S.trainingLog[wk]&&Object.keys(S.trainingLog[wk]).length;
+    const active=(fl&&(Object.keys(fl.mealsEaten||{}).length||(fl.extras||[]).length)) || (S.water&&S.water[iso]) || trained;
+    if(active) n++;
+    else if(i===0) continue;   // today not logged yet — don't break the streak
+    else break;
+  }
+  return n;
+}
+function editVision(){
+  openModal(`<h3>${new Date().getFullYear()} Vision</h3>
+    <p class="muted" style="font-size:13px;margin:4px 0 10px">A word, phrase, or quote to anchor your year.</p>
+    <textarea class="inp" id="visInp" rows="3" placeholder="e.g. Strong, energized, and present — vitality in every day.">${esc(S.vision||'')}</textarea>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="saveVision()">Save</button>`);
+  setTimeout(()=>$('#visInp').focus(),80);
+}
+function saveVision(){ S.vision=$('#visInp').value.trim(); save(); closeModal(); renderHome(); toast('Vision saved'); }
+function editFocus(){
+  const t=(S.focus&&S.focus[todayISO()])||'';
+  openModal(`<h3>Today's focus</h3>
+    <p class="muted" style="font-size:13px;margin:4px 0 10px">One intention for today.</p>
+    <input class="inp" id="focInp" value="${esc(t)}" placeholder="e.g. Hit my protein goal & 8 cups of water">
+    <button class="btn" style="width:100%;margin-top:12px" onclick="saveFocus()">Save</button>`);
+  setTimeout(()=>$('#focInp').focus(),80);
+}
+function saveFocus(){ S.focus=S.focus||{}; S.focus[todayISO()]=$('#focInp').value.trim(); save(); closeModal(); renderHome(); }
+function setWater(n){ S.water=S.water||{}; const d=todayISO(); const cur=S.water[d]||0; S.water[d]=(cur===n)?n-1:n; if(S.water[d]<0)S.water[d]=0; save(); renderHome(); }
 
 /* ============================ GROCERY ============================ */
 function renderGrocery(){
@@ -640,10 +701,27 @@ function renderProgress(){
       html+=`<tr><td>${fmtDate(c.date)}</td><td>${c.weightLbs??'—'}</td><td>${c.measurements?.waist??'—'}</td><td>${c.measurements?.chest??'—'}</td><td>${c.measurements?.hips??'—'}</td><td>${c.fitTest?.restingHR??'—'}</td></tr>`;
     });
     html+=`</tbody></table></div></div>`;
+
+    // Fitness tests (every 4 weeks)
+    const fts=ck.filter(c=>c.fitTest);
+    if(fts.length){
+      const fa=fts[0].fitTest, fz=fts[fts.length-1].fitTest;
+      const arrow=(a,b,lowerBetter)=>{ if(a==null||b==null||a===b)return''; const up=b>a; const better=lowerBetter?!up:up; return `<span style="color:${better?'var(--good)':'var(--bad)'};font-weight:700"> ${up?'▲':'▼'}</span>`; };
+      html+=`<div class="card"><h2>🏃 Fitness tests · every 4 weeks</h2>
+        <div class="row" style="gap:16px;flex-wrap:wrap;margin-bottom:13px">
+          <div><div class="tiny">Resting HR</div><b style="font-size:18px">${fz.restingHR??'—'}${arrow(fa.restingHR,fz.restingHR,true)}</b></div>
+          <div><div class="tiny">1-mile</div><b style="font-size:18px">${fz.mileTime??'—'}${arrow(parseTime(fa.mileTime),parseTime(fz.mileTime),true)}</b></div>
+          <div><div class="tiny">Plank</div><b style="font-size:18px">${fz.plankHold??'—'}${arrow(parseTime(fa.plankHold),parseTime(fz.plankHold),false)}</b></div>
+        </div>
+        <div style="overflow-x:auto"><table class="thist"><thead><tr><th>Date</th><th>Rest HR</th><th>Plank</th><th>1-mile</th><th>Sit&amp;Reach</th><th>Long Jump</th></tr></thead><tbody>`;
+      [...fts].reverse().forEach(c=>{const f=c.fitTest;html+=`<tr><td>${fmtDate(c.date)}</td><td>${f.restingHR??'—'}</td><td>${f.plankHold??'—'}</td><td>${f.mileTime??'—'}</td><td>${f.sitReach??'—'}</td><td>${f.longJump??'—'}</td></tr>`;});
+      html+=`</tbody></table></div><p class="note">Green = improvement since your first test (lower resting HR, faster mile, longer plank).</p></div>`;
+    }
   }
   $('#p-progress').innerHTML=html;
 }
 function fmtDate(iso){const[y,m,d]=iso.split('-');return `${+m}/${+d}/${y.slice(2)}`;}
+function parseTime(s){ if(s==null)return null; s=String(s); if(s.includes(':')){const p=s.split(':');return (+p[0])*60+(+p[1]);} const m=s.match(/(\d+(\.\d+)?)/); return m?+m[1]:null; }
 function getMetric(c,key){if(key==='weightLbs')return c.weightLbs;if(key==='waist')return c.measurements?.waist;if(key==='restingHR')return c.fitTest?.restingHR;return null;}
 function trendSVG(ck,key){
   const pts=ck.map(c=>({d:c.date,v:getMetric(c,key)})).filter(p=>p.v!=null);
@@ -733,6 +811,9 @@ function importFile(e){
     if(j.trainingLog)S.trainingLog=Object.assign(S.trainingLog,j.trainingLog);
     if(j.strava)S.strava=Object.assign(S.strava,j.strava);
     if(j.groceryRun)S.groceryRun=j.groceryRun;
+    if(j.vision)S.vision=j.vision;
+    if(j.focus)S.focus=Object.assign(S.focus||{},j.focus);
+    if(j.water)S.water=Object.assign(S.water||{},j.water);
     save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
   }catch(err){toast('Could not read file');}};
   rd.readAsText(f);
