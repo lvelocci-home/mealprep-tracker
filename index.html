@@ -4882,7 +4882,7 @@ function renderTrain(){
       <div><div style="font-size:23px;font-weight:800">${mins}</div><div class="tiny">Active min</div></div>
       <div><div style="font-size:23px;font-weight:800">${cals||'—'}</div><div class="tiny">Calories</div></div>
     </div>
-    ${dist?`<div class="tiny" style="text-align:center;margin-top:9px">🏃 ${round(dist,1)} km this week</div>`:''}
+    ${dist?`<div class="tiny" style="text-align:center;margin-top:9px">🏃 ${round(dist*0.621371,1)} mi this week</div>`:''}
     ${!S.strava.workerUrl?`<div class="tiny" style="text-align:center;margin-top:9px;color:var(--ink3)">Sessions/min/cal fill in once Strava is synced</div>`:''}
   </div>`;
 
@@ -4911,7 +4911,7 @@ function renderTrain(){
       html+=`<div class="banner" style="background:var(--accent-bg);border-color:#bfe9e1;color:var(--accent-d)">Last 7 days: <b>${recent.length}</b> sessions · <b>${mins}</b> min · <b>${cals||'—'}</b> cal</div>`;
       acts.forEach(a=>{
         const emo=actEmoji(a.type),dt=new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
-        html+=`<div class="act"><div class="aemoji">${emo}</div><div class="an"><b>${esc(a.name||a.type)}</b><div class="am">${dt} · ${a.durationMin||0} min${a.distanceKm?' · '+a.distanceKm+' km':''}</div></div>
+        html+=`<div class="act"><div class="aemoji">${emo}</div><div class="an"><b>${esc(a.name||a.type)}</b><div class="am">${dt} · ${a.durationMin||0} min${a.distanceKm?' · '+round(a.distanceKm*0.621371,2)+' mi':''}</div></div>
           <div class="astat">${a.calories?a.calories+' cal':''}${a.avgHR?'<br>♥ '+a.avgHR:''}</div></div>`;
       });
     } else html+=`<div class="tiny" style="padding:4px 2px">No activities yet — hit Sync.</div>`;
