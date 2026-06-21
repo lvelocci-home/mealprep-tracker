@@ -281,7 +281,7 @@ function defaultState(){
     groceryRun: { planId:"p1655", extras:[], checked:{} },
     // personal (local-only)
     foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0},
-    vision:"", focus:{}, water:{}
+    vision:"", focus:{}, water:{}, profileName:""
   };
 }
 let S = load();
@@ -328,13 +328,16 @@ function renderHome(){
   let dueText='Add your first check-in';
   if(last){const d=Math.floor((Date.now()-new Date(last.date))/864e5),n=14-d; dueText=n<=0?'Check-in due now':'Next check-in in '+n+' days';}
   const lastAct=(S.activities||[])[0];
-  const hr=new Date().getHours(), greet=hr<12?'Good morning ☀️':hr<18?'Good afternoon 🌤️':'Good evening 🌙';
+  const hr=new Date().getHours(), greetWord=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening', emoji=hr<12?'☀️':hr<18?'🌤️':'🌙';
+  const name=(S.profileName||'').trim();
   const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   const streak=vitalityStreak();
   const focusToday=(S.focus&&S.focus[today])||'';
   const cups=(S.water&&S.water[today])||0, wgoal=8;
 
-  let html=`<div class="hero"><div class="greet">${greet}${streak>1?' &nbsp;·&nbsp; <span class="streak">🔥 '+streak+' day streak</span>':''}</div><h2>Today's Vitality</h2><div class="hdate">${dateStr}</div></div>`;
+  let html=`<div class="hero">
+    <h2 onclick="editName()" style="cursor:pointer">${greetWord}${name?', '+esc(name):''} ${emoji}</h2>
+    <div class="hdate">${dateStr}${streak>1?' &nbsp;·&nbsp; <span class="streak">🔥 '+streak+' day streak</span>':''}</div></div>`;
 
   // 2026 vision
   html+=`<div class="vision" onclick="editVision()"><div class="vlabel">${new Date().getFullYear()} VISION</div>
@@ -419,6 +422,14 @@ function editFocus(){
 }
 function saveFocus(){ S.focus=S.focus||{}; S.focus[todayISO()]=$('#focInp').value.trim(); save(); closeModal(); renderHome(); }
 function setWater(n){ S.water=S.water||{}; const d=todayISO(); const cur=S.water[d]||0; S.water[d]=(cur===n)?n-1:n; if(S.water[d]<0)S.water[d]=0; save(); renderHome(); }
+function editName(){
+  openModal(`<h3>Your name</h3>
+    <p class="muted" style="font-size:13px;margin:4px 0 10px">Used in your greeting. Stays on this device only.</p>
+    <input class="inp" id="nameInp" value="${esc(S.profileName||'')}" placeholder="e.g. Lea">
+    <button class="btn" style="width:100%;margin-top:12px" onclick="saveName()">Save</button>`);
+  setTimeout(()=>$('#nameInp').focus(),80);
+}
+function saveName(){ S.profileName=$('#nameInp').value.trim(); save(); closeModal(); renderHome(); }
 
 /* ============================ GROCERY ============================ */
 function renderGrocery(){
@@ -668,7 +679,7 @@ async function syncStrava(){
 }
 
 /* ============================ PROGRESS / CHECK-IN ============================ */
-let trendMetric='weightLbs';
+let trendMetric='weightLbs', histOpen=false, fitOpen=false;
 function renderProgress(){
   const ck=[...S.checkins].sort((a,b)=>a.date<b.date?-1:1);
   let html='';
@@ -695,12 +706,15 @@ function renderProgress(){
     </div>`;
     html+=`<div class="chartwrap">${trendSVG(ck,trendMetric)}</div></div>`;
 
-    // history table
+    // history table (collapsible — newest row by default)
+    const hrev=[...ck].reverse(), hshow=histOpen?hrev:hrev.slice(0,1);
     html+=`<div class="card"><h2>History</h2><div style="overflow-x:auto"><table class="thist"><thead><tr><th>Date</th><th>Weight</th><th>Waist</th><th>Chest</th><th>Hips</th><th>R HR</th></tr></thead><tbody>`;
-    [...ck].reverse().forEach(c=>{
+    hshow.forEach(c=>{
       html+=`<tr><td>${fmtDate(c.date)}</td><td>${c.weightLbs??'—'}</td><td>${c.measurements?.waist??'—'}</td><td>${c.measurements?.chest??'—'}</td><td>${c.measurements?.hips??'—'}</td><td>${c.fitTest?.restingHR??'—'}</td></tr>`;
     });
-    html+=`</tbody></table></div></div>`;
+    html+=`</tbody></table></div>`;
+    if(hrev.length>1) html+=`<button class="btn ghost" style="margin-top:6px" onclick="histOpen=!histOpen;renderProgress()">${histOpen?'Show less ▲':'Show all '+hrev.length+' check-ins ▾'}</button>`;
+    html+=`</div>`;
 
     // Fitness tests (every 4 weeks)
     const fts=ck.filter(c=>c.fitTest);
@@ -714,8 +728,11 @@ function renderProgress(){
           <div><div class="tiny">Plank</div><b style="font-size:18px">${fz.plankHold??'—'}${arrow(parseTime(fa.plankHold),parseTime(fz.plankHold),false)}</b></div>
         </div>
         <div style="overflow-x:auto"><table class="thist"><thead><tr><th>Date</th><th>Rest HR</th><th>Plank</th><th>1-mile</th><th>Sit&amp;Reach</th><th>Long Jump</th></tr></thead><tbody>`;
-      [...fts].reverse().forEach(c=>{const f=c.fitTest;html+=`<tr><td>${fmtDate(c.date)}</td><td>${f.restingHR??'—'}</td><td>${f.plankHold??'—'}</td><td>${f.mileTime??'—'}</td><td>${f.sitReach??'—'}</td><td>${f.longJump??'—'}</td></tr>`;});
-      html+=`</tbody></table></div><p class="note">Green = improvement since your first test (lower resting HR, faster mile, longer plank).</p></div>`;
+      const frev=[...fts].reverse(), fshow=fitOpen?frev:frev.slice(0,1);
+      fshow.forEach(c=>{const f=c.fitTest;html+=`<tr><td>${fmtDate(c.date)}</td><td>${f.restingHR??'—'}</td><td>${f.plankHold??'—'}</td><td>${f.mileTime??'—'}</td><td>${f.sitReach??'—'}</td><td>${f.longJump??'—'}</td></tr>`;});
+      html+=`</tbody></table></div>`;
+      if(frev.length>1) html+=`<button class="btn ghost" style="margin-top:6px" onclick="fitOpen=!fitOpen;renderProgress()">${fitOpen?'Show less ▲':'Show all '+frev.length+' tests ▾'}</button>`;
+      html+=`<p class="note">Green = improvement since your first test (lower resting HR, faster mile, longer plank).</p></div>`;
     }
   }
   $('#p-progress').innerHTML=html;
@@ -780,6 +797,12 @@ function renderData(){
   let html=`<div class="card"><h2>🔒 Your data is private</h2>
     <p class="muted" style="font-size:13px">This app's code is public, but everything personal — your weight, measurements, food log, and Strava activity — lives <b>only in this browser</b>. Nothing is uploaded or published.</p></div>`;
 
+  html+=`<div class="card"><h2>Profile</h2>
+    <label class="fld" style="margin-top:0">Your name (for the greeting)</label>
+    <div class="row" style="gap:8px"><input class="inp" id="pfName" placeholder="e.g. Lea" value="${esc(S.profileName||'')}">
+    <button class="btn" onclick="S.profileName=$('#pfName').value.trim();save();toast('Saved')">Save</button></div>
+  </div>`;
+
   html+=`<div class="card"><h2>Import history</h2>
     <p class="muted" style="font-size:13px">Load your check-in history once on each device.</p>
     <input type="file" id="impFile" accept=".json" style="margin-top:10px;font-size:13px" onchange="importFile(event)">
@@ -814,6 +837,7 @@ function importFile(e){
     if(j.vision)S.vision=j.vision;
     if(j.focus)S.focus=Object.assign(S.focus||{},j.focus);
     if(j.water)S.water=Object.assign(S.water||{},j.water);
+    if(j.profileName)S.profileName=j.profileName;
     save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
   }catch(err){toast('Could not read file');}};
   rd.readAsText(f);
