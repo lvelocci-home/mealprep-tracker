@@ -59,9 +59,10 @@ nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-
 .vision .vtext{font-size:16px;font-weight:600;line-height:1.45;margin-top:5px;font-style:italic}
 .vision .vtext.empty{opacity:.8;font-style:normal;font-weight:500}
 .focusline .dstat{font-size:15px!important;font-weight:600!important;white-space:normal!important}
-.watdots{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
-.watdot{width:17px;height:21px;border-radius:3px 3px 7px 7px;border:2px solid var(--blue);cursor:pointer;transition:.1s}
-.watdot.full{background:var(--blue)}
+.watbtns{display:flex;gap:6px;margin-top:9px}
+.watbtns button{flex:1;border:1px solid #bcd9f2;background:var(--blue-bg);color:var(--blue);font-weight:700;font-size:13px;font-family:var(--font);padding:7px 4px;border-radius:9px;cursor:pointer}
+.watbtns button:active{transform:scale(.96)}
+.watbtns button.minus{flex:0 0 42px;color:var(--ink2);background:var(--bg2);border-color:var(--line2)}
 textarea.inp{resize:vertical;font-family:var(--font);line-height:1.45}
 
 /* Cards & bits */
@@ -281,7 +282,7 @@ function defaultState(){
     groceryRun: { planId:"p1655", extras:[], checked:{} },
     // personal (local-only)
     foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0},
-    vision:"", focus:{}, water:{}, profileName:""
+    vision:"", focus:{}, water:{}, profileName:"", waterGoal:126
   };
 }
 let S = load();
@@ -333,7 +334,7 @@ function renderHome(){
   const dateStr=new Date().toLocaleDateString('en-US',{weekday:'long',month:'long',day:'numeric'});
   const streak=vitalityStreak();
   const focusToday=(S.focus&&S.focus[today])||'';
-  const cups=(S.water&&S.water[today])||0, wgoal=8;
+  const ozToday=(S.water&&S.water[today])||0, wgoal=S.waterGoal||126, wpct=Math.min(100,Math.round(ozToday/wgoal*100));
 
   let html=`<div class="hero">
     <h2 onclick="editName()" style="cursor:pointer">${greetWord}${name?', '+esc(name):''} ${emoji}</h2>
@@ -358,8 +359,14 @@ function renderHome(){
 
   html+=`<div class="dash" style="cursor:default"><div class="dicon" style="background:var(--blue-bg);color:var(--blue)">💧</div>
     <div class="dbody"><div class="dlabel">Water</div>
-      <div class="dstat">${cups} <small>/ ${wgoal} cups</small></div>
-      <div class="watdots">${Array.from({length:wgoal},(_,k)=>`<div class="watdot ${k<cups?'full':''}" onclick="setWater(${k+1})"></div>`).join('')}</div>
+      <div class="dstat" onclick="logWaterExact()" style="cursor:pointer">${ozToday} <small>/ ${wgoal} oz</small></div>
+      <div class="dbar"><i style="width:${wpct}%;background:var(--blue)"></i></div>
+      <div class="watbtns">
+        <button onclick="addWater(36)">+36</button>
+        <button onclick="addWater(18)">+18</button>
+        <button onclick="addWater(8)">+8</button>
+        <button class="minus" onclick="addWater(-8)">−</button>
+      </div>
     </div></div>`;
 
   const actLine=lastAct?`${actEmoji(lastAct.type)} ${esc(lastAct.name||lastAct.type)} · ${lastAct.durationMin} min`:'Connect Strava to see workouts';
@@ -376,8 +383,8 @@ function renderHome(){
     </div><div class="dchev">›</div></div>`;
 
   html+=`<div class="dash" onclick="go('progress')"><div class="dicon" style="background:#e9f5ee;color:var(--good)">📊</div>
-    <div class="dbody"><div class="dlabel">Progress</div>
-      <div class="dstat">${last?last.weightLbs+' <small>lb</small>':'—'}</div>
+    <div class="dbody"><div class="dlabel">Progress <span style="font-weight:600;text-transform:none;letter-spacing:0;color:var(--ink3)">· tap weight to log</span></div>
+      <div class="dstat" onclick="event.stopPropagation();checkinModal()" style="cursor:pointer">${last?last.weightLbs+' <small>lb</small>':'＋ <small>log</small>'}</div>
       ${ck.length>=2?sparkHTML(ck):''}
       <div class="dsub">${dueText}</div>
     </div><div class="dchev">›</div></div>`;
@@ -421,7 +428,15 @@ function editFocus(){
   setTimeout(()=>$('#focInp').focus(),80);
 }
 function saveFocus(){ S.focus=S.focus||{}; S.focus[todayISO()]=$('#focInp').value.trim(); save(); closeModal(); renderHome(); }
-function setWater(n){ S.water=S.water||{}; const d=todayISO(); const cur=S.water[d]||0; S.water[d]=(cur===n)?n-1:n; if(S.water[d]<0)S.water[d]=0; save(); renderHome(); }
+function addWater(oz){ S.water=S.water||{}; const d=todayISO(); S.water[d]=Math.max(0,(S.water[d]||0)+oz); save(); renderHome(); }
+function logWaterExact(){
+  const d=todayISO(), cur=(S.water&&S.water[d])||0;
+  openModal(`<h3>Water today</h3>
+    <p class="muted" style="font-size:13px;margin:4px 0 10px">Set the exact ounces, or use the quick buttons on the dashboard.</p>
+    <label class="fld" style="margin-top:0">Ounces</label><input class="inp" id="wOz" type="number" inputmode="numeric" value="${cur}">
+    <button class="btn" style="width:100%;margin-top:12px" onclick="S.water=S.water||{};S.water['${d}']=Math.max(0,+$('#wOz').value||0);save();closeModal();renderHome()">Save</button>`);
+  setTimeout(()=>$('#wOz').focus(),80);
+}
 function editName(){
   openModal(`<h3>Your name</h3>
     <p class="muted" style="font-size:13px;margin:4px 0 10px">Used in your greeting. Stays on this device only.</p>
@@ -630,6 +645,23 @@ function renderTrain(){
       <select class="sel" onchange="S.currentWorkoutId=this.value;save();renderTrain()">${S.workouts.map(x=>`<option value="${x.id}" ${x.id===w.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select>
     </div><div style="text-align:right"><div class="tiny">This week</div><b style="font-size:18px;color:var(--accent-d)">${done}/${trainDays.length}</b></div></div></div>`;
 
+  // This-week summary (planned workouts + Strava activity)
+  const wkAgo=Date.now()-7*864e5;
+  const recent=(S.activities||[]).filter(a=>new Date(a.date).getTime()>wkAgo);
+  const mins=recent.reduce((s,a)=>s+(a.durationMin||0),0);
+  const cals=recent.reduce((s,a)=>s+(a.calories||0),0);
+  const dist=recent.reduce((s,a)=>s+(a.distanceKm||0),0);
+  html+=`<div class="card"><h2>📅 This week</h2>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;text-align:center">
+      <div><div style="font-size:23px;font-weight:800;color:var(--accent-d)">${done}<span style="font-size:13px;color:var(--ink3)">/${trainDays.length}</span></div><div class="tiny">Workouts</div></div>
+      <div><div style="font-size:23px;font-weight:800">${recent.length}</div><div class="tiny">Sessions</div></div>
+      <div><div style="font-size:23px;font-weight:800">${mins}</div><div class="tiny">Active min</div></div>
+      <div><div style="font-size:23px;font-weight:800">${cals||'—'}</div><div class="tiny">Calories</div></div>
+    </div>
+    ${dist?`<div class="tiny" style="text-align:center;margin-top:9px">🏃 ${round(dist,1)} km this week</div>`:''}
+    ${!S.strava.workerUrl?`<div class="tiny" style="text-align:center;margin-top:9px;color:var(--ink3)">Sessions/min/cal fill in once Strava is synced</div>`:''}
+  </div>`;
+
   w.days.forEach(d=>{
     if(d.rest){html+=`<div class="card" style="padding:0"><div class="rest">🧘 ${esc(d.label)}</div></div>`;return;}
     const dn=log[d.id]?'done':'';
@@ -788,7 +820,7 @@ function saveCheckin(){
   let ft=null;const rhr=$('#ft_rhr').value;
   if(rhr||$('#ft_plank').value||$('#ft_mile').value){ft={restingHR:rhr?+rhr:null,plankHold:$('#ft_plank').value||null,mileTime:$('#ft_mile').value||null,sitReach:+$('#ft_sit').value||null,longJump:+$('#ft_jump').value||null};}
   S.checkins.push({date:$('#ciDate').value,weightLbs:+w,measurements:m,fitTest:ft,workoutsDone:+$('#ciWork').value||null,adherencePct:null,notes:$('#ciNotes').value||''});
-  save();closeModal();renderProgress();toast('Check-in saved');
+  save();closeModal();renderProgress();renderHome();toast('Check-in saved');
 }
 
 /* ============================ DATA & PRIVACY ============================ */
@@ -797,10 +829,13 @@ function renderData(){
   let html=`<div class="card"><h2>🔒 Your data is private</h2>
     <p class="muted" style="font-size:13px">This app's code is public, but everything personal — your weight, measurements, food log, and Strava activity — lives <b>only in this browser</b>. Nothing is uploaded or published.</p></div>`;
 
-  html+=`<div class="card"><h2>Profile</h2>
+  html+=`<div class="card"><h2>Profile & goals</h2>
     <label class="fld" style="margin-top:0">Your name (for the greeting)</label>
     <div class="row" style="gap:8px"><input class="inp" id="pfName" placeholder="e.g. Lea" value="${esc(S.profileName||'')}">
     <button class="btn" onclick="S.profileName=$('#pfName').value.trim();save();toast('Saved')">Save</button></div>
+    <label class="fld">Daily water goal (oz)</label>
+    <div class="row" style="gap:8px"><input class="inp" id="pfWater" type="number" inputmode="numeric" value="${S.waterGoal||126}">
+    <button class="btn" onclick="S.waterGoal=Math.max(1,+$('#pfWater').value||126);save();toast('Saved')">Save</button></div>
   </div>`;
 
   html+=`<div class="card"><h2>Import history</h2>
@@ -838,6 +873,7 @@ function importFile(e){
     if(j.focus)S.focus=Object.assign(S.focus||{},j.focus);
     if(j.water)S.water=Object.assign(S.water||{},j.water);
     if(j.profileName)S.profileName=j.profileName;
+    if(j.waterGoal)S.waterGoal=j.waterGoal;
     save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
   }catch(err){toast('Could not read file');}};
   rd.readAsText(f);
