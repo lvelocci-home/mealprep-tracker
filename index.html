@@ -117,6 +117,8 @@ details.have summary::-webkit-details-marker{display:none}
 .meal .mn b{font-weight:700;font-size:14px}
 .meal .mn .mm{font-size:12px;color:var(--ink2);margin-top:2px}
 .meal.eaten .mn b{color:var(--accent-d)}
+.warmup{font-size:12px;color:var(--ink2);font-style:italic;padding:4px 4px 9px 14px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.cardio{font-size:13px;font-weight:600;color:var(--warn);padding:11px 4px 2px 14px;margin-top:4px;border-top:1px dashed var(--line)}
 .split{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
 .split .col-side .card:first-child{margin-top:0}
 @media(max-width:720px){.split{grid-template-columns:1fr}}
@@ -2961,39 +2963,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "X Band Walks",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Froggy Glute Lifts",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Frog Pumps",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Clam Shells",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Plie Squats",
-            "reps": "8–12"
+            "reps": "8–12",
+            "sets": "4"
           },
           {
             "name": "Static Lunges",
-            "reps": "8–12"
+            "reps": "8–12",
+            "sets": "4"
           },
           {
             "name": "Standing Crunches",
-            "reps": "8–10"
+            "reps": "8–10",
+            "sets": "4"
           },
           {
             "name": "Russian Twists",
-            "reps": "8–10"
+            "reps": "8–10",
+            "sets": "4"
           },
           {
             "name": "Pallof Twist",
-            "reps": "8–10 each"
+            "reps": "8–10 each",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3009,35 +3020,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Lat Pulldowns",
-            "reps": "8–12"
+            "reps": "8–12",
+            "sets": "4"
           },
           {
             "name": "Single Arm Dumbbell Rows",
-            "reps": "8–12"
+            "reps": "8–12",
+            "sets": "4"
           },
           {
             "name": "External Delt Rotations",
-            "reps": "8–12"
+            "reps": "8–12",
+            "sets": "4"
           },
           {
             "name": "Lateral Raises",
-            "reps": "8–12"
+            "reps": "8–12",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Tricep Bench Dips",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Tricep Kickbacks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -3047,39 +3066,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Suitcase Squats",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Walking Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Donkey Kick Backs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Marching Glute Bridges",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Glute Bridge Pull Aparts",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Single Leg Lunge off Bench",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Standing Bicycle Crunches",
-            "reps": "8–10"
+            "reps": "8–10",
+            "sets": "4"
           },
           {
             "name": "Ball Crunches",
-            "reps": "8–10"
+            "reps": "8–10",
+            "sets": "4"
           },
           {
             "name": "Heels to Heaven",
-            "reps": "8–10"
+            "reps": "8–10",
+            "sets": "4"
           }
         ],
         "id": "d4"
@@ -3089,38 +3117,47 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Arnold Press",
-            "reps": "6–8"
+            "reps": "6–8",
+            "sets": "4"
           },
           {
             "name": "Superman Holds",
-            "reps": "6–8"
+            "reps": "6–8",
+            "sets": "4"
           },
           {
             "name": "Forward Lunge with a Lateral Raise",
-            "reps": "6–8"
+            "reps": "6–8",
+            "sets": "4"
           },
           {
             "name": "Gorilla Rows",
-            "reps": "6–8"
+            "reps": "6–8",
+            "sets": "4"
           },
           {
             "name": "Lift Off Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hip Thrusts",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Pike Pushups",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bird Dog Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
-        "id": "d5"
+        "id": "d5",
+        "cardio": "Mid-workout cardio: 10 min intervals — 30s all-out / 30s easy ×10"
       }
     ]
   },
@@ -3133,39 +3170,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Push Press",
-            "reps": "15/10/5"
+            "reps": "15/10/5",
+            "sets": "4"
           },
           {
             "name": "Lat Pulldowns",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Tricep Bench Dips",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Overhead Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "DB Incline Flyes",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Straight Arm DB Pull Overs",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Overhead Tricep Extension",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3175,39 +3221,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Back Squats",
-            "reps": "15/10/5"
+            "reps": "15/10/5",
+            "sets": "4"
           },
           {
             "name": "Stiff Leg Barbell Deadlifts",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Bicycle Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Plank Glute Cross Overs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wide Sumo Side Bends",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Single Leg DB or KB Deadlifts",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Russian Twists",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Kettle Bell Swings",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Donkey Kick Backs",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d2"
@@ -3217,39 +3272,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Thrusters",
-            "reps": "15/10/5"
+            "reps": "15/10/5",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Arnold Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Halo Exercise",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Lateral Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bridging Barbell Tricep Extensions",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Under Bar Pull Ups",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wood Choppers",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -3259,39 +3323,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Romanian Deadlift",
-            "reps": "10/10/5"
+            "reps": "10/10/5",
+            "sets": "4"
           },
           {
             "name": "Hand to Foot Ball Passes",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hamstring Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "X Band Walks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Plie Squats",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Hip Thrusts",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Alternating Lunges",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Leg Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Butterfly Situps",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d4"
@@ -3307,35 +3380,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Air Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Tricep Kickbacks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Glute Pulses with Band",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Standing Straight Leg Lifts",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Glute Bridge Pull Aparts",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Calf Raises",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3345,35 +3426,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Lateral Raise Pulses",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Incline DB Bench Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "External Delt Rotations",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Star Crunches",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Incline DB Flye Pulses",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Rear Delt Flyes",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Delt Skier Kickbacks",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Wall Pushups",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d2"
@@ -3383,35 +3472,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Plie Squats",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Static Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wall Sit",
-            "reps": "30s"
+            "reps": "30s",
+            "sets": "4"
           },
           {
             "name": "X Band Walks",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Marching Glute Bridges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Stability Ball Crunch",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Donkey Kick Backs",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Standing Side Bends",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -3427,35 +3524,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Lat Pulldowns",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "DB Halos",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Front Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Arnold Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Lateral Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Straight Arm DB Pull Overs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d5"
@@ -3477,35 +3582,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Back Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Static Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Glute Step Ups",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Good Mornings",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Donkey Kick Backs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Ab V-Ups",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Russian Twists",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Superman Holds",
-            "reps": "10s"
+            "reps": "10s",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3515,23 +3628,28 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Hand to Elbow Plank",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Lying Leg Raises",
-            "reps": "50"
+            "reps": "50",
+            "sets": "4"
           },
           {
             "name": "Bicycle Crunches",
-            "reps": "50"
+            "reps": "50",
+            "sets": "4"
           },
           {
             "name": "Plank Rocks",
-            "reps": "40"
+            "reps": "40",
+            "sets": "4"
           },
           {
             "name": "Oblique V Ups",
-            "reps": "100"
+            "reps": "100",
+            "sets": "4"
           }
         ],
         "id": "d2"
@@ -3541,35 +3659,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Hand Release Push Ups",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Plank Hold",
-            "reps": "45s"
+            "reps": "45s",
+            "sets": "4"
           },
           {
             "name": "Overhead Shoulder Press",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Gorilla Rows",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Sumo Deadlift High Pull",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Tricep Pressdowns",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -3579,31 +3705,38 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Romanian Deadlift",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Glute Pull Through",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Walking Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hamstring Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Bicycle Crunches",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Wide Sumo Side Bends",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d4"
@@ -3613,23 +3746,28 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Stomach Vacuums",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Lying Leg Raises",
-            "reps": "50"
+            "reps": "50",
+            "sets": "4"
           },
           {
             "name": "Kettlebell Swings",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Heels to Heaven",
-            "reps": "40"
+            "reps": "40",
+            "sets": "4"
           },
           {
             "name": "Ball Crunches",
-            "reps": "100"
+            "reps": "100",
+            "sets": "4"
           }
         ],
         "id": "d5"
@@ -3639,27 +3777,33 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Dead - Curl - Press",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Bench Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Thrusters",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Burpees",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "45 Degree Lunge Lateral Raise",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Ab Barbell Leg Curl Ins",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d6"
@@ -3675,31 +3819,38 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Suitcase Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Plie Squat Pulses",
-            "reps": "16"
+            "reps": "16",
+            "sets": "4"
           },
           {
             "name": "Heels to Heaven",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Good Mornings",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Glute Kickbacks",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Butterfly Situps",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3715,31 +3866,38 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Overhead Shoulder Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Tricep Pressdowns",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Lat Pulldowns",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "External Delt Rotations",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Halo Exercise",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -3755,23 +3913,28 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Back Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Plie Squats",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Standing Side Bend",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Plank Hold",
-            "reps": "30s"
+            "reps": "30s",
+            "sets": "4"
           },
           {
             "name": "Static Lunges",
-            "reps": "6 each"
+            "reps": "6 each",
+            "sets": "4"
           }
         ],
         "id": "d5"
@@ -3781,23 +3944,28 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Arnold Press",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Rear Delt Flyes",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Lateral Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Tricep Kickbacks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d6"
@@ -3813,39 +3981,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Good Mornings",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Single Leg Deadlift",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hand to Foot Ball Passes",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Goblet Squats",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Butterfly Situps",
-            "reps": "16"
+            "reps": "16",
+            "sets": "4"
           },
           {
             "name": "Hip Abduction",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Heels to Heaven",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Donkey Kick Backs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hamstring Ball Curl Ins",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3861,35 +4038,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Arnold Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Sumo Deadlift High Pull",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Lateral Raises",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Rear Delt Flyes",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wood Choppers",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "45 Degree Bicep Curls",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Overhead Tricep Extension",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -3899,43 +4084,53 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Dead - Curl - Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Lying Leg Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Frog Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Squat with Calf Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Kettlebell Swings",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bow to Boat",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Superman Holds",
-            "reps": "10s"
+            "reps": "10s",
+            "sets": "4"
           },
           {
             "name": "Bird Dog Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d4"
@@ -3957,27 +4152,33 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Thrusters",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Band Pull Aparts",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "DB Bicep Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Tricep Kickbacks",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Lateral Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Crunches",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -3987,27 +4188,33 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Dead - Curl - Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Back Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Marching Glute Bridges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Straight Leg Lifts",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Standing Glute Kickbacks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wood Chop with Dumbbells",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d2"
@@ -4017,39 +4224,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Bench Step Ups",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Low Impact Burpees",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Sumo Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Forward Lunge with a Lateral Raise",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Windmill Exercise",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Delt Skier Kickbacks",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Dead - Curl - Press",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Standing Bicycle Crunches",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Walking Lunges",
-            "reps": "10 each"
+            "reps": "10 each",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -4065,43 +4281,53 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Dumbbell Thrusters",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Plie Squats",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Bicycle Crunches",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Hamstring Ball Curl Ins",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wood Choppers",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Air Squats",
-            "reps": "15"
+            "reps": "15",
+            "sets": "4"
           },
           {
             "name": "Flutterkicks",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Alternating Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "X Band Walks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Plank Glute Cross Overs",
-            "reps": "15"
+            "reps": "15",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -4111,35 +4337,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Lateral Raise Pulses",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Tricep Pressdowns",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Incline DB Flye Pulses",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Tricep Bench Dips",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Hip Abduction",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d2"
@@ -4149,35 +4383,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Suitcase Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Hip Abduction",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Wide Sumo Side Bends",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Standing Glute Kickbacks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Calf Raises",
-            "reps": "16"
+            "reps": "16",
+            "sets": "4"
           },
           {
             "name": "Banded Squat with Lateral Leg Raise",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Standing Crunches",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Clam Shells",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -4187,31 +4429,38 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Lateral Raises",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Arnold Press",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Front Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Bird Dog Crunches",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Overhead Tricep Extension",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d4"
@@ -4227,39 +4476,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Med Ball Roll Backs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Ball Crunches",
-            "reps": "16"
+            "reps": "16",
+            "sets": "4"
           },
           {
             "name": "Bent Over Rows",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Side Plank Pulses",
-            "reps": "16"
+            "reps": "16",
+            "sets": "4"
           },
           {
             "name": "Light DB Front Raises",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Tricep Pressdowns",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Bicep Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Warrior Three Crunch",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           }
         ],
         "id": "d1"
@@ -4269,39 +4527,48 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Air Squats",
-            "reps": "20"
+            "reps": "20",
+            "sets": "4"
           },
           {
             "name": "Good Mornings",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "X Band Walks",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Stiff Leg Deadlift",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Russian Twists",
-            "reps": "12"
+            "reps": "12",
+            "sets": "4"
           },
           {
             "name": "Side Leg Raises",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Goblet Squats",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Glute Bridge Pull Aparts",
-            "reps": "14"
+            "reps": "14",
+            "sets": "4"
           },
           {
             "name": "Heels to Heaven",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d2"
@@ -4311,35 +4578,43 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "External Delt Rotations",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Lat Pulldowns",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Delt Skier Kickbacks",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Scapular Retractions",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hammer Curls",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Boat Pose Holds",
-            "reps": "10s"
+            "reps": "10s",
+            "sets": "4"
           },
           {
             "name": "Standing Side Bends",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Butterfly Situps",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           }
         ],
         "id": "d3"
@@ -4349,31 +4624,38 @@ const SEED_WORKOUTS = [
         "exercises": [
           {
             "name": "Plie Squat Pulses",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Donkey Kick Backs",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Lying Leg Raises",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "45 Degree Bicep Curls",
-            "reps": "10"
+            "reps": "10",
+            "sets": "4"
           },
           {
             "name": "Static Lunges",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Deadlift to Row",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           },
           {
             "name": "Hip Thrusts",
-            "reps": "8"
+            "reps": "8",
+            "sets": "4"
           }
         ],
         "id": "d4"
@@ -4394,7 +4676,7 @@ function defaultState(){
     groceryRun: { planId:"p1655", extras:[], checked:{} },
     // personal (local-only)
     foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0},
-    cloud:{url:"",token:"",lastSync:0}, shareToken:"",
+    cloud:{url:"",token:"",lastSync:0}, shareToken:"", notes:{},
     vision:"", focus:{}, water:{}, profileName:"", waterGoal:126
   };
 }
@@ -4411,7 +4693,7 @@ function load(){
 function save(){ const c=Object.assign({},S); delete c.plans; delete c.workouts; localStorage.setItem(LS_KEY, JSON.stringify(c)); scheduleCloudPush(); }
 
 /* ---- cloud sync (Render + Supabase) ---- */
-const CLOUD_KEYS=["checkins","foodLog","trainingLog","activities","water","waterGoal","vision","focus","profileName","groceryRun","currentPlanId","currentWorkoutId","strava","shareToken"];
+const CLOUD_KEYS=["checkins","foodLog","trainingLog","activities","water","waterGoal","vision","focus","profileName","groceryRun","currentPlanId","currentWorkoutId","strava","shareToken","notes"];
 function cloudPersonal(){ const o={}; CLOUD_KEYS.forEach(k=>o[k]=S[k]); return o; }
 function applyCloud(state){ if(!state)return; CLOUD_KEYS.forEach(k=>{ if(state[k]!==undefined) S[k]=state[k]; }); }
 let _pushT=null;
@@ -4812,9 +5094,17 @@ function renderFood(){
     <button class="btn sec" style="flex:1" onclick="searchFoodModal()">🔍 Search</button>
     <button class="btn sec" style="flex:1" onclick="customFoodModal()">＋ Custom</button>
   </div></div>`;
+  side+=notesCard(foodDate);
 
   $('#p-food').innerHTML=`<div class="split"><div class="col-main">${main}</div><aside class="col-side">${side}</aside></div>`;
 }
+function notesCard(date){
+  const v=(S.notes&&S.notes[date])||'';
+  const label=date===todayISO()?"What's up today":"Notes · "+fmtDate(date);
+  return `<div class="card"><h2>📝 ${label}</h2>
+    <textarea class="inp" rows="4" placeholder="Notes, how you're feeling, reminders…" onchange="saveNote('${date}',this.value)">${esc(v)}</textarea></div>`;
+}
+function saveNote(date,text){ S.notes=S.notes||{}; if(text.trim())S.notes[date]=text; else delete S.notes[date]; save(); }
 function ringHTML(label,val,target,color,unit){
   const r=26,c=2*Math.PI*r,pct=target?Math.min(1,val/target):0;
   return `<div><div class="ring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" stroke="var(--line)" stroke-width="7" fill="none"/>
@@ -4896,10 +5186,12 @@ function renderTrain(){
     const dn=log[d.id]?'done':'';
     main+=`<div class="card"><div class="day"><div class="dh">
       <div class="check ${dn}" onclick="toggleDay('${d.id}')" style="${dn?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${dn?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
-      <b>${esc(d.label)}</b></div>`;
+      <b>${esc(d.label)}</b></div>
+      <div class="warmup">🤸 Warm-up: 5 min + 5–10 min stretching the muscles you'll train</div>`;
     d.exercises.forEach(ex=>{
-      main+=`<div class="ex"><a href="https://julielohre.com/?s=${encodeURIComponent(ex.name)}" target="_blank" rel="noopener">${esc(ex.name)}</a><span class="sr">${esc(ex.reps)} reps</span></div>`;
+      main+=`<div class="ex"><a href="https://julielohre.com/?s=${encodeURIComponent(ex.name)}" target="_blank" rel="noopener">${esc(ex.name)}</a><span class="sr">${ex.sets?esc(ex.sets)+' × ':''}${esc(ex.reps)} reps</span></div>`;
     });
+    if(d.cardio) main+=`<div class="cardio">🔥 ${esc(d.cardio)}</div>`;
     main+=`</div></div>`;
   });
 
@@ -4908,18 +5200,18 @@ function renderTrain(){
   if(!S.strava.workerUrl){
     side+=`<p class="muted" style="font-size:13px">Connect Strava to pull your Apple Watch workouts here.</p><button class="btn sec" style="margin-top:10px;width:100%" onclick="go('data')">Connect Strava →</button>`;
   }else{
-    const acts=(S.activities||[]).slice(0,12);
-    if(acts.length){
-      side+=`<div class="banner" style="background:var(--accent-bg);border-color:#bfe9e1;color:var(--accent-d)">Last 7 days: <b>${recent.length}</b> sessions · <b>${mins}</b> min · <b>${cals||'—'}</b> cal</div>`;
-      acts.forEach(a=>{
+    side+=`<button class="btn" style="width:100%" onclick="syncStrava()">↻ Sync${S.strava.lastSync?' · '+timeAgo(S.strava.lastSync):''}</button>`;
+    if(recent.length){
+      side+=`<div class="banner" style="margin-top:12px;background:var(--accent-bg);border-color:#bfe9e1;color:var(--accent-d)">Last 7 days: <b>${recent.length}</b> sessions · <b>${mins}</b> min · <b>${cals||'—'}</b> cal</div>`;
+      recent.forEach(a=>{
         const emo=actEmoji(a.type),dt=new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
         side+=`<div class="act"><div class="aemoji">${emo}</div><div class="an"><b>${esc(a.name||a.type)}</b><div class="am">${dt} · ${a.durationMin||0} min${a.distanceKm?' · '+round(a.distanceKm*0.621371,2)+' mi':''}</div></div>
           <div class="astat">${a.calories?a.calories+' cal':''}${a.avgHR?'<br>♥ '+a.avgHR:''}</div></div>`;
       });
-    } else side+=`<div class="tiny" style="padding:4px 2px">No activities yet — hit Sync.</div>`;
-    side+=`<button class="btn" style="margin-top:12px;width:100%" onclick="syncStrava()">↻ Sync${S.strava.lastSync?' · '+timeAgo(S.strava.lastSync):''}</button>`;
+    } else side+=`<div class="tiny" style="margin-top:12px;padding:4px 2px">No workouts in the last 7 days.</div>`;
   }
   side+=`</div>`;
+  side+=notesCard(todayISO());
   $('#p-train').innerHTML=`<div class="split"><div class="col-main">${main}</div><aside class="col-side">${side}</aside></div>`;
 }
 function toggleDay(id){const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};S.trainingLog[wk][id]=!S.trainingLog[wk][id];if(!S.trainingLog[wk][id])delete S.trainingLog[wk][id];save();renderTrain();}
@@ -5124,6 +5416,7 @@ function importFile(e){
     if(j.profileName)S.profileName=j.profileName;
     if(j.waterGoal)S.waterGoal=j.waterGoal;
     if(j.cloud)S.cloud=Object.assign(S.cloud||{},j.cloud);
+    if(j.notes)S.notes=Object.assign(S.notes||{},j.notes);
     save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
   }catch(err){toast('Could not read file');}};
   rd.readAsText(f);
