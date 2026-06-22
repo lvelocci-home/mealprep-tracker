@@ -5085,8 +5085,8 @@ function renderFood(){
   }
   main+=`</div></div>`;
 
-  // side column — off-plan / extras
-  let side=`<div class="card"><h2>Off-plan / extras</h2>`;
+  // side column — notes on top, then off-plan / extras
+  let side=notesCard(foodDate)+`<div class="card"><h2>Off-plan / extras</h2>`;
   if((lg.extras||[]).length){
     lg.extras.forEach((e,i)=>side+=`<div class="meal"><div class="mn"><b>${esc(e.name)}</b><div class="mm">${e.cal||0} cal · ${e.p||0}P / ${e.c||0}C / ${e.f||0}F</div></div><div class="xrm" style="font-size:20px;color:var(--ink3);cursor:pointer" onclick="rmFoodExtra(${i})">×</div></div>`);
   } else side+=`<div class="tiny" style="padding:4px 2px 10px">Nothing logged off-plan.</div>`;
@@ -5094,7 +5094,6 @@ function renderFood(){
     <button class="btn sec" style="flex:1" onclick="searchFoodModal()">🔍 Search</button>
     <button class="btn sec" style="flex:1" onclick="customFoodModal()">＋ Custom</button>
   </div></div>`;
-  side+=notesCard(foodDate);
 
   $('#p-food').innerHTML=`<div class="split"><div class="col-main">${main}</div><aside class="col-side">${side}</aside></div>`;
 }
@@ -5195,8 +5194,8 @@ function renderTrain(){
     main+=`</div></div>`;
   });
 
-  // side column — Strava recent activity
-  let side=`<div class="card"><h2>📡 Recent activity ${S.strava.workerUrl?'':'<span class="pill" style="background:var(--line);color:var(--ink2);margin-left:auto">off</span>'}</h2>`;
+  // side column — notes on top, then Strava recent activity
+  let side=notesCard(todayISO())+`<div class="card"><h2>📡 Recent activity ${S.strava.workerUrl?'':'<span class="pill" style="background:var(--line);color:var(--ink2);margin-left:auto">off</span>'}</h2>`;
   if(!S.strava.workerUrl){
     side+=`<p class="muted" style="font-size:13px">Connect Strava to pull your Apple Watch workouts here.</p><button class="btn sec" style="margin-top:10px;width:100%" onclick="go('data')">Connect Strava →</button>`;
   }else{
@@ -5211,7 +5210,6 @@ function renderTrain(){
     } else side+=`<div class="tiny" style="margin-top:12px;padding:4px 2px">No workouts in the last 7 days.</div>`;
   }
   side+=`</div>`;
-  side+=notesCard(todayISO());
   $('#p-train').innerHTML=`<div class="split"><div class="col-main">${main}</div><aside class="col-side">${side}</aside></div>`;
 }
 function toggleDay(id){const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};S.trainingLog[wk][id]=!S.trainingLog[wk][id];if(!S.trainingLog[wk][id])delete S.trainingLog[wk][id];save();renderTrain();}
