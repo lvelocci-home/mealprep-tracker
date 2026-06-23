@@ -5049,10 +5049,8 @@ function renderFood(){
   const p=curPlan(),tg=p.target,lg=dayLog(foodDate),tot=dayTotals(foodDate);
   const isToday=foodDate===todayISO();
   let main=`<div class="card">
-    <div class="row" style="gap:12px"><div style="flex:1;min-width:0">
-      <label class="fld" style="margin-top:0">Day</label>
-      <input class="inp" type="date" value="${foodDate}" max="${todayISO()}" onchange="foodDate=this.value;renderFood()">
-    </div><div style="text-align:right;flex:none;white-space:nowrap"><div class="tiny">Target</div><b style="font-size:14px">${tg.cal} cal</b></div></div>
+    <div class="row" style="align-items:baseline"><label class="fld" style="margin:0;flex:1">Day</label><span class="tiny">Target <b style="color:var(--ink);font-size:14px">${tg.cal} cal</b></span></div>
+    <input class="inp" type="date" value="${foodDate}" max="${todayISO()}" onchange="foodDate=this.value;renderFood()" style="margin-top:4px;width:100%">
     <div class="rings" style="margin-top:16px">
       ${ringHTML('Calories',tot.cal,tg.cal,'var(--cal)','')}
       ${ringHTML('Protein',tot.p,tg.p,'var(--pro)','g')}
