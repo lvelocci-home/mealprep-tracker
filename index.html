@@ -5090,7 +5090,11 @@ function renderFood(){
   if((lg.extras||[]).length){
     lg.extras.forEach((e,i)=>side+=`<div class="meal"><div class="mn"><b>${esc(e.name)}</b><div class="mm">${e.cal||0} cal · ${e.p||0}P / ${e.c||0}C / ${e.f||0}F</div></div><div class="xrm" style="font-size:20px;color:var(--ink3);cursor:pointer" onclick="rmFoodExtra(${i})">×</div></div>`);
   } else side+=`<div class="tiny" style="padding:4px 2px 10px">Nothing logged off-plan.</div>`;
-  side+=`<div class="row" style="gap:8px;margin-top:8px">
+  const planMealOpts=S.plans.map(pl=>`<optgroup label="${esc(pl.name)}">${(pl.meals||[]).map(m=>`<option value="${pl.id}|${m.id}">${esc(m.name)} · ${mealMacros(m).cal} cal</option>`).join('')}</optgroup>`).join('');
+  side+=`<label class="fld">Add from a plan's recipes</label>
+    <select class="sel" id="planMealSel">${planMealOpts}</select>
+    <button class="btn sec" style="width:100%;margin-top:8px" onclick="addPlanMeal()">＋ Add this meal</button>
+    <div class="row" style="gap:8px;margin-top:8px">
     <button class="btn sec" style="flex:1" onclick="searchFoodModal()">🔍 Search</button>
     <button class="btn sec" style="flex:1" onclick="customFoodModal()">＋ Custom</button>
   </div></div>`;
@@ -5104,6 +5108,15 @@ function notesCard(date){
     <textarea class="inp" rows="4" placeholder="Notes, how you're feeling, reminders…" onchange="saveNote('${date}',this.value)">${esc(v)}</textarea></div>`;
 }
 function saveNote(date,text){ S.notes=S.notes||{}; if(text.trim())S.notes[date]=text; else delete S.notes[date]; save(); }
+function addPlanMeal(){
+  const v=$('#planMealSel')&&$('#planMealSel').value; if(!v)return;
+  const [pid,mid]=v.split('|');
+  const pl=S.plans.find(p=>p.id===pid), m=pl&&(pl.meals||[]).find(x=>x.id===mid);
+  if(!m){toast('Pick a meal');return;}
+  const mm=mealMacros(m);
+  dayLog(foodDate).extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f});
+  save(); renderFood(); toast('Added '+m.name);
+}
 function ringHTML(label,val,target,color,unit){
   const r=26,c=2*Math.PI*r,pct=target?Math.min(1,val/target):0;
   return `<div><div class="ring"><svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="${r}" stroke="var(--line)" stroke-width="7" fill="none"/>
