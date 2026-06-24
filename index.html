@@ -56,6 +56,9 @@ nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-
 .dbar{height:7px;border-radius:5px;background:var(--line);overflow:hidden;margin-top:7px}
 .dbar>i{display:block;height:100%;border-radius:5px}
 .streak{font-size:13px;font-weight:700;color:var(--warn)}
+.vf-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:11px}
+@media(max-width:720px){.vf-row{grid-template-columns:1fr}}
+.vf-row .vision,.vf-row .dash{margin-bottom:0;height:100%}
 .vision{background:linear-gradient(135deg,var(--accent),var(--accent-d));color:#fff;border-radius:var(--radius);padding:16px 18px;margin-bottom:11px;cursor:pointer;box-shadow:var(--shadow)}
 .vision .vlabel{font-size:10px;font-weight:800;letter-spacing:1.2px;opacity:.85}
 .vision .vtext{font-size:16px;font-weight:600;line-height:1.45;margin-top:5px;font-style:italic}
@@ -119,6 +122,17 @@ details.have summary::-webkit-details-marker{display:none}
 .meal .mn b{font-weight:700;font-size:14px}
 .meal .mn .mm{font-size:12px;color:var(--ink2);margin-top:2px}
 .meal.eaten .mn b{color:var(--accent-d)}
+/* Recipes */
+.recipe-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px}
+.recipe-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:15px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.recipe-head{display:flex;gap:10px;align-items:flex-start}
+.recipe-name{font-size:15px;font-weight:700;line-height:1.3}
+.recipe-plan{font-size:11px;font-weight:600;color:var(--accent-d);margin-top:3px;text-transform:uppercase;letter-spacing:.4px}
+.recipe-macros{text-align:right;flex:none;white-space:nowrap}
+.rm-cal b{font-size:20px;font-weight:800}.rm-cal span{font-size:11px;color:var(--ink3);margin-left:3px}
+.rm-line{font-size:12px;font-weight:700;margin-top:1px}
+.recipe-ings{margin-top:10px;border-top:1px dashed var(--line);padding-top:6px}
+.recipe-ings .ming{padding:3px 0;border-bottom:none}
 .warmup{font-size:12px;color:var(--ink2);font-style:italic;padding:4px 4px 9px 14px;border-bottom:1px solid var(--line);margin-bottom:4px}
 .cardio{font-size:13px;font-weight:600;color:var(--warn);padding:11px 4px 2px 14px;margin-top:4px;border-top:1px dashed var(--line)}
 .split{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
@@ -183,6 +197,7 @@ a.link{color:var(--accent-d);font-weight:700;text-decoration:none}
   <nav class="tabs">
     <button data-pg="train" onclick="go('train')"><svg viewBox="0 0 24 24"><path d="M6.5 6.5l11 11M21 21l-1-1M3 3l1 1M18 22l4-4M2 6l4-4M6.5 17.5L4 20M17.5 6.5L20 4"/></svg>Train</button>
     <button data-pg="food" onclick="go('food')"><svg viewBox="0 0 24 24"><path d="M3 2v7a3 3 0 0 0 6 0V2M6 2v20M21 15V2a5 5 0 0 0-3 9v9"/></svg>Food</button>
+    <button data-pg="recipes" onclick="go('recipes')"><svg viewBox="0 0 24 24"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2zM22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>Recipes</button>
     <button data-pg="progress" onclick="go('progress')"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="M7 14l4-4 3 3 5-6"/></svg>Progress</button>
     <button data-pg="grocery" onclick="go('grocery')"><svg viewBox="0 0 24 24"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"/></svg>Shop</button>
   </nav>
@@ -192,6 +207,7 @@ a.link{color:var(--accent-d);font-weight:700;text-decoration:none}
   <section id="p-home" class="page active"></section>
   <section id="p-grocery" class="page"></section>
   <section id="p-food" class="page"></section>
+  <section id="p-recipes" class="page"></section>
   <section id="p-train" class="page"></section>
   <section id="p-progress" class="page"></section>
   <section id="p-data" class="page"></section>
@@ -4818,7 +4834,7 @@ function go(pg){
   $('#p-'+pg).classList.add('active');
   document.querySelectorAll('nav.tabs button').forEach(b=>b.classList.toggle('active',b.dataset.pg===pg));
   window.scrollTo(0,0);
-  ({home:renderHome,grocery:renderGrocery,food:renderFood,train:renderTrain,progress:renderProgress,data:renderData}[pg])();
+  ({home:renderHome,grocery:renderGrocery,food:renderFood,recipes:renderRecipes,train:renderTrain,progress:renderProgress,data:renderData}[pg])();
 }
 
 /* ============================ HOME / DASHBOARD ============================ */
@@ -4846,15 +4862,15 @@ function renderHome(){
     <h2 onclick="editName()" style="cursor:pointer">${greetWord}${name?', '+esc(name):''} ${emoji}</h2>
     <div class="hdate">${dateStr}${streak>1?' &nbsp;·&nbsp; <span class="streak">🔥 '+streak+' day streak</span>':''}</div></div>`;
 
-  // 2026 vision
-  html+=`<div class="vision" onclick="editVision()"><div class="vlabel">${new Date().getFullYear()} VISION</div>
-    <div class="vtext ${S.vision?'':'empty'}">${S.vision?esc(S.vision):'✨ Tap to set your vision for the year'}</div></div>`;
-
-  // daily focus
-  html+=`<div class="dash focusline" onclick="editFocus()"><div class="dicon" style="background:#fef0e4;color:var(--warn)">🎯</div>
-    <div class="dbody"><div class="dlabel">Today's focus</div>
-      <div class="dstat">${focusToday?esc(focusToday):'<span style="color:var(--ink3);font-weight:500">Set an intention for today</span>'}</div>
-    </div><div class="dchev">✎</div></div>`;
+  // Vision + Today's Focus — side-by-side on wide, stacked on mobile
+  html+=`<div class="vf-row">
+    <div class="vision" onclick="editVision()"><div class="vlabel">${new Date().getFullYear()} VISION</div>
+      <div class="vtext ${S.vision?'':'empty'}">${S.vision?esc(S.vision):'✨ Tap to set your vision for the year'}</div></div>
+    <div class="dash focusline" onclick="editFocus()" style="margin-bottom:0"><div class="dicon" style="background:#fef0e4;color:var(--warn)">🎯</div>
+      <div class="dbody"><div class="dlabel">Today's focus</div>
+        <div class="dstat">${focusToday?esc(focusToday):'<span style="color:var(--ink3);font-weight:500">Set an intention for today</span>'}</div>
+      </div><div class="dchev">✎</div></div>
+  </div>`;
 
   html+=`<div class="dash" onclick="go('food')"><div class="dicon" style="background:var(--accent-bg);color:var(--accent-d)">🍽️</div>
     <div class="dbody"><div class="dlabel">Nutrition</div>
@@ -5174,6 +5190,91 @@ async function runFoodSearch(){
 }
 function pickFood(i){const f=window['_of'+i];dayLog(foodDate).extras.push(f);save();closeModal();renderFood();toast('Added '+f.name);}
 
+/* ============================ RECIPES ============================ */
+let recipeSearch="", recipeMacroFilter="all";
+function renderRecipes(){
+  const q=recipeSearch.toLowerCase().trim(), filter=recipeMacroFilter;
+  // flatten all meals across all plans
+  const all=[];
+  S.plans.forEach(pl=>(pl.meals||[]).forEach(m=>all.push({plan:pl, meal:m, macros:mealMacros(m)})));
+  // filter by search (name, plan, ingredient) + macro focus
+  const matches=all.filter(r=>{
+    if(filter==='hp' && !(r.macros.p>=25)) return false;
+    if(filter==='lc' && !(r.macros.c<=25)) return false;
+    if(filter==='lf' && !(r.macros.f<=15)) return false;
+    if(!q) return true;
+    if(r.meal.name.toLowerCase().includes(q)) return true;
+    if(r.plan.name.toLowerCase().includes(q)) return true;
+    return (r.meal.items||[]).some(it=>(it.f||'').toLowerCase().includes(q));
+  });
+  let html=`<div class="card" style="position:sticky;top:0;z-index:5">
+    <div class="row" style="gap:10px;align-items:center"><h2 style="margin:0;flex:1">📖 Recipe library <span class="tiny" style="font-weight:600;color:var(--ink3);margin-left:6px">${matches.length} of ${all.length}</span></h2></div>
+    <input class="inp" placeholder="🔍 Search by recipe, ingredient, or plan…" value="${esc(recipeSearch)}" oninput="recipeSearch=this.value;renderRecipes()" style="margin-top:10px">
+    <div class="seg" style="margin-top:10px">
+      <button class="${filter==='all'?'on':''}" onclick="recipeMacroFilter='all';renderRecipes()">All</button>
+      <button class="${filter==='hp'?'on':''}" onclick="recipeMacroFilter='hp';renderRecipes()">High protein</button>
+      <button class="${filter==='lc'?'on':''}" onclick="recipeMacroFilter='lc';renderRecipes()">Low carb</button>
+      <button class="${filter==='lf'?'on':''}" onclick="recipeMacroFilter='lf';renderRecipes()">Low fat</button>
+    </div>
+  </div>`;
+
+  if(!matches.length){
+    html+=`<div class="card"><div class="empty">No recipes match.${q?' Try a different search.':''}</div></div>`;
+  } else {
+    html+=`<div class="recipe-grid">`;
+    matches.forEach((r,i)=>{
+      const m=r.meal, mm=r.macros;
+      html+=`<div class="recipe-card">
+        <div class="recipe-head">
+          <div style="flex:1;min-width:0">
+            <div class="recipe-name">${esc(m.name)}</div>
+            <div class="recipe-plan">${esc(r.plan.name)}</div>
+          </div>
+          <div class="recipe-macros">
+            <div class="rm-cal"><b>${mm.cal}</b><span>cal</span></div>
+            <div class="rm-line"><span style="color:var(--pro)">${mm.p}P</span> · <span style="color:var(--carb)">${mm.c}C</span> · <span style="color:var(--fat)">${mm.f}F</span></div>
+          </div>
+        </div>
+        ${(m.items||[]).length?`<div class="recipe-ings">${m.items.map(it=>`<div class="ming"><span class="mq">${esc(it.q||'—')}</span><span>${esc(it.f)}</span></div>`).join('')}</div>`:''}
+        <div class="row" style="gap:8px;margin-top:10px">
+          <button class="btn" style="flex:1" onclick="addRecipeToToday('${r.plan.id}','${m.id}')">＋ Add to today</button>
+          <button class="btn sec" onclick="useRecipeForMeal('${r.plan.id}','${m.id}')" title="Swap into a plan-meal slot for today">Swap…</button>
+        </div>
+      </div>`;
+    });
+    html+=`</div>`;
+  }
+  $('#p-recipes').innerHTML=html;
+}
+function addRecipeToToday(planId, mealId){
+  const pl=S.plans.find(p=>p.id===planId); const m=pl&&(pl.meals||[]).find(x=>x.id===mealId);
+  if(!m){toast('Recipe not found');return;}
+  const mm=mealMacros(m);
+  dayLog(todayISO()).extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f});
+  save(); toast('Added '+m.name+' to today');
+}
+function useRecipeForMeal(planId, mealId){
+  // pick which slot in TODAY's current plan to "use" this recipe for
+  const cur=curPlan();
+  const opts=cur.meals.map(m=>`<option value="${m.id}">${esc(m.name)}</option>`).join('');
+  const pl=S.plans.find(p=>p.id===planId); const m=pl&&(pl.meals||[]).find(x=>x.id===mealId);
+  const mm=m?mealMacros(m):{cal:0,p:0,c:0,f:0};
+  openModal(`<h3>Swap into a meal slot</h3>
+    <p class="muted" style="font-size:13px;margin:4px 0 10px">Mark a plan meal as not eaten, and log <b>${esc(m.name)}</b> as an off-plan extra for today instead.</p>
+    <label class="fld">Replace which meal slot?</label>
+    <select class="sel" id="swapSel">${opts}</select>
+    <div class="tiny" style="margin-top:8px">Will log ${mm.cal} cal · ${mm.p}P / ${mm.c}C / ${mm.f}F</div>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="doRecipeSwap('${planId}','${mealId}')">Swap</button>`);
+}
+function doRecipeSwap(planId, mealId){
+  const slot=$('#swapSel').value; const pl=S.plans.find(p=>p.id===planId); const m=pl&&(pl.meals||[]).find(x=>x.id===mealId);
+  if(!m){closeModal();return;}
+  const lg=dayLog(todayISO()); delete lg.mealsEaten[slot];
+  const mm=mealMacros(m);
+  lg.extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f});
+  save(); closeModal(); toast('Swapped in '+m.name);
+}
+
 /* ============================ TRAIN ============================ */
 function renderTrain(){
   const w=curWorkout(),wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};
@@ -5464,7 +5565,7 @@ async function boot(){
   if(S.cloud&&S.cloud.url&&S.cloud.token){
     const ok=await cloudPull();
     if(ok){ const active=document.querySelector('.page.active'); const pg=active?active.id.replace('p-',''):'home';
-      ({home:renderHome,grocery:renderGrocery,food:renderFood,train:renderTrain,progress:renderProgress,data:renderData}[pg]||renderHome)(); }
+      ({home:renderHome,grocery:renderGrocery,food:renderFood,recipes:renderRecipes,train:renderTrain,progress:renderProgress,data:renderData}[pg]||renderHome)(); }
   }
 }
 boot();
