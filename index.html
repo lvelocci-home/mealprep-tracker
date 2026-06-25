@@ -134,6 +134,8 @@ details.have summary::-webkit-details-marker{display:none}
 .recipe-ings{margin-top:10px;border-top:1px dashed var(--line);padding-top:6px}
 .recipe-ings .ming{padding:3px 0;border-bottom:none}
 .warmup{font-size:12px;color:var(--ink2);font-style:italic;padding:4px 4px 9px 14px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.swap-line{font-size:13px;font-weight:600;color:var(--blue);background:var(--blue-bg);border-radius:8px;padding:8px 12px;margin:6px 0 4px;display:flex;align-items:center;gap:6px}
+.swap-line .sw-rm{margin-left:auto;cursor:pointer;color:var(--blue);font-size:18px;line-height:1;padding:0 4px}
 .cardio{font-size:13px;font-weight:600;color:var(--warn);padding:11px 4px 2px 14px;margin-top:4px;border-top:1px dashed var(--line)}
 .split{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
 .split .col-side .card:first-child{margin-top:0}
@@ -5281,6 +5283,7 @@ function renderTrain(){
   const log=S.trainingLog[wk];
   const trainDays=w.days.filter(d=>!d.rest);
   const done=trainDays.filter(d=>log[d.id]).length;
+  const isSwap=(v)=>v&&typeof v==='object'&&v.swap;
   let main=`<div class="card"><div class="row"><div style="flex:1">
       <label class="fld" style="margin-top:0">Program</label>
       <select class="sel" onchange="S.currentWorkoutId=this.value;save();renderTrain()">${S.workouts.map(x=>`<option value="${x.id}" ${x.id===w.id?'selected':''}>${esc(x.name)}</option>`).join('')}</select>
@@ -5305,15 +5308,23 @@ function renderTrain(){
 
   w.days.forEach(d=>{
     if(d.rest){main+=`<div class="card" style="padding:0"><div class="rest">🧘 ${esc(d.label)}</div></div>`;return;}
-    const dn=log[d.id]?'done':'';
+    const v=log[d.id], dn=v?'done':'', sw=isSwap(v);
+    const checkStyle = sw ? 'background:var(--blue);border-color:var(--blue)' : (dn?'background:var(--accent);border-color:var(--accent)':'');
     main+=`<div class="card"><div class="day"><div class="dh">
-      <div class="check ${dn}" onclick="toggleDay('${d.id}')" style="${dn?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${dn?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
-      <b>${esc(d.label)}</b></div>
-      <div class="warmup">🤸 Warm-up: 5 min + 5–10 min stretching the muscles you'll train</div>`;
+      <div class="check ${dn}" onclick="toggleDay('${d.id}')" style="${checkStyle}"><svg viewBox="0 0 24 24" style="${dn?'opacity:1':''}"><path d="${sw?'M7 12h10':'M5 13l4 4L19 7'}"/></svg></div>
+      <b style="flex:1">${esc(d.label)}</b>
+      <button class="btn ghost" style="padding:2px 6px;font-size:12px;color:var(--blue)" onclick="swapDayModal('${d.id}','${esc(d.label).replace(/'/g,"\\'")}')">${sw?'Edit swap':'Swap'}</button>
+      </div>`;
+    if(sw){
+      const a=v.swap;
+      main+=`<div class="swap-line">🔄 Swapped with <b>${esc(a.name||a.type||'activity')}</b>${a.durationMin?' · '+a.durationMin+' min':''} <span class="sw-rm" onclick="clearSwap('${d.id}')">×</span></div>`;
+    } else {
+      main+=`<div class="warmup">🤸 Warm-up: 5 min + 5–10 min stretching the muscles you'll train</div>`;
+    }
     d.exercises.forEach(ex=>{
-      main+=`<div class="ex"><a href="https://julielohre.com/?s=${encodeURIComponent(ex.name)}" target="_blank" rel="noopener">${esc(ex.name)}</a><span class="sr">${ex.sets?esc(ex.sets)+' × ':''}${esc(ex.reps)} reps</span></div>`;
+      main+=`<div class="ex"${sw?' style="opacity:.45"':''}><a href="https://julielohre.com/?s=${encodeURIComponent(ex.name)}" target="_blank" rel="noopener">${esc(ex.name)}</a><span class="sr">${ex.sets?esc(ex.sets)+' × ':''}${esc(ex.reps)} reps</span></div>`;
     });
-    if(d.cardio) main+=`<div class="cardio">🔥 ${esc(d.cardio)}</div>`;
+    if(d.cardio&&!sw) main+=`<div class="cardio">🔥 ${esc(d.cardio)}</div>`;
     main+=`</div></div>`;
   });
 
@@ -5335,7 +5346,46 @@ function renderTrain(){
   side+=`</div>`;
   $('#p-train').innerHTML=`<div class="split"><div class="col-main">${main}</div><aside class="col-side">${side}</aside></div>`;
 }
-function toggleDay(id){const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};S.trainingLog[wk][id]=!S.trainingLog[wk][id];if(!S.trainingLog[wk][id])delete S.trainingLog[wk][id];save();renderTrain();}
+function toggleDay(id){const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};
+  const cur=S.trainingLog[wk][id];
+  // if it's a swap, tapping the check clears it; else it's a plain on/off
+  if(cur) delete S.trainingLog[wk][id]; else S.trainingLog[wk][id]=true;
+  save();renderTrain();}
+function clearSwap(id){const wk=weekKey();if(S.trainingLog[wk])delete S.trainingLog[wk][id];save();renderTrain();}
+function swapDayModal(dayId, dayLabel){
+  // pull last-7-day Strava activities for the suggestion list
+  const wkAgo=Date.now()-7*864e5;
+  const recent=(S.activities||[]).filter(a=>new Date(a.date).getTime()>wkAgo);
+  const opts=recent.map((a,i)=>{
+    const dt=new Date(a.date).toLocaleDateString('en-US',{month:'short',day:'numeric'});
+    return `<div class="searchres" onclick="pickSwap('${dayId}',${i})">
+      <div class="srn"><b>${esc(a.name||a.type)}</b><br><span>${dt} · ${a.durationMin||0} min${a.type?' · '+esc(a.type):''}</span></div>
+      <div style="color:var(--blue);font-weight:800">⇄</div></div>`;
+  }).join('');
+  window._swapActs=recent;
+  openModal(`<h3>Swap ${esc(dayLabel)}</h3>
+    <p class="muted" style="font-size:13px;margin:4px 0 10px">Log what you actually did instead — it still counts toward your weekly workouts.</p>
+    ${recent.length?`<label class="fld">From your last 7 days on Strava</label>${opts}<div style="height:10px"></div>`:'<p class="note">No recent Strava activity. Enter manually below.</p>'}
+    <label class="fld">Or type it in</label>
+    <input class="inp" id="swapName" placeholder="e.g. Pilates strength">
+    <div class="grid2" style="margin-top:8px">
+      <div><label class="fld" style="margin:0">Duration (min)</label><input class="inp" id="swapDur" type="number" inputmode="numeric"></div>
+      <div><label class="fld" style="margin:0">Type</label><input class="inp" id="swapType" placeholder="Pilates, Yoga, Run…"></div>
+    </div>
+    <button class="btn" style="width:100%;margin-top:12px" onclick="saveCustomSwap('${dayId}')">Save swap</button>`);
+}
+function pickSwap(dayId, idx){
+  const a=window._swapActs[idx]; if(!a)return;
+  const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};
+  S.trainingLog[wk][dayId]={swap:{name:a.name||a.type, type:a.type, durationMin:a.durationMin, date:a.date}};
+  save();closeModal();renderTrain();toast('Swapped with '+(a.name||a.type));
+}
+function saveCustomSwap(dayId){
+  const name=$('#swapName').value.trim(); if(!name){toast('Enter a name');return;}
+  const wk=weekKey();S.trainingLog[wk]=S.trainingLog[wk]||{};
+  S.trainingLog[wk][dayId]={swap:{name, type:$('#swapType').value.trim()||null, durationMin:+$('#swapDur').value||null, date:new Date().toISOString()}};
+  save();closeModal();renderTrain();toast('Swap saved');
+}
 function actEmoji(t){t=(t||'').toLowerCase();if(t.includes('run'))return'🏃';if(t.includes('ride')||t.includes('cycl')||t.includes('bike'))return'🚴';if(t.includes('swim'))return'🏊';if(t.includes('walk')||t.includes('hike'))return'🚶';if(t.includes('weight')||t.includes('strength')||t.includes('workout'))return'🏋️';if(t.includes('yoga'))return'🧘';return'💪';}
 function timeAgo(ts){const s=(Date.now()-ts)/1000;if(s<60)return'just now';if(s<3600)return Math.floor(s/60)+'m ago';if(s<86400)return Math.floor(s/3600)+'h ago';return Math.floor(s/86400)+'d ago';}
 async function syncStrava(){
