@@ -134,6 +134,9 @@ details.have summary::-webkit-details-marker{display:none}
 .recipe-ings{margin-top:10px;border-top:1px dashed var(--line);padding-top:6px}
 .recipe-ings .ming{padding:3px 0;border-bottom:none}
 .warmup{font-size:12px;color:var(--ink2);font-style:italic;padding:4px 4px 9px 14px;border-bottom:1px solid var(--line);margin-bottom:4px}
+.meal-time{color:var(--accent-d);font-weight:600;cursor:pointer;padding:1px 4px;border-radius:4px;white-space:nowrap}
+.meal-time:hover{background:var(--accent-bg)}
+.if-card h2{margin-bottom:8px}
 .cardio{font-size:13px;font-weight:600;color:var(--warn);padding:11px 4px 2px 14px;margin-top:4px;border-top:1px dashed var(--line)}
 .split{display:grid;grid-template-columns:2fr 1fr;gap:14px;align-items:start}
 .split .col-side .card:first-child{margin-top:0}
@@ -5076,12 +5079,26 @@ function renderFood(){
       ${ringHTML('Fat',tot.f,tg.f,'var(--fat)','g')}
     </div></div>`;
 
+  // Eating window + fast (intermittent fasting)
+  const ew=eatingWindow(foodDate), fast=fastSinceLast(foodDate);
+  if(ew||fast){
+    main+=`<div class="card if-card"><h2>⏱️ Intermittent fasting</h2><div class="row" style="gap:18px;flex-wrap:wrap">`;
+    if(ew){
+      main+=`<div><div class="tiny">Eating window</div><b style="font-size:16px">${fmtHM(ew.first)} – ${ew.last?fmtHM(ew.last):'…'}</b>${ew.minutes>0?` <span class="tiny">· ${fmtDur(ew.minutes)}</span>`:''}</div>`;
+    }
+    if(fast!=null){
+      main+=`<div><div class="tiny">Fast since last night</div><b style="font-size:16px;color:${fast>=14*60?'var(--good)':'var(--ink)'}">${fmtDur(fast)}</b></div>`;
+    }
+    main+=`</div></div>`;
+  }
+
   main+=`<div class="card"><div class="row"><h2 style="margin:0;flex:1">Plan meals${isToday?' · today':''}</h2><button class="btn ghost" style="padding:2px 4px;font-size:12px" onclick="toggleAllMeals()">${p.meals.every(m=>foodExp.has(m.id))?'Hide recipes':'Show recipes'}</button></div>`;
   p.meals.forEach(m=>{
-    const eaten=lg.mealsEaten[m.id]?'eaten':'', mm=mealMacros(m), exp=foodExp.has(m.id);
+    const eatenVal=lg.mealsEaten[m.id], eaten=eatenVal?'eaten':'', mm=mealMacros(m), exp=foodExp.has(m.id);
+    const timeLabel=(eatenVal&&eatenVal!==true)?fmtHM(eatenVal):'';
     main+=`<div class="meal ${eaten}">
       <div class="check" onclick="toggleMeal('${m.id}')" style="${eaten?'background:var(--accent);border-color:var(--accent)':''}"><svg viewBox="0 0 24 24" style="${eaten?'opacity:1':''}"><path d="M5 13l4 4L19 7"/></svg></div>
-      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${mm.cal} cal · ${mm.p}P / ${mm.c}C / ${mm.f}F</div></div>
+      <div class="mn" onclick="toggleMeal('${m.id}')"><b>${esc(m.name)}</b><div class="mm">${mm.cal} cal · ${mm.p}P / ${mm.c}C / ${mm.f}F${timeLabel?' · <span class="meal-time" onclick="event.stopPropagation();editMealTime(\''+m.id+'\')">🕐 '+timeLabel+'</span>':eaten?' · <span class="meal-time" onclick="event.stopPropagation();editMealTime(\''+m.id+'\')">set time</span>':''}</div></div>
       <button class="mealinfo" onclick="toggleMealInfo('${m.id}')" title="Ingredients">${exp?'▲':'▼'}</button>
     </div>
     ${exp&&m.items?`<div class="mealings">${m.items.map(it=>`<div class="ming"><span class="mq">${esc(it.q||'—')}</span><span>${esc(it.f)}</span></div>`).join('')}</div>`:''}`;
@@ -5104,7 +5121,7 @@ function renderFood(){
   // side column — notes on top, then off-plan / extras
   let side=notesCard(foodDate)+`<div class="card"><h2>Off-plan / extras</h2>`;
   if((lg.extras||[]).length){
-    lg.extras.forEach((e,i)=>side+=`<div class="meal"><div class="mn"><b>${esc(e.name)}</b><div class="mm">${e.cal||0} cal · ${e.p||0}P / ${e.c||0}C / ${e.f||0}F</div></div><div class="xrm" style="font-size:20px;color:var(--ink3);cursor:pointer" onclick="rmFoodExtra(${i})">×</div></div>`);
+    lg.extras.forEach((e,i)=>side+=`<div class="meal"><div class="mn"><b>${esc(e.name)}</b><div class="mm">${e.cal||0} cal · ${e.p||0}P / ${e.c||0}C / ${e.f||0}F${e.time?' · <span class="meal-time" onclick="editExtraTime('+i+')">🕐 '+fmtHM(e.time)+'</span>':' · <span class="meal-time" onclick="editExtraTime('+i+')">set time</span>'}</div></div><div class="xrm" style="font-size:20px;color:var(--ink3);cursor:pointer" onclick="rmFoodExtra(${i})">×</div></div>`);
   } else side+=`<div class="tiny" style="padding:4px 2px 10px">Nothing logged off-plan.</div>`;
   side+=`<label class="fld">Add from a plan's recipes</label>
     <input class="inp" id="planMealSearch" placeholder="🔍 Search your recipes…" oninput="filterPlanMeals(this.value)" style="margin-bottom:8px">
@@ -5139,7 +5156,7 @@ function addPlanMeal(){
   const pl=S.plans.find(p=>p.id===pid), m=pl&&(pl.meals||[]).find(x=>x.id===mid);
   if(!m){toast('Pick a meal');return;}
   const mm=mealMacros(m);
-  dayLog(foodDate).extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f});
+  dayLog(foodDate).extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f, time:foodDate===todayISO()?nowHM():'12:00'});
   save(); renderFood(); toast('Added '+m.name);
 }
 function ringHTML(label,val,target,color,unit){
@@ -5149,7 +5166,48 @@ function ringHTML(label,val,target,color,unit){
     <div class="rv"><b>${round(val)}</b><span>/${target}${unit}</span></div></div>
     <div class="rlabel">${label}</div><div class="rrem">${Math.max(0,round(target-val))}${unit} left</div></div>`;
 }
-function toggleMeal(id){const lg=dayLog(foodDate);lg.mealsEaten[id]=!lg.mealsEaten[id];if(!lg.mealsEaten[id])delete lg.mealsEaten[id];save();renderFood();}
+function nowHM(){ const d=new Date(); return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0'); }
+function fmtHM(hm){ if(!hm||hm===true)return ''; const [h,m]=hm.split(':').map(Number); const p=h>=12?'PM':'AM'; const h12=((h+11)%12)+1; return h12+':'+String(m).padStart(2,'0')+' '+p; }
+function toggleMeal(id){
+  const lg=dayLog(foodDate);
+  if(lg.mealsEaten[id]) delete lg.mealsEaten[id];
+  else lg.mealsEaten[id]=foodDate===todayISO()?nowHM():'12:00';
+  save();renderFood();
+}
+function editMealTime(id){
+  const lg=dayLog(foodDate); const cur=(lg.mealsEaten[id]===true?'12:00':lg.mealsEaten[id])||nowHM();
+  openModal(`<h3>When did you eat this?</h3>
+    <label class="fld">Time</label><input class="inp" id="mtTime" type="time" value="${cur}">
+    <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="saveMealTime('${id}')">Save</button>
+    <button class="btn sec" onclick="$('#mtTime').value=nowHM()">Now</button></div>`);
+}
+function saveMealTime(id){ const t=$('#mtTime').value; if(!t)return; dayLog(foodDate).mealsEaten[id]=t; save(); closeModal(); renderFood(); }
+function editExtraTime(i){
+  const lg=dayLog(foodDate); const cur=(lg.extras[i]&&lg.extras[i].time)||nowHM();
+  openModal(`<h3>When did you eat this?</h3>
+    <label class="fld">Time</label><input class="inp" id="mtTime" type="time" value="${cur}">
+    <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="saveExtraTime(${i})">Save</button>
+    <button class="btn sec" onclick="$('#mtTime').value=nowHM()">Now</button></div>`);
+}
+function saveExtraTime(i){ const t=$('#mtTime').value; if(!t)return; dayLog(foodDate).extras[i].time=t; save(); closeModal(); renderFood(); }
+function eatingWindow(date){
+  const lg=S.foodLog[date]||{mealsEaten:{},extras:[]};
+  const ts=[];
+  Object.values(lg.mealsEaten||{}).forEach(v=>{ if(v&&v!==true&&/^\d\d:\d\d$/.test(v))ts.push(v); });
+  (lg.extras||[]).forEach(e=>{ if(e.time&&/^\d\d:\d\d$/.test(e.time))ts.push(e.time); });
+  if(!ts.length) return null;
+  ts.sort(); const first=ts[0], last=ts[ts.length-1];
+  const [h1,m1]=first.split(':').map(Number), [h2,m2]=last.split(':').map(Number);
+  return {first, last, minutes:(h2*60+m2)-(h1*60+m1)};
+}
+function fastSinceLast(date){
+  const d=new Date(date+'T00:00'); d.setDate(d.getDate()-1);
+  const yEW=eatingWindow(d.toLocaleDateString('en-CA')), tEW=eatingWindow(date);
+  if(!yEW||!tEW) return null;
+  const [yh,ym]=yEW.last.split(':').map(Number), [th,tm]=tEW.first.split(':').map(Number);
+  return (24*60-(yh*60+ym))+(th*60+tm);
+}
+function fmtDur(mins){ if(mins==null)return''; const h=Math.floor(mins/60),m=mins%60; return h+'h'+(m?' '+m+'m':''); }
 function rmFoodExtra(i){dayLog(foodDate).extras.splice(i,1);save();renderFood();}
 function customFoodModal(){
   openModal(`<h3>Add custom food</h3>
@@ -5161,7 +5219,7 @@ function customFoodModal(){
     <button class="btn" style="width:100%;margin-top:12px" onclick="addCustomFood()">Add</button>`);
 }
 function addCustomFood(){const n=$('#cfN').value.trim();if(!n)return;
-  dayLog(foodDate).extras.push({name:n,cal:+$('#cfCal').value||0,p:+$('#cfP').value||0,c:+$('#cfC').value||0,f:+$('#cfF').value||0});
+  dayLog(foodDate).extras.push({name:n,cal:+$('#cfCal').value||0,p:+$('#cfP').value||0,c:+$('#cfC').value||0,f:+$('#cfF').value||0,time:foodDate===todayISO()?nowHM():'12:00'});
   save();closeModal();renderFood();toast('Added');}
 function searchFoodModal(){
   openModal(`<h3>Search food</h3><p class="muted" style="font-size:13px;margin:4px 0 10px">Powered by Open Food Facts (free database).</p>
@@ -5188,7 +5246,7 @@ async function runFoodSearch(){
     }).join('');
   }catch(e){box.innerHTML='<div class="empty">Search failed (offline?). Use a custom entry.</div>';}
 }
-function pickFood(i){const f=window['_of'+i];dayLog(foodDate).extras.push(f);save();closeModal();renderFood();toast('Added '+f.name);}
+function pickFood(i){const f=window['_of'+i];f.time=foodDate===todayISO()?nowHM():'12:00';dayLog(foodDate).extras.push(f);save();closeModal();renderFood();toast('Added '+f.name);}
 
 /* ============================ RECIPES ============================ */
 let recipeSearch="", recipeMacroFilter="all";
@@ -5250,7 +5308,7 @@ function addRecipeToToday(planId, mealId){
   const pl=S.plans.find(p=>p.id===planId); const m=pl&&(pl.meals||[]).find(x=>x.id===mealId);
   if(!m){toast('Recipe not found');return;}
   const mm=mealMacros(m);
-  dayLog(todayISO()).extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f});
+  dayLog(todayISO()).extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f, time:nowHM()});
   save(); toast('Added '+m.name+' to today');
 }
 function useRecipeForMeal(planId, mealId){
@@ -5271,7 +5329,7 @@ function doRecipeSwap(planId, mealId){
   if(!m){closeModal();return;}
   const lg=dayLog(todayISO()); delete lg.mealsEaten[slot];
   const mm=mealMacros(m);
-  lg.extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f});
+  lg.extras.push({name:m.name, cal:mm.cal, p:mm.p, c:mm.c, f:mm.f, time:nowHM()});
   save(); closeModal(); toast('Swapped in '+m.name);
 }
 
