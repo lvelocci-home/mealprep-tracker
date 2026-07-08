@@ -3,7 +3,7 @@
 A personal, single-file web app for meal prep, nutrition, training, and progress tracking —
 built to run a structured weekly routine (shop → prep → eat to macros → train → check in).
 
-**Live:** https://lvelocci-home.github.io/mealprep-tracker/
+**Live:** https://lvelocci-home.github.io/wellness/
 
 It works offline, installs to a phone home screen, and keeps all personal data private
 (see [Privacy](#privacy)).

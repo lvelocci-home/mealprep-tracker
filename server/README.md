@@ -13,7 +13,7 @@ Tiny service that syncs your app data across devices and serves a read-only
 
 ### 2. Deploy the API (Render — free web service)
 1. Sign up at <https://render.com> and connect your GitHub.
-2. **New → Web Service** → pick the `lvelocci-home/mealprep-tracker` repo.
+2. **New → Web Service** → pick the `lvelocci-home/wellness` repo.
 3. Settings:
    - **Root Directory:** `server`
    - **Runtime:** Node
