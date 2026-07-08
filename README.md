@@ -82,6 +82,3 @@ Vanilla JS · HTML · CSS · SVG charts · `localStorage` · Open Food Facts API
 Cloudflare Workers · Node/Express · PostgreSQL (Supabase) · Render · GitHub Pages.
 
 ---
-
-*Personal project. Not affiliated with any coaching brand; meal/workout plans are the
-owner's own.*
