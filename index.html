@@ -147,6 +147,10 @@ details.have summary::-webkit-details-marker{display:none}
 .meal-time{color:var(--accent-d);font-weight:600;cursor:pointer;padding:1px 4px;border-radius:4px;white-space:nowrap}
 .meal-time:hover{background:var(--accent-bg)}
 .if-card h2{margin-bottom:8px}
+.reveal-wrap{position:relative}
+.reveal-wrap .reveal-inp{padding-right:44px;letter-spacing:.5px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+.reveal-btn{position:absolute;right:4px;top:50%;transform:translateY(-50%);background:none;border:none;font-size:18px;line-height:1;cursor:pointer;padding:8px 10px;opacity:.55;border-radius:6px}
+.reveal-btn:hover{opacity:1;background:var(--bg2)}
 .swap-line{font-size:13px;font-weight:600;color:var(--blue);background:var(--blue-bg);border-radius:8px;padding:8px 12px;margin:6px 0 4px;display:flex;align-items:center;gap:6px}
 .swap-line .sw-rm{margin-left:auto;cursor:pointer;color:var(--blue);font-size:18px;line-height:1;padding:0 4px}
 .cardio{font-size:13px;font-weight:600;color:var(--warn);padding:11px 4px 2px 14px;margin-top:4px;border-top:1px dashed var(--line)}
@@ -4748,6 +4752,18 @@ async function cloudPull(){
   }catch(e){}
   return false;
 }
+function revealField(id, placeholder, value){
+  return `<div class="reveal-wrap">
+    <input class="inp reveal-inp" id="${id}" type="password" autocomplete="off" spellcheck="false" placeholder="${esc(placeholder)}" value="${esc(value)}">
+    <button type="button" class="reveal-btn" onclick="toggleReveal('${id}')" aria-label="Show/hide" title="Show/hide">👁</button>
+  </div>`;
+}
+function toggleReveal(id){
+  const el=$('#'+id); if(!el)return;
+  const btn=el.nextElementSibling;
+  if(el.type==='password'){ el.type='text'; btn.textContent='🙈'; btn.title='Hide'; }
+  else { el.type='password'; btn.textContent='👁'; btn.title='Show'; }
+}
 async function saveCloud(){
   S.cloud=S.cloud||{}; S.cloud.url=$('#clUrl').value.trim(); S.cloud.token=$('#clTok').value.trim();
   if(!S.cloud.url||!S.cloud.token){ save(); renderData(); toast('Saved'); return; }
@@ -5625,8 +5641,8 @@ function renderData(){
   const synced=S.cloud&&S.cloud.url&&S.cloud.token;
   html+=`<div class="card"><h2>☁️ Cloud sync ${synced?'<span class="pill" style="margin-left:auto">on</span>':''}</h2>
     <p class="muted" style="font-size:13px">Sync your data across devices. Use the same URL + token on your laptop and phone. ${synced&&S.cloud.lastSync?'<br>Last synced '+timeAgo(S.cloud.lastSync)+'.':''}</p>
-    <label class="fld">API URL</label><input class="inp" id="clUrl" placeholder="https://...onrender.com" value="${esc(S.cloud&&S.cloud.url||'')}">
-    <label class="fld">Your private token</label><input class="inp" id="clTok" placeholder="a long secret you choose" value="${esc(S.cloud&&S.cloud.token||'')}">
+    <label class="fld">API URL</label>${revealField('clUrl','https://...onrender.com', S.cloud&&S.cloud.url||'')}
+    <label class="fld">Your private token</label>${revealField('clTok','a long secret you choose', S.cloud&&S.cloud.token||'')}
     <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="saveCloud()">Save & sync now</button>
     ${synced?'<button class="btn sec" onclick="S.cloud={url:\'\',token:\'\',lastSync:0};save();renderData();toast(\'Disconnected\')">Disconnect</button>':''}</div>
     <p class="note">Setup steps are in <code>server/README.md</code> (Render + Supabase, free).</p>
@@ -5653,8 +5669,8 @@ function renderData(){
   </div>`;
 
   html+=`<div class="card"><h2>📡 Connect Strava</h2>
-    <label class="fld" style="margin-top:0">Worker URL</label><input class="inp" id="stUrl" placeholder="https://mealprep-strava.xxx.workers.dev" value="${esc(S.strava.workerUrl||'')}">
-    <label class="fld">App token</label><input class="inp" id="stTok" placeholder="your APP_TOKEN" value="${esc(S.strava.token||'')}">
+    <label class="fld" style="margin-top:0">Worker URL</label>${revealField('stUrl','https://mealprep-strava.xxx.workers.dev', S.strava.workerUrl||'')}
+    <label class="fld">App token</label>${revealField('stTok','your APP_TOKEN', S.strava.token||'')}
     <div class="row" style="gap:8px;margin-top:12px"><button class="btn" style="flex:1" onclick="saveStrava()">Save & test</button></div>
     <p class="note">See <code>worker/README.md</code> for the one-time setup. The token stays on this device only.</p>
   </div>`;
