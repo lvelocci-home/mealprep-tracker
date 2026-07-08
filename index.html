@@ -64,6 +64,16 @@ nav.tabs button svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-
 .vision .vtext{font-size:16px;font-weight:600;line-height:1.45;margin-top:5px;font-style:italic}
 .vision .vtext.empty{opacity:.8;font-style:normal;font-weight:500}
 .focusline .dstat{font-size:15px!important;font-weight:600!important;white-space:normal!important}
+.wm-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:11px}
+@media(max-width:720px){.wm-row{grid-template-columns:1fr}}
+.wm-row .dash{margin-bottom:0;height:100%}
+.med-card{cursor:pointer;transition:.15s}
+.med-card.med-done{background:#f6f2ff;border-color:#dccff5}
+.med-card.med-done .dstat{color:var(--fat)}
+.med-check{width:34px;height:34px;border-radius:10px;border:2px solid var(--line2);flex:none;display:flex;align-items:center;justify-content:center;background:var(--card);transition:.15s;align-self:center}
+.med-check svg{width:18px;height:18px;stroke:#fff;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;opacity:0}
+.med-check.on{background:var(--fat);border-color:var(--fat)}
+.med-check.on svg{opacity:1}
 .watbtns{display:flex;gap:6px;margin-top:9px}
 .watbtns button{flex:1;border:1px solid #bcd9f2;background:var(--blue-bg);color:var(--blue);font-weight:700;font-size:13px;font-family:var(--font);padding:7px 4px;border-radius:9px;cursor:pointer}
 .watbtns button:active{transform:scale(.96)}
@@ -4697,7 +4707,7 @@ function defaultState(){
     // personal (local-only)
     foodLog:{}, trainingLog:{}, checkins:[], activities:[], strava:{workerUrl:"",token:"",lastSync:0},
     cloud:{url:"",token:"",lastSync:0}, shareToken:"", notes:{},
-    vision:"", focus:{}, water:{}, profileName:"", waterGoal:126
+    vision:"", focus:{}, water:{}, profileName:"", waterGoal:126, meditation:{}
   };
 }
 let S = load();
@@ -4713,7 +4723,7 @@ function load(){
 function save(){ const c=Object.assign({},S); delete c.plans; delete c.workouts; localStorage.setItem(LS_KEY, JSON.stringify(c)); scheduleCloudPush(); }
 
 /* ---- cloud sync (Render + Supabase) ---- */
-const CLOUD_KEYS=["checkins","foodLog","trainingLog","activities","water","waterGoal","vision","focus","profileName","groceryRun","currentPlanId","currentWorkoutId","strava","shareToken","notes"];
+const CLOUD_KEYS=["checkins","foodLog","trainingLog","activities","water","waterGoal","vision","focus","profileName","groceryRun","currentPlanId","currentWorkoutId","strava","shareToken","notes","meditation"];
 function cloudPersonal(){ const o={}; CLOUD_KEYS.forEach(k=>o[k]=S[k]); return o; }
 function applyCloud(state){ if(!state)return; CLOUD_KEYS.forEach(k=>{ if(state[k]!==undefined) S[k]=state[k]; }); }
 let _pushT=null;
@@ -4881,17 +4891,28 @@ function renderHome(){
       <div class="dsub">${mealsEaten}/${p.meals.length} meals · ${round(tot.p)}P / ${round(tot.c)}C / ${round(tot.f)}F</div>
     </div><div class="dchev">›</div></div>`;
 
-  html+=`<div class="dash" style="cursor:default"><div class="dicon" style="background:var(--blue-bg);color:var(--blue)">💧</div>
-    <div class="dbody"><div class="dlabel">Water</div>
-      <div class="dstat" onclick="logWaterExact()" style="cursor:pointer">${ozToday} <small>/ ${wgoal} oz</small></div>
-      <div class="dbar"><i style="width:${wpct}%;background:var(--blue)"></i></div>
-      <div class="watbtns">
-        <button onclick="addWater(36)">+36</button>
-        <button onclick="addWater(18)">+18</button>
-        <button onclick="addWater(8)">+8</button>
-        <button class="minus" onclick="addWater(-8)">−</button>
+  const medToday=!!(S.meditation&&S.meditation[today]);
+  const medStreak=meditationStreak();
+  html+=`<div class="wm-row">
+    <div class="dash" style="cursor:default"><div class="dicon" style="background:var(--blue-bg);color:var(--blue)">💧</div>
+      <div class="dbody"><div class="dlabel">Water</div>
+        <div class="dstat" onclick="logWaterExact()" style="cursor:pointer">${ozToday} <small>/ ${wgoal} oz</small></div>
+        <div class="dbar"><i style="width:${wpct}%;background:var(--blue)"></i></div>
+        <div class="watbtns">
+          <button onclick="addWater(36)">+36</button>
+          <button onclick="addWater(18)">+18</button>
+          <button onclick="addWater(8)">+8</button>
+          <button class="minus" onclick="addWater(-8)">−</button>
+        </div>
+      </div></div>
+    <div class="dash med-card ${medToday?'med-done':''}" onclick="toggleMeditation()"><div class="dicon" style="background:#efeaf9;color:var(--fat)">🧘</div>
+      <div class="dbody"><div class="dlabel">Meditation</div>
+        <div class="dstat">${medToday?'Done today ✓':'Tap when done'}</div>
+        <div class="dsub">${medStreak>0?'🔥 '+medStreak+'-day streak':'Start your streak today'}</div>
       </div>
-    </div></div>`;
+      <div class="med-check ${medToday?'on':''}"><svg viewBox="0 0 24 24"><path d="M5 13l4 4L19 7"/></svg></div>
+    </div>
+  </div>`;
 
   const actLine=lastAct?`${actEmoji(lastAct.type)} ${esc(lastAct.name||lastAct.type)} · ${lastAct.durationMin} min`:'Connect Strava to see workouts';
   html+=`<div class="dash" onclick="go('train')"><div class="dicon" style="background:#eef0fb;color:var(--fat)">🏋️</div>
@@ -4953,6 +4974,22 @@ function editFocus(){
 }
 function saveFocus(){ S.focus=S.focus||{}; S.focus[todayISO()]=$('#focInp').value.trim(); save(); closeModal(); renderHome(); }
 function addWater(oz){ S.water=S.water||{}; const d=todayISO(); S.water[d]=Math.max(0,(S.water[d]||0)+oz); save(); renderHome(); }
+function toggleMeditation(){
+  event&&event.stopPropagation&&event.stopPropagation();
+  S.meditation=S.meditation||{}; const d=todayISO();
+  if(S.meditation[d]) delete S.meditation[d]; else S.meditation[d]=true;
+  save(); renderHome();
+}
+function meditationStreak(){
+  const m=S.meditation||{}; let n=0;
+  for(let i=0;i<400;i++){
+    const d=new Date(); d.setDate(d.getDate()-i); const iso=d.toLocaleDateString('en-CA');
+    if(m[iso]) n++;
+    else if(i===0) continue; // today not logged yet
+    else break;
+  }
+  return n;
+}
 function logWaterExact(){
   const d=todayISO(), cur=(S.water&&S.water[d])||0;
   openModal(`<h3>Water today</h3>
@@ -5588,6 +5625,7 @@ function importFile(e){
     if(j.waterGoal)S.waterGoal=j.waterGoal;
     if(j.cloud)S.cloud=Object.assign(S.cloud||{},j.cloud);
     if(j.notes)S.notes=Object.assign(S.notes||{},j.notes);
+    if(j.meditation)S.meditation=Object.assign(S.meditation||{},j.meditation);
     save();renderData();toast('Imported '+(j.checkins?j.checkins.length+' check-ins':'data'));
   }catch(err){toast('Could not read file');}};
   rd.readAsText(f);
