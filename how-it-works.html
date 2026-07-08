@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>How Wellness Tracker Works</title>
+<style>
+:root{
+  --bg:#0f1720; --card:#1a2530; --line:#2a3644; --ink:#e9eef4; --ink2:#98a5b3; --ink3:#647485;
+  --accent:#0eb39a; --pink:#e0566b; --amber:#f0a821; --purple:#8b6cf0; --blue:#2f78d6;
+  --shadow:0 4px 30px rgba(0,0,0,.35);
+  --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:linear-gradient(180deg,#0b1218 0%,#0f1720 100%);color:var(--ink);font-family:var(--font);min-height:100vh;padding:60px 24px 100px;line-height:1.5;letter-spacing:-.01em}
+.wrap{max-width:1200px;margin:0 auto}
+
+/* ---- Hero ---- */
+.hero{text-align:center;margin-bottom:70px}
+.hero .tag{display:inline-block;font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--accent);text-transform:uppercase;background:rgba(14,179,154,.12);padding:6px 14px;border-radius:20px;margin-bottom:24px}
+.hero h1{font-size:56px;font-weight:800;letter-spacing:-1.5px;line-height:1.1;margin-bottom:16px;background:linear-gradient(135deg,#fff 0%,#8fdccf 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero p{font-size:20px;color:var(--ink2);max-width:660px;margin:0 auto;font-weight:500}
+
+/* ---- Section titles ---- */
+.section{margin-bottom:80px}
+.section h2{font-size:12px;font-weight:800;letter-spacing:2.5px;color:var(--accent);text-transform:uppercase;text-align:center;margin-bottom:14px}
+.section h3{font-size:34px;font-weight:800;text-align:center;letter-spacing:-.6px;margin-bottom:44px}
+
+/* ---- Big diagram (data flow) ---- */
+.flow{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;align-items:center;position:relative;margin-bottom:20px}
+@media(max-width:900px){.flow{grid-template-columns:1fr;gap:32px}}
+.flow-node{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:30px 22px;text-align:center;box-shadow:var(--shadow);position:relative}
+.flow-node .emoji{font-size:44px;line-height:1;margin-bottom:14px}
+.flow-node .title{font-size:19px;font-weight:800;margin-bottom:6px}
+.flow-node .sub{font-size:14px;color:var(--ink2)}
+.flow-arrow{position:absolute;top:50%;right:-24px;transform:translateY(-50%);width:32px;height:32px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;color:#0b1218;z-index:2;box-shadow:0 4px 12px rgba(14,179,154,.5)}
+.flow-arrow.left{right:auto;left:-24px}
+@media(max-width:900px){.flow-arrow{top:auto;bottom:-32px;right:50%;transform:translateX(50%) rotate(90deg)}
+.flow-arrow.left{left:auto;right:50%;transform:translateX(50%) rotate(90deg)}}
+.flow-node.you{border-color:var(--accent);background:linear-gradient(160deg,rgba(14,179,154,.15) 0%,var(--card) 50%)}
+.flow-node.you .emoji{filter:drop-shadow(0 0 20px rgba(14,179,154,.5))}
+.flow-caption{text-align:center;color:var(--ink3);font-size:14px;margin-top:32px;font-style:italic}
+
+/* ---- Service cards grid ---- */
+.stack-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+.svc{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:22px 22px 20px;box-shadow:var(--shadow);position:relative;overflow:hidden;transition:.2s}
+.svc:hover{transform:translateY(-3px);border-color:var(--accent)}
+.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.svc.gh::before{background:#c9d1d9}
+.svc.pages::before{background:#8fdccf}
+.svc.supabase::before{background:#3ecf8e}
+.svc.render::before{background:#8b6cf0}
+.svc.cloudflare::before{background:var(--amber)}
+.svc.off::before{background:var(--pink)}
+.svc.strava::before{background:#fc4c02}
+.svc .top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
+.svc .icon{font-size:32px;line-height:1}
+.svc .name{font-size:17px;font-weight:800}
+.svc .role{font-size:12px;font-weight:700;color:var(--ink3);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.svc .desc{font-size:14px;color:var(--ink2);line-height:1.55}
+.svc .pill{display:inline-block;font-size:11px;font-weight:800;padding:3px 8px;border-radius:12px;background:rgba(14,179,154,.15);color:var(--accent);margin-top:12px}
+
+/* ---- Data flow example ---- */
+.example{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:36px;box-shadow:var(--shadow)}
+.example .steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;align-items:stretch}
+@media(max-width:900px){.example .steps{grid-template-columns:1fr}}
+.step{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:20px;position:relative}
+.step .num{position:absolute;top:-14px;left:20px;background:var(--accent);color:#0b1218;font-weight:800;font-size:14px;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.step .who{font-size:12px;font-weight:700;color:var(--accent);text-transform:uppercase;letter-spacing:1px;margin-top:8px;margin-bottom:6px}
+.step .act{font-size:14px;color:var(--ink)}
+
+/* ---- Callouts row ---- */
+.callouts{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:16px}
+@media(max-width:900px){.callouts{grid-template-columns:1fr}}
+.callout{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:24px;text-align:center;box-shadow:var(--shadow)}
+.callout .big{font-size:44px;font-weight:800;color:var(--accent);line-height:1;margin-bottom:8px;letter-spacing:-1.5px}
+.callout .lbl{font-size:14px;color:var(--ink2);font-weight:600}
+
+/* Footer */
+footer{text-align:center;color:var(--ink3);font-size:13px;margin-top:80px;padding-top:30px;border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="tag">The stack, explained</div>
+    <h1>How Wellness Tracker Works</h1>
+    <p>A personal wellness app built from free, one-job-each services — glued together with a private token I own.</p>
+  </div>
+
+  <!-- BIG PICTURE -->
+  <div class="section">
+    <h2>The Big Picture</h2>
+    <h3>Three things, one flow</h3>
+    <div class="flow">
+      <div class="flow-node you">
+        <div class="emoji">📱</div>
+        <div class="title">Me</div>
+        <div class="sub">on my phone or laptop</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-node">
+        <div class="emoji">🌐</div>
+        <div class="title">The App</div>
+        <div class="sub">a single web page,<br>same URL on any device</div>
+        <div class="flow-arrow">→</div>
+      </div>
+      <div class="flow-node">
+        <div class="emoji">🗄️</div>
+        <div class="title">My Private Cloud</div>
+        <div class="sub">holds every check-in,<br>meal, workout, note</div>
+      </div>
+    </div>
+    <div class="flow-caption">Everything else is just what makes those three feel effortless.</div>
+  </div>
+
+  <!-- THE STACK -->
+  <div class="section">
+    <h2>Under the hood</h2>
+    <h3>Seven free services, each with one job</h3>
+    <div class="stack-grid">
+
+      <div class="svc gh">
+        <div class="top"><span class="icon">📦</span><span class="name">GitHub</span></div>
+        <div class="role">Code storage</div>
+        <div class="desc">Google Drive for code. Every change is version-controlled and reversible — I can rewind any edit.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+      <div class="svc pages">
+        <div class="top"><span class="icon">🌐</span><span class="name">GitHub Pages</span></div>
+        <div class="role">Website hosting</div>
+        <div class="desc">Serves the app to the world. Push a change, it goes live in about a minute.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+      <div class="svc supabase">
+        <div class="top"><span class="icon">🗄️</span><span class="name">Supabase</span></div>
+        <div class="role">Database (filing cabinet)</div>
+        <div class="desc">The vault where check-ins, food logs, water, and notes actually live. Locked to my private token.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+      <div class="svc render">
+        <div class="top"><span class="icon">🛎️</span><span class="name">Render</span></div>
+        <div class="role">API server (front-desk clerk)</div>
+        <div class="desc">The friendly middleman. When my phone saves something, Render files it in Supabase. When my laptop asks for the latest, Render fetches it. Keeps every device in sync.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+      <div class="svc cloudflare">
+        <div class="top"><span class="icon">🛡️</span><span class="name">Cloudflare Worker</span></div>
+        <div class="role">Strava go-between</div>
+        <div class="desc">Holds the Strava secret in a safe place and hands my workouts back to the app. Nothing sensitive ever touches the public page.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+      <div class="svc off">
+        <div class="top"><span class="icon">🍎</span><span class="name">Open Food Facts</span></div>
+        <div class="role">Nutrition database</div>
+        <div class="desc">A giant, community-run food database. When I search "cappuccino," this is where the macros come from — no account needed.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+      <div class="svc strava">
+        <div class="top"><span class="icon">🏃</span><span class="name">Strava</span></div>
+        <div class="role">Workout source</div>
+        <div class="desc">Where my Apple Watch workouts already sync automatically. My app just borrows them from here.</div>
+        <span class="pill">FREE</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- REAL EXAMPLE -->
+  <div class="section">
+    <h2>Real-world example</h2>
+    <h3>What happens when I log water on my phone</h3>
+    <div class="example">
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div class="who">📱 Phone</div>
+          <div class="act">I tap "+36" on the water card while walking to the kitchen.</div>
+        </div>
+        <div class="step">
+          <div class="num">2</div>
+          <div class="who">🛎️ Render</div>
+          <div class="act">The app quietly hands the update to my Render server — proving it's me with my private token.</div>
+        </div>
+        <div class="step">
+          <div class="num">3</div>
+          <div class="who">🗄️ Supabase</div>
+          <div class="act">Render files it in Supabase, which stores it forever.</div>
+        </div>
+        <div class="step">
+          <div class="num">4</div>
+          <div class="who">💻 Laptop</div>
+          <div class="act">When I open my laptop later, the app asks Render "what's new?" and my water shows up already.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CALLOUTS -->
+  <div class="section">
+    <h2>The whole thing at a glance</h2>
+    <h3>Free, private, mine</h3>
+    <div class="callouts">
+      <div class="callout">
+        <div class="big">$0</div>
+        <div class="lbl">Total monthly cost — every service is on a permanent free tier.</div>
+      </div>
+      <div class="callout">
+        <div class="big">🔒</div>
+        <div class="lbl">Your data lives behind a private token only you have. The public URL shows a blank app to anyone else.</div>
+      </div>
+      <div class="callout">
+        <div class="big">📱💻</div>
+        <div class="lbl">Same URL on every device. Sync is invisible and instant.</div>
+      </div>
+    </div>
+  </div>
+
+  <footer>Wellness Tracker · built and owned by lvelocci</footer>
+
+</div>
+</body>
+</html>
